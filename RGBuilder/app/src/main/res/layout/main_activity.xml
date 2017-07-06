@@ -60,7 +60,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:selectAllOnFocus="false"
-                android:text="DD"
+                android:text="26"
                 android:textAlignment="center" />
 
             <EditText
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="A0"
+                android:text="f7"
                 android:textAlignment="center" />
 
             <EditText
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="DD"
+                android:text="a3"
                 android:textAlignment="center" />
         </LinearLayout>
 

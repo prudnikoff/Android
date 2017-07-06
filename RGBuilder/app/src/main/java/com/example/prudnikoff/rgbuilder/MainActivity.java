@@ -1,11 +1,15 @@
 package com.example.prudnikoff.rgbuilder;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,27 @@ public class MainActivity extends AppCompatActivity {
     private EditText editGreen= null;
     private EditText editBlue = null;
     private RelativeLayout mainLayout = null;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.main_menu: goInfoActivity(); break;
+        }
+        return true;
+    }
+
+    protected void goInfoActivity() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        this.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,12 +125,7 @@ public class MainActivity extends AppCompatActivity {
         setMainColor();
     }
 
-    public int getRandomColor(){
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
-
-    private void setRandomColor() {
+    protected void setRandomColor() {
         Random rnd = new Random();
         int red = rnd.nextInt(255);
         int green = rnd.nextInt(255);
@@ -116,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.setBackgroundColor(randomColor);
     }
 
-    private boolean checkTypedColor(String color) {
+    protected boolean checkTypedColor(String color) {
 
         final String allowed = "ABCDEFabcdef0123456789";
         boolean result = true;
@@ -133,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    private void setMainColor() {
+    protected void setMainColor() {
+
         String sRed = editRed.getText().toString();
         String sGreen = editGreen.getText().toString();
         String sBlue = editBlue.getText().toString();
@@ -161,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 editBlue.setText("00");
             }
         }
+
         int mainColor = Color.rgb(red, green, blue);
         mainLayout.setBackgroundColor(mainColor);
 
