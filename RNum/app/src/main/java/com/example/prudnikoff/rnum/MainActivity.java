@@ -25,14 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         setUp();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         rndNumberTextView.setText(getRandomNumber());
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

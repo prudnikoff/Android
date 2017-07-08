@@ -11,6 +11,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="7"
-        android:textSize="80sp"
+        android:textSize="110sp"
         android:textColor="#ffffff"/>
 </RelativeLayout>
