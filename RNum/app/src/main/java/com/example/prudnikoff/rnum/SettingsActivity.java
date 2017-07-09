@@ -17,27 +17,30 @@ public class SettingsActivity extends AppCompatActivity{
     SeekBar mainSeekBar = null;
     TextView rangeNumberTextView = null;
     CheckBox ifZeroCheckBox = null;
+    Intent returnIntent = new Intent();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
         mainSeekBar = (SeekBar)findViewById(R.id.mainSeekBar);
         rangeNumberTextView = (TextView)findViewById(R.id.rangeNumberTextView);
         ifZeroCheckBox = (CheckBox)findViewById(R.id.ifZerocheckBox);
+
         ifZeroCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ifZeroCheckBox.isChecked()) {
-                    MainActivity.setIfZero(true);
-                } else MainActivity.setIfZero(false);
+                returnIntent.putExtra("ifZero", ifZeroCheckBox.isChecked());
             }
         });
+
         mainSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 rangeNumberTextView.setText(String.valueOf(mainSeekBar.getProgress()));
-                MainActivity.setRangeNumber(mainSeekBar.getProgress());
+                returnIntent.putExtra("rangeNumber", mainSeekBar.getProgress());
             }
 
             @Override
@@ -56,11 +59,10 @@ public class SettingsActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        mainSeekBar.setProgress(MainActivity.getRangeNumber());
-        rangeNumberTextView.setText(String.valueOf(MainActivity.getRangeNumber()));
-        if (MainActivity.getIfZero()) {
-            ifZeroCheckBox.setChecked(true);
-        } else ifZeroCheckBox.setChecked(false);
+        Bundle extras = getIntent().getExtras();
+        mainSeekBar.setProgress(extras.getInt("rangeNumber"));
+        rangeNumberTextView.setText(String.valueOf(extras.getInt("rangeNumber")));
+        ifZeroCheckBox.setChecked(extras.getBoolean("ifZero"));
     }
 
     @Override
@@ -80,8 +82,8 @@ public class SettingsActivity extends AppCompatActivity{
     }
 
     protected void goMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 
     protected void goInfoActivity() {

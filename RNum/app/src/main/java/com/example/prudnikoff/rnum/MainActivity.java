@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public static final int SETTINGS_REQUEST = 1;
     static int rangeNumber = 100;
     static boolean ifZero = false;
     TextView rndNumberTextView = null;
@@ -27,7 +27,18 @@ public class MainActivity extends AppCompatActivity {
         setUp();
         rndNumberTextView.setText(getRandomNumber());
     }
-    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == SETTINGS_REQUEST) {
+            Bundle extras = data.getExtras();
+            rangeNumber = extras.getInt("rangeNumber");
+            if(data.hasExtra("ifZero")) ifZero = extras.getBoolean("ifZero");
+        }
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -44,30 +55,16 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public static void setRangeNumber(int _rangeNumber) {
-        rangeNumber = _rangeNumber;
-    }
-
-    public static int getRangeNumber() {
-        return rangeNumber;
-    }
-
-    public static void setIfZero(boolean _ifZero) {
-        ifZero = _ifZero;
-    }
-
-    public static boolean getIfZero() {
-        return ifZero;
-    }
-
     protected void goInfoActivity() {
-        Intent intent = new Intent(this, InfoActivity.class);
-        startActivity(intent);
+        Intent goInfoActivity = new Intent(this, InfoActivity.class);
+        startActivity(goInfoActivity);
     }
 
     protected void goSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        Intent goSettingsActivity = new Intent(this, SettingsActivity.class);
+        goSettingsActivity.putExtra("rangeNumber", rangeNumber);
+        goSettingsActivity.putExtra("ifZero", ifZero);
+        startActivityForResult(goSettingsActivity, SETTINGS_REQUEST);
     }
 
     protected void setUp() {
