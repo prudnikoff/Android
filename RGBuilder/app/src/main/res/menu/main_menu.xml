@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    android:id="@+id/main_menu"
+    <item android:id="@+id/picture_item"
+        android:title="Photo"/>
     <item
-        android:id="@+id/main_menu"
+        android:id="@+id/about_item"
         android:title="About" />
-
 </menu>

@@ -1,7 +1,9 @@
 package com.example.prudnikoff.rgbuilder;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editGreen= null;
     private EditText editBlue = null;
     private RelativeLayout mainLayout = null;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,14 +40,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.main_menu: goInfoActivity(); break;
+            case R.id.picture_item: takePhoto(); break;
+            case R.id.about_item: goInfoActivity(); break;
         }
         return true;
     }
 
-    protected void goInfoActivity() {
-        Intent intent = new Intent(this, InfoActivity.class);
-        this.startActivity(intent);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            setColor(parseBitmap(imageBitmap));
+        }
     }
 
     @Override
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                setMainColor();
+                setTypedColor();
 
             }
         });
@@ -88,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                setMainColor();
+                setTypedColor();
 
             }
         });
@@ -107,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                setMainColor();
+                setTypedColor();
 
             }
         });
@@ -115,29 +123,36 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setRandomColor();
+                setColor(getRandomColor());
             }
         });
 
+        setTypedColor();
     }
 
-    @Override protected void onStart() {
-        super.onStart();
-        setMainColor();
+    protected void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
-    protected void setRandomColor() {
+    protected int parseBitmap(Bitmap picture) {
+        int color = picture.getPixel(picture.getHeight()/2, picture.getWidth()/2);
+        return color;
+    }
+
+    protected void goInfoActivity() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        this.startActivity(intent);
+    }
+
+    protected int getRandomColor() {
         Random rnd = new Random();
         int red = rnd.nextInt(255);
         int green = rnd.nextInt(255);
         int blue = rnd.nextInt(255);
-        int randomColor = Color.rgb(red, green, blue);
-        editRed.setText(Integer.toHexString(red));
-        editGreen.setText(Integer.toHexString(green));
-        editBlue.setText(Integer.toHexString(blue));
-        mainLayout.setBackgroundColor(randomColor);
-        String textForToast = "#" + Integer.toHexString(red) + Integer.toHexString(green) + Integer.toHexString(blue);
-        Toast.makeText(this, textForToast, Toast.LENGTH_SHORT).show();
+        return Color.rgb(red, green, blue);
     }
 
     protected boolean checkTypedColor(String color) {
@@ -157,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    protected void setMainColor() {
+    protected void setTypedColor() {
 
         String sRed = editRed.getText().toString();
         String sGreen = editGreen.getText().toString();
@@ -190,5 +205,17 @@ public class MainActivity extends AppCompatActivity {
         int mainColor = Color.rgb(red, green, blue);
         mainLayout.setBackgroundColor(mainColor);
 
+    }
+
+    protected void setColor(int color) {
+        String red = Integer.toHexString(Color.red(color));
+        String green = Integer.toHexString(Color.green(color));
+        String blue = Integer.toHexString(Color.blue(color));
+        editRed.setText(red);
+        editGreen.setText(green);
+        editBlue.setText(blue);
+        mainLayout.setBackgroundColor(color);
+        String textForToast = "#" + red + green + blue;
+        Toast.makeText(this, textForToast, Toast.LENGTH_SHORT).show();
     }
 }
