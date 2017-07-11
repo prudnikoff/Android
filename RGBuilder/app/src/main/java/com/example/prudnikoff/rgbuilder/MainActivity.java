@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -135,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
         editGreen.setText(Integer.toHexString(green));
         editBlue.setText(Integer.toHexString(blue));
         mainLayout.setBackgroundColor(randomColor);
+        String textForToast = "#" + Integer.toHexString(red) + Integer.toHexString(green) + Integer.toHexString(blue);
+        Toast.makeText(this, textForToast, Toast.LENGTH_SHORT).show();
     }
 
     protected boolean checkTypedColor(String color) {
