@@ -138,8 +138,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected int parseBitmap(Bitmap picture) {
-        int color = picture.getPixel(picture.getHeight()/2, picture.getWidth()/2);
-        return color;
+        int centralX = picture.getWidth()/2;
+        int centralY = picture.getHeight()/2;
+        int averageRed = 0;
+        int averageGreen = 0;
+        int averageBlue = 0;
+        int counter = 0;
+        int averageX = centralX / 5;
+        int averageY = centralY / 5;
+        for (int x = -averageX; x <= averageX; x += averageX / 10) {
+            for (int y = -averageY; y <= averageY; y += averageY / 10) {
+                int pixel = picture.getPixel(centralX + x, centralY + y);
+                averageRed += Color.red(pixel);
+                averageGreen += Color.green(pixel);
+                averageBlue += Color.blue(pixel);
+                counter++;
+            }
+        }
+        return Color.rgb(averageRed / counter, averageGreen / counter, averageBlue / counter);
     }
 
     protected void goInfoActivity() {
@@ -207,10 +223,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    protected String addZero(String data) {
+        if (data.length() < 2) data = "0" + data;
+        return data;
+    }
+
     protected void setColor(int color) {
-        String red = Integer.toHexString(Color.red(color));
-        String green = Integer.toHexString(Color.green(color));
-        String blue = Integer.toHexString(Color.blue(color));
+        String red = addZero(Integer.toHexString(Color.red(color)));
+        String green = addZero(Integer.toHexString(Color.green(color)));
+        String blue = addZero(Integer.toHexString(Color.blue(color)));
         editRed.setText(red);
         editGreen.setText(green);
         editBlue.setText(blue);

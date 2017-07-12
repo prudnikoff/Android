@@ -10,6 +10,6 @@
         android:layout_centerVertical="true"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="RGBuilder 1.0 \n Developer: Prudnikoff \n Email: prudnikoff@vproshloe.com \n GitHub: github.com/prudnikoff" />
+        android:text="RGBuilder 2.0 \n Developer: Prudnikoff \n Email: prudnikoff@vproshloe.com \n GitHub: github.com/prudnikoff" />
 
 </RelativeLayout>
