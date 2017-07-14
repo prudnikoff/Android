@@ -1,3 +1,444 @@
 <resources>
     <string name="app_name">RGBuilder</string>
+    <string-array name="colors_names">
+        <item>Air Force Blue</item>
+        <item>Alice Blue</item>
+        <item>Alizarin Crimson</item>
+        <item>Almond</item>
+        <item>Amaranth</item>
+        <item>Amber</item>
+        <item>American Rose</item>
+        <item>Amethyst</item>
+        <item>Anti-flash White</item>
+        <item>Antique White</item>
+        <item>Apple Green</item>
+        <item>Asparagus</item>
+        <item>Aqua</item>
+        <item>Aquamarine</item>
+        <item>Army Green</item>
+        <item>Arsenic</item>
+        <item>Azure</item>
+        <item>Battleship Grey</item>
+        <item>Beige</item>
+        <item>Bistre</item>
+        <item>Bittersweet</item>
+        <item>Black</item>
+        <item>Blond</item>
+        <item>Blue</item>
+        <item>Bondi Blue</item>
+        <item>Boston University Red</item>
+        <item>Brass</item>
+        <item>Bright green</item>
+        <item>Bright turquoise</item>
+        <item>Bright violet</item>
+        <item>Bronze</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Burgundy</item>
+        <item>Burnt Orange</item>
+        <item>Burnt Sienna</item>
+        <item>Burnt umber</item>
+        <item>Camel</item>
+        <item>Camouflage green</item>
+        <item>Canonical aubergine</item>
+        <item>Cardinal</item>
+        <item>Carmine</item>
+        <item>Carrot</item>
+        <item>Celadon</item>
+        <item>Cerise</item>
+        <item>Cerulean</item>
+        <item>Cerulean blue</item>
+        <item>Chartreuse</item>
+        <item>Chestnut</item>
+        <item>Chocolate</item>
+        <item>Cinnamon</item>
+        <item>Cobalt</item>
+        <item>Copper</item>
+        <item>Coral</item>
+        <item>Corn</item>
+        <item>Cornflower blue</item>
+        <item>Cream</item>
+        <item>Crimson</item>
+        <item>Cyan</item>
+        <item>Dark blue</item>
+        <item>Dark brown</item>
+        <item>Dark cerulean</item>
+        <item>Dark chestnut</item>
+        <item>Dark coral</item>
+        <item>Dark goldenrod</item>
+        <item>Dark green</item>
+        <item>Dark Indigo</item>
+        <item>Dark Khaki</item>
+        <item>Dark Olive</item>
+        <item>Dark pastel green</item>
+        <item>Dark Peach</item>
+        <item>Dark pink</item>
+        <item>Dark salmon</item>
+        <item>Dark Scarlet</item>
+        <item>Dark slate gray</item>
+        <item>Dark spring green</item>
+        <item>Dark tan</item>
+        <item>Dark tangerine</item>
+        <item>Dark Tea Green</item>
+        <item>Dark turquoise</item>
+        <item>Dark violet</item>
+        <item>Deep pink</item>
+        <item>Deep sky blue</item>
+        <item>Denim</item>
+        <item>Dodger blue</item>
+        <item>Emerald</item>
+        <item>Eggplant</item>
+        <item>Fawn</item>
+        <item>Fern green</item>
+        <item>Fire brick</item>
+        <item>Flax</item>
+        <item>Fuchsia</item>
+        <item>Gamboge</item>
+        <item>Gold</item>
+        <item>Goldenrod</item>
+        <item>Gray</item>
+        <item>Gray-asparagus</item>
+        <item>Gray-Tea Green</item>
+        <item>Green</item>
+        <item>Green-yellow</item>
+        <item>Gradus Blue</item>
+        <item>Heliotrope</item>
+        <item>Hot pink</item>
+        <item>Indigo</item>
+        <item>International orange </item>
+        <item>Indian Red</item>
+        <item>Jade</item>
+        <item>Khaki</item>
+        <item>Klein Blue</item>
+        <item>Lavender</item>
+        <item>Lavender Blush</item>
+        <item>Lemon</item>
+        <item>Lemon Cream</item>
+        <item>Light brown</item>
+        <item>Lilac</item>
+        <item>Lime</item>
+        <item>Linen</item>
+        <item>Lawn Green</item>
+        <item>Magenta</item>
+        <item>Malachite</item>
+        <item>Maroon</item>
+        <item>Mauve</item>
+        <item>Midnight Blue</item>
+        <item>Mint Green</item>
+        <item>Moss green</item>
+        <item>Mountbatten pink</item>
+        <item>Mustard</item>
+        <item>Navajo white</item>
+        <item>Navy</item>
+        <item>Ochre</item>
+        <item>Old Gold</item>
+        <item>Olive</item>
+        <item>Olive Drab</item>
+        <item>Orange</item>
+        <item>Orchid</item>
+        <item>Old Lace</item>
+        <item>Pale Blue</item>
+        <item>Pale brown</item>
+        <item>Pale carmine</item>
+        <item>Pale chestnut</item>
+        <item>Pale cornflower blue</item>
+        <item>Pale magenta</item>
+        <item>Pale mauve</item>
+        <item>Pale pink</item>
+        <item>Pale red-violet</item>
+        <item>Pale Sandy Brown</item>
+        <item>Pale yellow</item>
+        <item>Pang</item>
+        <item>Papaya whip</item>
+        <item>Pastel green</item>
+        <item>Pastel pink</item>
+        <item>Peach</item>
+        <item>Peach-orange</item>
+        <item>Peach-yellow</item>
+        <item>Pear</item>
+        <item>Periwinkle</item>
+        <item>Persian blue</item>
+        <item>Pine Green</item>
+        <item>Pink</item>
+        <item>Pink-orange</item>
+        <item>Plum</item>
+        <item>Powder blue</item>
+        <item>Puce</item>
+        <item>Prussian blue</item>
+        <item>Pumpkin</item>
+        <item>Purple</item>
+        <item>Raw umber</item>
+        <item>Red</item>
+        <item>Red-violet</item>
+        <item>Robin egg blue</item>
+        <item>Royal Blue</item>
+        <item>Russet</item>
+        <item>Rust</item>
+        <item>Rosy Brown</item>
+        <item>Safety Orange</item>
+        <item>Saffron</item>
+        <item>Sapphire</item>
+        <item>Sana</item>
+        <item>Salmon</item>
+        <item>Sandy brown</item>
+        <item>Sangria</item>
+        <item>Scarlet</item>
+        <item>School bus yellow</item>
+        <item>Sea Green</item>
+        <item>Seashell</item>
+        <item>Selective yellow</item>
+        <item>Sepia</item>
+        <item>Silver</item>
+        <item>Slate gray</item>
+        <item>Spring Green</item>
+        <item>Steel blue</item>
+        <item>Swamp green</item>
+        <item>Tan</item>
+        <item>Tenné</item>
+        <item>Tangerine</item>
+        <item>Tea Green</item>
+        <item>Teal</item>
+        <item>Thistle</item>
+        <item>Turquoise</item>
+        <item>Titian</item>
+        <item>Transport Red</item>
+        <item>Tomato</item>
+        <item>Ultramarine</item>
+        <item>United Nations Blue</item>
+        <item>Ubuntu orange</item>
+        <item>Vanilla</item>
+        <item>Vermilion</item>
+        <item>Violet</item>
+        <item>Violet-eggplant</item>
+        <item>Viridian</item>
+        <item>Wheat</item>
+        <item>White</item>
+        <item>Wisteria</item>
+        <item>Wine</item>
+        <item>Xanadu</item>
+        <item>Yellow</item>
+        <item>Zinnwaldite</item>
+        <item>Zaffre</item>
+    </string-array>
+
+    <string-array name="colors_codes">
+        <item>93 138 168</item>
+        <item>240 248 255</item>
+        <item>227 38 54</item>
+        <item>239 222 205</item>
+        <item>229 43 80</item>
+        <item>255 191 0</item>
+        <item>255 3 62</item>
+        <item>153 102 204</item>
+        <item>242 243 244</item>
+        <item>250 235 215</item>
+        <item>141 182 0</item>
+        <item>123 160 91</item>
+        <item>0 255 255</item>
+        <item>127 255 212</item>
+        <item>75 83 32</item>
+        <item>59 68 75</item>
+        <item>0 127 255</item>
+        <item>132 132 130</item>
+        <item>245 245 220</item>
+        <item>61 43 31</item>
+        <item>254 111 94</item>
+        <item>0 0 0</item>
+        <item>250 240 190</item>
+        <item>0 0 255</item>
+        <item>0 149 182</item>
+        <item>204 0 0</item>
+        <item>181 166 66</item>
+        <item>102 255 0</item>
+        <item>8 232 222</item>
+        <item>205 0 205</item>
+        <item>205 127 50</item>
+        <item>150 75 0</item>
+        <item>240 220 130</item>
+        <item>144 0 32</item>
+        <item>204 85 0</item>
+        <item>233 116 81</item>
+        <item>138 51 36</item>
+        <item>194 154 107</item>
+        <item>120 134 107</item>
+        <item>119 41 83</item>
+        <item>196 30 58</item>
+        <item>150 0 24</item>
+        <item>237 145 33</item>
+        <item>172 225 175</item>
+        <item>222 49 99</item>
+        <item>0 123 167</item>
+        <item>42 82 190</item>
+        <item>127 255 0</item>
+        <item>205 92 92</item>
+        <item>210 105 30</item>
+        <item>123 63 0</item>
+        <item>0 71 171</item>
+        <item>184 115 51</item>
+        <item>255 127 80</item>
+        <item>251 236 93</item>
+        <item>100 149 237</item>
+        <item>255 253 208</item>
+        <item>220 20 60</item>
+        <item>0 255 255</item>
+        <item>0 0 139</item>
+        <item>101 67 33</item>
+        <item>8 69 126</item>
+        <item>152 105 96</item>
+        <item>205 91 69</item>
+        <item>184 134 11</item>
+        <item>1 50 32</item>
+        <item>49 0 98</item>
+        <item>189 183 107 	</item>
+        <item>85 104 50</item>
+        <item>3 192 60</item>
+        <item>255 218 185</item>
+        <item>231 84 128</item>
+        <item>233 150 122</item>
+        <item>86 3 25</item>
+        <item>47 79 79</item>
+        <item>23 114 69</item>
+        <item>145 129 81</item>
+        <item>255 168 18</item>
+        <item>186 219 173</item>
+        <item>17 96 98</item>
+        <item>66 49 137</item>
+        <item>255 20 147</item>
+        <item>0 191 255</item>
+        <item>21 96 189</item>
+        <item>30 144 255</item>
+        <item>80 200 120</item>
+        <item>153 0 102</item>
+        <item>229 170 112</item>
+        <item>79 121 66</item>
+        <item>178 34 34</item>
+        <item>238 220 130</item>
+        <item>255 0 255</item>
+        <item>228 155 15</item>
+        <item>255 215 0</item>
+        <item>218 165 32</item>
+        <item>128 128 128</item>
+        <item>70 89 69</item>
+        <item>202 218 186</item>
+        <item>0 255 0</item>
+        <item>173 255 47</item>
+        <item>0 125 255</item>
+        <item>223 115 255</item>
+        <item>252 15 192</item>
+        <item>75 0 130</item>
+        <item>255 79 0</item>
+        <item>205 92 92</item>
+        <item>0 168 107</item>
+        <item>195 176 145</item>
+        <item>58 117 196</item>
+        <item>230 230 250</item>
+        <item>255 240 245</item>
+        <item>253 233 16</item>
+        <item>255 250 205</item>
+        <item>205 133 63</item>
+        <item>200 162 200</item>
+        <item>204 255 0</item>
+        <item>250 240 230</item>
+        <item>124 252 0</item>
+        <item>255 0 255</item>
+        <item>11 218 81</item>
+        <item>128 0 0</item>
+        <item>153 51 102</item>
+        <item>0 51 102</item>
+        <item>152 255 152</item>
+        <item>173 223 173</item>
+        <item>153 122 141</item>
+        <item>255 219 88</item>
+        <item>255 222 173</item>
+        <item>0 0 128</item>
+        <item>204 119 34</item>
+        <item>207 181 59</item>
+        <item>128 128 0</item>
+        <item>107 142 35</item>
+        <item>255 165 0</item>
+        <item>218 112 214</item>
+        <item>253 245 230</item>
+        <item>175 238 238</item>
+        <item>152 118 84</item>
+        <item>175 64 53</item>
+        <item>221 173 175</item>
+        <item>171 205 239</item>
+        <item>249 132 229</item>
+        <item>153 102 102</item>
+        <item>250 218 221</item>
+        <item>219 112 147</item>
+        <item>218 189 171</item>
+        <item>240 220 130</item>
+        <item>199 252 236</item>
+        <item>255 239 213</item>
+        <item>119 221 119</item>
+        <item>255 209 220</item>
+        <item>255 229 180</item>
+        <item>255 204 153</item>
+        <item>250 223 173</item>
+        <item>209 226 49</item>
+        <item>204 204 255</item>
+        <item>102 0 255</item>
+        <item>1 121 111</item>
+        <item>255 192 203</item>
+        <item>255 153 102</item>
+        <item>102 0 102</item>
+        <item>0 51 153</item>
+        <item>204 136 153</item>
+        <item>0 49 83</item>
+        <item>255 117 24</item>
+        <item>128 0 128</item>
+        <item>115 74 18</item>
+        <item>255 0 0</item>
+        <item>199 21 133</item>
+        <item>0 204 204</item>
+        <item>65 105 225</item>
+        <item>117 90 87</item>
+        <item>183 65 14</item>
+        <item>188 143 143</item>
+        <item>255 153 0</item>
+        <item>244 196 48</item>
+        <item>8 37 103</item>
+        <item>210 134 200</item>
+        <item>255 55 105</item>
+        <item>244 164 96</item>
+        <item>146 0 10</item>
+        <item>255 36 0</item>
+        <item>255 216 0</item>
+        <item>46 139 87</item>
+        <item>255 245 238</item>
+        <item>255 186 0</item>
+        <item>112 66 20</item>
+        <item>192 192 192</item>
+        <item>112 128 144</item>
+        <item>0 255 127</item>
+        <item>70 130 180</item>
+        <item>172 183 142</item>
+        <item>210 180 140</item>
+        <item>205 87 0</item>
+        <item>255 204 0</item>
+        <item>208 240 192</item>
+        <item>0 128 128</item>
+        <item>216 191 216</item>
+        <item>48 213 200</item>
+        <item>213 62 7</item>
+        <item>204 6 5</item>
+        <item>255 99 71</item>
+        <item>18 10 143</item>
+        <item>91 146 229</item>
+        <item>221 72 20</item>
+        <item>243 229 171</item>
+        <item>227 66 52</item>
+        <item>139 0 255</item>
+        <item>153 17 153</item>
+        <item>64 130 109</item>
+        <item>245 222 179</item>
+        <item>255 255 255</item>
+        <item>201 160 220</item>
+        <item>114 47 55</item>
+        <item>115 134 120</item>
+        <item>255 255 0</item>
+        <item>235 194 175</item>
+        <item>0 20 168</item>
+    </string-array>
 </resources>

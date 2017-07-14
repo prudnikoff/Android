@@ -1,6 +1,7 @@
 package com.example.prudnikoff.rgbuilder;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.provider.MediaStore;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText editBlue = null;
     private RelativeLayout mainLayout = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String[] colorsNames = null;
+    private String[] colorsCodes = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        Resources res = getResources();
+        colorsNames = res.getStringArray(R.array.colors_names);
+        colorsCodes = res.getStringArray(R.array.colors_codes);
         mainLayout = (RelativeLayout)findViewById(R.id.relativeLayoutMain);
         editRed = (EditText)findViewById(R.id.editTextRed);
         editGreen = (EditText)findViewById(R.id.editTextGreen);
@@ -126,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 setColor(getRandomColor());
             }
         });
+
+        //mainLayout.setOnGenericMotionListener();
 
         setTypedColor();
     }
@@ -237,6 +245,24 @@ public class MainActivity extends AppCompatActivity {
         editBlue.setText(blue);
         mainLayout.setBackgroundColor(color);
         String textForToast = "#" + red + green + blue;
-        Toast.makeText(this, textForToast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, textForToast + "\n" + getColorName(color), Toast.LENGTH_SHORT).show();
+    }
+
+    protected String getColorName(int color) {
+        int differenceRed = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[0]) - Color.red(color));
+        int differenceGreen = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[1]) - Color.green(color));
+        int differenceBlue = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[2]) - Color.blue(color));
+        int totalDifference = differenceBlue + differenceGreen + differenceRed;
+        int minIndex = 0;
+        for (int i = 1; i < colorsCodes.length; i++) {
+            differenceRed = Math.abs(Integer.parseInt(colorsCodes[i].split(" ")[0]) - Color.red(color));
+            differenceGreen = Math.abs(Integer.parseInt(colorsCodes[i].split(" ")[1]) - Color.green(color));
+            differenceBlue = Math.abs(Integer.parseInt(colorsCodes[i].split(" ")[2]) - Color.blue(color));
+            if (differenceBlue + differenceGreen + differenceRed < totalDifference) {
+                totalDifference = differenceBlue + differenceGreen + differenceRed;
+                minIndex = i;
+            }
+        }
+        return colorsNames[minIndex];
     }
 }
