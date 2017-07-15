@@ -28,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText editGreen= null;
     private EditText editBlue = null;
     private RelativeLayout mainLayout = null;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String[] colorsNames = null;
     private String[] colorsCodes = null;
+    private int currentColor = 0;
+    private boolean isLongClickTyped = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,11 +131,20 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setColor(getRandomColor());
+                if (!isLongClickTyped) {
+                    setColor(getRandomColor());
+                } else isLongClickTyped = false;
             }
         });
 
-        //mainLayout.setOnGenericMotionListener();
+        mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showCurrentColor();
+                isLongClickTyped = true;
+                return false;
+            }
+        });
 
         setTypedColor();
     }
@@ -226,14 +237,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        int mainColor = Color.rgb(red, green, blue);
-        mainLayout.setBackgroundColor(mainColor);
+        currentColor = Color.rgb(red, green, blue);
+        mainLayout.setBackgroundColor(currentColor);
 
     }
 
     protected String addZero(String data) {
         if (data.length() < 2) data = "0" + data;
         return data;
+    }
+
+    protected void showCurrentColor() {
+        setColor(currentColor);
     }
 
     protected void setColor(int color) {
@@ -249,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected String getColorName(int color) {
+        currentColor = color;
         int differenceRed = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[0]) - Color.red(color));
         int differenceGreen = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[1]) - Color.green(color));
         int differenceBlue = Math.abs(Integer.parseInt(colorsCodes[0].split(" ")[2]) - Color.blue(color));
