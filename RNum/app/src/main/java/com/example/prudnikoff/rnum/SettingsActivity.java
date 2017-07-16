@@ -32,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity{
         ifZeroCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mainSeekBar.getProgress() == 0) ifZeroCheckBox.setChecked(true);
                 returnIntent.putExtra("ifZero", ifZeroCheckBox.isChecked());
             }
         });
@@ -39,7 +40,13 @@ public class SettingsActivity extends AppCompatActivity{
         mainSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                rangeNumberTextView.setText(String.valueOf(mainSeekBar.getProgress()));
+                if (mainSeekBar.getProgress() == 0) {
+                    ifZeroCheckBox.setChecked(true);
+                    rangeNumberTextView.setText("0");
+                    returnIntent.putExtra("ifZero", ifZeroCheckBox.isChecked());
+                } else {
+                    rangeNumberTextView.setText(String.valueOf(mainSeekBar.getProgress()));
+                }
                 returnIntent.putExtra("rangeNumber", mainSeekBar.getProgress());
             }
 
