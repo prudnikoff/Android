@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RGBuilder</string>
+    <string name="saved_color">savedColor</string>
     <string-array name="colors_names">
         <item>Air Force Blue</item>
         <item>Alice Blue</item>

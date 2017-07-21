@@ -1,6 +1,8 @@
 package com.example.prudnikoff.rgbuilder;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -62,15 +64,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Resources res = getResources();
         colorsNames = res.getStringArray(R.array.colors_names);
         colorsCodes = res.getStringArray(R.array.colors_codes);
+
+        int defaultValue = 0;
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        currentColor = sharedPref.getInt(getString(R.string.saved_color), defaultValue);
+
         mainLayout = (RelativeLayout)findViewById(R.id.relativeLayoutMain);
         editRed = (EditText)findViewById(R.id.editTextRed);
         editGreen = (EditText)findViewById(R.id.editTextGreen);
         editBlue = (EditText)findViewById(R.id.editTextBlue);
+
         editRed.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,7 +155,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setTypedColor();
+        if (currentColor == 0) {
+            setColor(-1432545754);
+        } else setColor(currentColor);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.saved_color), currentColor);
+        editor.apply();
     }
 
     protected void takePhoto() {
