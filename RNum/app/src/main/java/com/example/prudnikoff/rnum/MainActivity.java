@@ -1,6 +1,8 @@
 package com.example.prudnikoff.rnum;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +17,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public static final int SETTINGS_REQUEST = 1;
-    static int rangeNumber = 100;
+    static int rangeNumber = 0;
     static boolean ifZero = false;
     TextView rndNumberTextView = null;
     RelativeLayout mainLayout = null;
@@ -24,8 +26,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        rangeNumber = sharedPref.getInt(getString(R.string.range), 100);
+        ifZero = sharedPref.getBoolean(getString(R.string.if_zero), false);
         setUp();
         rndNumberTextView.setText(getRandomNumber());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.range), rangeNumber);
+        editor.putBoolean(getString(R.string.if_zero), ifZero);
+        editor.apply();
     }
 
     @Override

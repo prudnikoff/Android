@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RNum</string>
+    <string name="range">Range</string>
+    <string name="if_zero">IfZero</string>
 </resources>
