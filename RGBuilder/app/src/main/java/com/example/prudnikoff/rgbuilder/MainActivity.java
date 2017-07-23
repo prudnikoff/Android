@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editBlue = null;
     private RelativeLayout mainLayout = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String FILE_NAME = "data";
     private String[] colorsNames = null;
     private String[] colorsCodes = null;
     private int currentColor = 0;
@@ -71,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
         colorsNames = res.getStringArray(R.array.colors_names);
         colorsCodes = res.getStringArray(R.array.colors_codes);
 
-        int defaultValue = 0;
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        currentColor = sharedPref.getInt(getString(R.string.saved_color), defaultValue);
+        if (!new File(FILE_NAME).exists()) saveDataInFile(String.valueOf(currentColor));
+        currentColor = Integer.parseInt(getDataFromFile());
 
         mainLayout = (RelativeLayout)findViewById(R.id.relativeLayoutMain);
         editRed = (EditText)findViewById(R.id.editTextRed);
@@ -163,10 +169,57 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.saved_color), currentColor);
-        editor.apply();
+        saveDataInFile(String.valueOf(currentColor));
+    }
+
+    protected void saveDataInFile(String data) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+            fileOutputStream.write(data.getBytes());
+        } catch (FileNotFoundException fileNotFoundException) {
+            Log.e("FILE", "File wasn't found");
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioEx) {
+            Log.e("FILE", "IO error");
+            ioEx.printStackTrace();
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+            } catch (IOException ioEx) {
+                ioEx.printStackTrace();
+            }
+        }
+    }
+
+    protected String getDataFromFile() {
+        FileInputStream fileInputStream = null;
+        String returnData = null;
+        try {
+            fileInputStream = openFileInput(FILE_NAME);
+            int size = fileInputStream.available();
+            byte[] buffer = new byte[size];
+            fileInputStream.read(buffer);
+            fileInputStream.close();
+            returnData = new String(buffer, "UTF-8");
+        } catch (FileNotFoundException fileNotFoundException) {
+            Log.e("FILE", "File wasn't found");
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioEx) {
+            Log.e("FILE", "IO error");
+            ioEx.printStackTrace();
+        } finally {
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException ioEx) {
+                ioEx.printStackTrace();
+            }
+        }
+        return returnData;
     }
 
     protected void takePhoto() {
