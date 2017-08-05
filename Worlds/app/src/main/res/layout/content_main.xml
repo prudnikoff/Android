@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.worlds.prudnikoff.worlds.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:showIn="@layout/app_hub">
 
     <TextView
         android:layout_width="wrap_content"
