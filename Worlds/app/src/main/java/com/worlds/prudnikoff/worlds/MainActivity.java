@@ -3,6 +3,7 @@ package com.worlds.prudnikoff.worlds;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,7 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -78,16 +87,8 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //String defenition = null;
-                try {
-                    new InternetConnection().execute(query);
-                    //JSONObject root = InternetConnection.getJSONObjectFromURL(query);
-                    //defenition = root.getString("defenition");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                //Toast.makeText(getApplicationContext(), defenition, Toast.LENGTH_SHORT).show();
-                return false;
+                new InternetConnection().execute(query);
+                return true;
             }
 
             @Override
@@ -121,5 +122,72 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class InternetConnection extends AsyncTask<String, String, String> {
+
+        private JSONObject root = null;
+
+        //private static final String DIRECT_URL_START = "http://owlbot.info/api/v1/dictionary/";
+        //private static final String DIRECT_URL_END = "?format=json";
+        private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=";
+        private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                root = getJSONObjectFromURL(params[0]);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            parseJSON();
+        }
+
+        private JSONObject getJSONObjectFromURL(String query) throws IOException, JSONException {
+
+            String urlString = DIRECT_URL_START + query;
+            HttpURLConnection urlConnection;
+            URL url = new URL(urlString);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append("\n");
+            }
+            br.close();
+
+            String jsonString = sb.toString();
+            System.out.println("JSON: " + jsonString);
+            return new JSONObject(jsonString);
+
+        }
+
+        private void parseJSON() {
+            try {
+                JSONArray rootArray = root.getJSONArray("results");
+                JSONObject elem = rootArray.getJSONObject(0);
+                JSONArray sensesArray = elem.getJSONArray("senses");
+                JSONObject senseElem = sensesArray.getJSONObject(0);
+                JSONArray definitionsArray = senseElem.getJSONArray("definition");
+                String definition = definitionsArray.getString(0);
+                Toast.makeText(getApplicationContext(), definition, Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
