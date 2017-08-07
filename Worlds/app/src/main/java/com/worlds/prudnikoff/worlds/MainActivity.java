@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -185,14 +184,40 @@ public class MainActivity extends AppCompatActivity
             DefinitionModel[] definitions = new DefinitionModel[resultsArray.length()];
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject definitionElem = resultsArray.getJSONObject(i);
-
+                String headword = definitionElem.getString("headword");
+                String partOfSpeech = definitionElem.getString("part_of_speech");
+                String americanPronunciations = null;
+                String britishPronunciations = null;
+                if (definitionElem.has("pronunciations")) {
+                    britishPronunciations = definitionElem
+                            .getJSONArray("pronunciations")
+                            .getJSONObject(0)
+                            .getString("ipa");
+                    if (definitionElem.getJSONArray("pronunciations").length() > 1) {
+                        americanPronunciations = definitionElem
+                                .getJSONArray("pronunciations")
+                                .getJSONObject(1)
+                                .getString("ipa");
+                    }
+                }
+                JSONObject sensesObj = definitionElem.getJSONArray("senses").getJSONObject(0);
+                String definition = null;
+                if (sensesObj.has("definition")) {
+                     definition = sensesObj.getJSONArray("definition").getString(0);
+                } else if (sensesObj.has("signpost")) {
+                    definition = sensesObj.getString("signpost");
+                }
+                String example = null;
+                if (sensesObj.has("examples")) {
+                    example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                }
+                DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
+                        definition, example, americanPronunciations, britishPronunciations);
+                definitions[i] = definitionModel;
             }
-            JSONObject elem = rootArray.getJSONObject(0);
-            JSONArray sensesArray = elem.getJSONArray("senses");
-            JSONObject senseElem = sensesArray.getJSONObject(0);
-            JSONArray definitionsArray = senseElem.getJSONArray("definition");
-            String definition = definitionsArray.getString(0);
-            Toast.makeText(getApplicationContext(), definition, Toast.LENGTH_LONG).show();
+            WordModel word = new WordModel(definitions[0].getHeadWord(), definitions);
+            String definitionToShow = definitions[0].getDefinition();
+            Toast.makeText(getApplicationContext(), definitionToShow, Toast.LENGTH_LONG).show();
         } catch (JSONException ex) {
             Log.e("JSONException", "The word wasn't found");
             Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found", Toast.LENGTH_SHORT).show();
