@@ -28,11 +28,6 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="MainActivity"/>
         </activity>
 
-        <activity android:name=".SearchResultActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,16 +20,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new InternetConnection().execute(query);
+                new InternetConnection().execute(query.replaceAll(" ", ","));
                 return true;
             }
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -124,33 +125,34 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private class InternetConnection extends AsyncTask<String, String, String> {
+    private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
 
-        private JSONObject root = null;
-
-        //private static final String DIRECT_URL_START = "http://owlbot.info/api/v1/dictionary/";
-        //private static final String DIRECT_URL_END = "?format=json";
         private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=";
         private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
 
         @Override
-        protected String doInBackground(String... params) {
+        protected JSONObject doInBackground(String... params) {
+            JSONObject root = null;
             try {
                 root = getJSONObjectFromURL(params[0]);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException IOEx) {
+                Log.e("IOException", "IO stream error");
+                IOEx.printStackTrace();
+            } catch (JSONException JSONEx) {
+                Log.e("JSONException", "Something wrong with converting String to JSON");
+                JSONEx.printStackTrace();
             }
-            return null;
+            return root;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            parseJSON();
+        protected void onPostExecute(JSONObject root) {
+            parseJSON(root);
         }
 
         private JSONObject getJSONObjectFromURL(String query) throws IOException, JSONException {
 
-            String urlString = DIRECT_URL_START + query;
+            String urlString = DIRECT_URL_START + query + DIRECT_URL_END;
             HttpURLConnection urlConnection;
             URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -175,19 +177,30 @@ public class MainActivity extends AppCompatActivity
             return new JSONObject(jsonString);
 
         }
+    }
 
-        private void parseJSON() {
-            try {
-                JSONArray rootArray = root.getJSONArray("results");
-                JSONObject elem = rootArray.getJSONObject(0);
-                JSONArray sensesArray = elem.getJSONArray("senses");
-                JSONObject senseElem = sensesArray.getJSONObject(0);
-                JSONArray definitionsArray = senseElem.getJSONArray("definition");
-                String definition = definitionsArray.getString(0);
-                Toast.makeText(getApplicationContext(), definition, Toast.LENGTH_LONG).show();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+    private void parseJSON(JSONObject root) {
+        try {
+            JSONArray resultsArray = root.getJSONArray("results");
+            DefinitionModel[] definitions = new DefinitionModel[resultsArray.length()];
+            for (int i = 0; i < resultsArray.length(); i++) {
+                JSONObject definitionElem = resultsArray.getJSONObject(i);
+
             }
+            JSONObject elem = rootArray.getJSONObject(0);
+            JSONArray sensesArray = elem.getJSONArray("senses");
+            JSONObject senseElem = sensesArray.getJSONObject(0);
+            JSONArray definitionsArray = senseElem.getJSONArray("definition");
+            String definition = definitionsArray.getString(0);
+            Toast.makeText(getApplicationContext(), definition, Toast.LENGTH_LONG).show();
+        } catch (JSONException ex) {
+            Log.e("JSONException", "The word wasn't found");
+            Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
+        } catch (NullPointerException nullPointerEx) {
+            Log.e("Internet", "Internet connection failed");
+            Toast.makeText(getApplicationContext(), "Internet connection failed", Toast.LENGTH_SHORT).show();
+            nullPointerEx.printStackTrace();
         }
     }
 }
