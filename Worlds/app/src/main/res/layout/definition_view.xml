@@ -1,135 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="#F5F5F5">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxWidth="100dp"
-            android:minWidth="100dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/headword_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:text="world" />
-
-            <TextView
-                android:id="@+id/partOfSpeech_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:maxWidth="100dp"
-                android:textSize="12sp"
-                android:text="(adjective)" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/definition_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textSize="12sp"
-            android:text="existing in, involving, or affecting all or most countries in the world" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:id="@+id/card_View"
+        card_view:cardBackgroundColor="#ffffff"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="10dp"
+        card_view:cardCornerRadius="7dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_weight="1">
+            android:padding="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/british"/>
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/british_pronunciation_textView"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/headword_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="100dp"
+                        android:minWidth="100dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:text="world" />
+
+                    <TextView
+                        android:id="@+id/partOfSpeech_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12sp"
+                        android:text="(noun)" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/definition_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:text="the place, where all people live" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_gravity="center"
-                android:text="[wold]"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/british"/>
+
+                    <TextView
+                        android:id="@+id/british_pronunciation_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_gravity="center"
+                        android:text="[wold]"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/american"/>
+
+                    <TextView
+                        android:id="@+id/american_pronunciation_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textStyle="italic"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12sp"
+                        android:text="[would]"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="@string/example"
+                    android:minWidth="100dp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/example_textView"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:text="the reigning Formula One world"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/american"/>
-
-            <TextView
-                android:id="@+id/american_pronunciation_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textStyle="italic"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12sp"
-                android:text="[would]"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:text="@string/example"
-            android:minWidth="100dp"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/example_textView"
-            android:layout_gravity="center_vertical"
-            android:textStyle="italic"
-            android:textSize="12sp"
-            android:text="the reigning Formula One world championcddddddddddddddddddddd"/>
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -221,8 +221,9 @@ public class MainActivity extends AppCompatActivity
                 definitions[i] = definitionModel;
             }
             WordModel word = new WordModel(definitions[0].getHeadWord(), definitions);
-            String definitionToShow = definitions[0].getDefinition();
-            Toast.makeText(getApplicationContext(), definitionToShow, Toast.LENGTH_LONG).show();
+            goWordActivity(word);
+            //String definitionToShow = definitions[0].getDefinition();
+            //Toast.makeText(getApplicationContext(), definitionToShow, Toast.LENGTH_LONG).show();
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
@@ -235,5 +236,11 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Internet connection failed", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void goWordActivity(WordModel word) {
+        Intent intent = new Intent(this, WordActivity.class);
+        intent.putExtra("word", word);
+        startActivity(intent);
     }
 }

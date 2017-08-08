@@ -1,6 +1,8 @@
 package com.worlds.prudnikoff.worlds;
 
-public class DefinitionModel {
+import java.io.Serializable;
+
+public class DefinitionModel implements Serializable {
 
     private String partOfSpeech;
     private String headWord;
