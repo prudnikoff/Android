@@ -222,8 +222,6 @@ public class MainActivity extends AppCompatActivity
             }
             WordModel word = new WordModel(definitions[0].getHeadWord(), definitions);
             goWordActivity(word);
-            //String definitionToShow = definitions[0].getDefinition();
-            //Toast.makeText(getApplicationContext(), definitionToShow, Toast.LENGTH_LONG).show();
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
