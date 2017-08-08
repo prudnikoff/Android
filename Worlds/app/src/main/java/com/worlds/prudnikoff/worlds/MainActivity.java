@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
                 Log.e("IOException", "IO stream error");
                 IOEx.printStackTrace();
             } catch (JSONException JSONEx) {
-                Log.e("JSONException", "Something wrong with converting String to JSON");
+                Log.e("JSON", "Something wrong with converting String to JSON");
                 JSONEx.printStackTrace();
             }
             return root;
@@ -185,7 +185,10 @@ public class MainActivity extends AppCompatActivity
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject definitionElem = resultsArray.getJSONObject(i);
                 String headword = definitionElem.getString("headword");
-                String partOfSpeech = definitionElem.getString("part_of_speech");
+                String partOfSpeech = null;
+                if (definitionElem.has("part_of_speech")) {
+                    partOfSpeech = definitionElem.getString("part_of_speech");
+                }
                 String americanPronunciations = null;
                 String britishPronunciations = null;
                 if (definitionElem.has("pronunciations")) {
@@ -200,16 +203,18 @@ public class MainActivity extends AppCompatActivity
                                 .getString("ipa");
                     }
                 }
-                JSONObject sensesObj = definitionElem.getJSONArray("senses").getJSONObject(0);
                 String definition = null;
-                if (sensesObj.has("definition")) {
-                     definition = sensesObj.getJSONArray("definition").getString(0);
-                } else if (sensesObj.has("signpost")) {
-                    definition = sensesObj.getString("signpost");
-                }
                 String example = null;
-                if (sensesObj.has("examples")) {
-                    example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                if (!definitionElem.isNull("senses")) {
+                    JSONObject sensesObj = definitionElem.getJSONArray("senses").getJSONObject(0);
+                    if (sensesObj.has("definition")) {
+                        definition = sensesObj.getJSONArray("definition").getString(0);
+                    } else if (sensesObj.has("signpost")) {
+                        definition = sensesObj.getString("signpost");
+                    }
+                    if (sensesObj.has("examples")) {
+                        example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                    }
                 }
                 DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
                         definition, example, americanPronunciations, britishPronunciations);
@@ -219,13 +224,16 @@ public class MainActivity extends AppCompatActivity
             String definitionToShow = definitions[0].getDefinition();
             Toast.makeText(getApplicationContext(), definitionToShow, Toast.LENGTH_LONG).show();
         } catch (JSONException ex) {
-            Log.e("JSONException", "The word wasn't found");
-            Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found", Toast.LENGTH_SHORT).show();
+            Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
+        } catch (IndexOutOfBoundsException indexOutEx) {
+            Log.e("JSON", "IndexOutOfBoundsException");
+            Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found", Toast.LENGTH_SHORT).show();
+            indexOutEx.printStackTrace();
         } catch (NullPointerException nullPointerEx) {
             Log.e("Internet", "Internet connection failed");
             Toast.makeText(getApplicationContext(), "Internet connection failed", Toast.LENGTH_SHORT).show();
-            nullPointerEx.printStackTrace();
+
         }
     }
 }
