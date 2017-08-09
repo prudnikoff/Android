@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -181,46 +182,48 @@ public class MainActivity extends AppCompatActivity
     private void parseJSON(JSONObject root) {
         try {
             JSONArray resultsArray = root.getJSONArray("results");
-            DefinitionModel[] definitions = new DefinitionModel[resultsArray.length()];
+            ArrayList<DefinitionModel> definitions = new ArrayList<>();
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject definitionElem = resultsArray.getJSONObject(i);
-                String headword = definitionElem.getString("headword");
-                String partOfSpeech = null;
-                if (definitionElem.has("part_of_speech")) {
-                    partOfSpeech = definitionElem.getString("part_of_speech");
-                }
-                String americanPronunciations = null;
-                String britishPronunciations = null;
-                if (definitionElem.has("pronunciations")) {
-                    britishPronunciations = definitionElem
-                            .getJSONArray("pronunciations")
-                            .getJSONObject(0)
-                            .getString("ipa");
-                    if (definitionElem.getJSONArray("pronunciations").length() > 1) {
-                        americanPronunciations = definitionElem
-                                .getJSONArray("pronunciations")
-                                .getJSONObject(1)
-                                .getString("ipa");
-                    }
-                }
-                String definition = null;
-                String example = null;
-                if (!definitionElem.isNull("senses")) {
+                if (definitionElem.has("headword") && !definitionElem.isNull("senses")) {
                     JSONObject sensesObj = definitionElem.getJSONArray("senses").getJSONObject(0);
-                    if (sensesObj.has("definition")) {
-                        definition = sensesObj.getJSONArray("definition").getString(0);
-                    } else if (sensesObj.has("signpost")) {
-                        definition = sensesObj.getString("signpost");
-                    }
-                    if (sensesObj.has("examples")) {
-                        example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                    if (sensesObj.has("definition") || sensesObj.has("signpost")) {
+                        String headword = definitionElem.getString("headword");
+                        String partOfSpeech = null;
+                        if (definitionElem.has("part_of_speech")) {
+                            partOfSpeech = definitionElem.getString("part_of_speech");
+                        }
+                        String americanPronunciations = null;
+                        String britishPronunciations = null;
+                        if (definitionElem.has("pronunciations")) {
+                            britishPronunciations = definitionElem
+                                    .getJSONArray("pronunciations")
+                                    .getJSONObject(0)
+                                    .getString("ipa");
+                            if (definitionElem.getJSONArray("pronunciations").length() > 1) {
+                                americanPronunciations = definitionElem
+                                        .getJSONArray("pronunciations")
+                                        .getJSONObject(1)
+                                        .getString("ipa");
+                            }
+                        }
+                        String definition = null;
+                        String example = null;
+                        if (sensesObj.has("definition")) {
+                            definition = sensesObj.getJSONArray("definition").getString(0);
+                        } else if (sensesObj.has("signpost")) {
+                            definition = sensesObj.getString("signpost");
+                        }
+                        if (sensesObj.has("examples")) {
+                            example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                        }
+                        DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
+                                definition, example, americanPronunciations, britishPronunciations);
+                        definitions.add(definitionModel);
                     }
                 }
-                DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
-                        definition, example, americanPronunciations, britishPronunciations);
-                definitions[i] = definitionModel;
             }
-            WordModel word = new WordModel(definitions[0].getHeadWord(), definitions);
+            WordModel word = new WordModel(definitions.get(0).getHeadWord(), definitions);
             goWordActivity(word);
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");

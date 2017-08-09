@@ -9,9 +9,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAdapter.DefinitionHolder> {
-    
-    private DefinitionModel[] definitions;
+
+    private ArrayList<DefinitionModel> definitions;
 
     public DefinitionListAdapter(WordModel word) {
         this.definitions = word.getDefinitions();
@@ -19,7 +21,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
 
     @Override
     public int getItemCount() {
-        return definitions.length;
+        return definitions.size();
     }
 
     @Override
@@ -31,7 +33,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
 
     @Override
     public void onBindViewHolder(DefinitionHolder definitionHolder, int position) {
-        DefinitionModel definition = definitions[position];
+        DefinitionModel definition = definitions.get(position);
         if (definition.getPartOfSpeech() != null) {
             definitionHolder.partOfSpeechTextView.setText("(" + definition.getPartOfSpeech() + ")");
         } else definitionHolder.partOfSpeechTextView.setText("");
