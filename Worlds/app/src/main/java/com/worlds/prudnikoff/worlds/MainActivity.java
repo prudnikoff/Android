@@ -1,5 +1,7 @@
 package com.worlds.prudnikoff.worlds;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -127,8 +129,18 @@ public class MainActivity extends AppCompatActivity
 
     private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
 
+        ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
         private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=";
         private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
+
+        @Override
+        protected void onPreExecute() {
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -148,6 +160,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(JSONObject root) {
             parseJSON(root);
+            progDailog.dismiss();
         }
 
         private JSONObject getJSONObjectFromURL(String query) throws IOException, JSONException {
