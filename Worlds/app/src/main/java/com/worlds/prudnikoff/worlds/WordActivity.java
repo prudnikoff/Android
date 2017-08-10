@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import java.util.ArrayList;
 
 public class WordActivity extends AppCompatActivity {
 
@@ -16,8 +17,8 @@ public class WordActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        WordModel word = (WordModel)getIntent().getSerializableExtra("word");
-        DefinitionListAdapter adapter = new DefinitionListAdapter(word);
+        ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent().getSerializableExtra("definitions");
+        DefinitionListAdapter adapter = new DefinitionListAdapter(definitions);
         recyclerView.setAdapter(adapter);
     }
 

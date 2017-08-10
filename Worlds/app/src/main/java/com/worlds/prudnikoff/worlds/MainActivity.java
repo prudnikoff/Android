@@ -1,6 +1,5 @@
 package com.worlds.prudnikoff.worlds;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -236,8 +235,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             }
-            WordModel word = new WordModel(definitions.get(0).getHeadWord(), definitions);
-            goWordActivity(word);
+            goWordActivity(definitions);
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
@@ -252,9 +250,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void goWordActivity(WordModel word) {
+    private void goWordActivity(ArrayList<DefinitionModel> definitions) {
         Intent intent = new Intent(this, WordActivity.class);
-        intent.putExtra("word", word);
+        intent.putExtra("definitions", definitions);
         startActivity(intent);
     }
 }
