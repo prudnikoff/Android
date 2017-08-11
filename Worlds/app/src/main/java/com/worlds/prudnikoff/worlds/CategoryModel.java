@@ -1,8 +1,9 @@
 package com.worlds.prudnikoff.worlds;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CategoryModel {
+public class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
@@ -20,8 +21,8 @@ public class CategoryModel {
         numOfWords++;
     }
 
-    public int getNumOfWords() {
-        return numOfWords;
+    public String getNumOfWords() {
+        return String.valueOf(numOfWords);
     }
 
     public String getNameOfCategory() {

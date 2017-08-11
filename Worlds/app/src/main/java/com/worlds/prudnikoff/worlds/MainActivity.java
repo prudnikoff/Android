@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,16 +40,27 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private String nameOfCategory;
+    ArrayList<CategoryModel> categories;
+    RecyclerView categoriesRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        categories = new ArrayList<>();
         setContentView(R.layout.main_activity);
         setUpActions();
     }
 
     private void setUpActions() {
+
+        //setting up the RecyclerView of categories
+        categoriesRecyclerView = (RecyclerView)findViewById(R.id.categoriesRecyclerView);
+        categoriesRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        categoriesRecyclerView.setLayoutManager(layoutManager);
+        CategoryListAdapter adapter = new CategoryListAdapter(categories);
+        categoriesRecyclerView.setAdapter(adapter);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,7 +69,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 inputNameOfCategory();
-                if (nameOfCategory != null && !nameOfCategory.equals("")) createNewCategory();
             }
         });
 
@@ -274,13 +286,12 @@ public class MainActivity extends AppCompatActivity
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        nameOfCategory = editText.getText().toString();
+                         createNewCategory(editText.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                nameOfCategory = null;
                                 dialog.cancel();
                             }
                         });
@@ -290,11 +301,13 @@ public class MainActivity extends AppCompatActivity
         alert.show();
     }
 
-    private void createNewCategory() {
-        String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
-        nameOfCategory = null;
-        Toast.makeText(getApplicationContext(), nameOfCategory, Toast.LENGTH_SHORT).show();
+    private void createNewCategory(String nameOfCategory) {
+        if (!nameOfCategory.equals("")) {
+            String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+            CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
+            categories.add(newCategory);
+            categoriesRecyclerView.invalidate();
+        }
     }
 
 }
