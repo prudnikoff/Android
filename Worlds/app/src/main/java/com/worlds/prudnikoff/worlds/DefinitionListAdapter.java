@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,7 +59,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class DefinitionHolder extends RecyclerView.ViewHolder {
+    public static class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         TextView headWordTextView;
@@ -66,6 +68,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         TextView britishPronunciationTextView;
         TextView americanPronunciationTextView;
         TextView exampleTextView;
+        ImageButton addButton;
 
         DefinitionHolder(View itemView) {
             super(itemView);
@@ -76,6 +79,15 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
             britishPronunciationTextView = (TextView)itemView.findViewById(R.id.british_pronunciation_textView);
             americanPronunciationTextView = (TextView)itemView.findViewById(R.id.american_pronunciation_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.example_textView);
+            addButton = (ImageButton)itemView.findViewById(R.id.add_button);
+            addButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == addButton.getId()) {
+                Toast.makeText(view.getContext(), "ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

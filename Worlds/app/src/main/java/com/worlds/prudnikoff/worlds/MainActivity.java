@@ -3,14 +3,16 @@ package com.worlds.prudnikoff.worlds;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,9 +33,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private String nameOfCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +55,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "To add a new category", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                inputNameOfCategory();
+                if (nameOfCategory != null && !nameOfCategory.equals("")) createNewCategory();
             }
         });
 
@@ -92,7 +98,6 @@ public class MainActivity extends AppCompatActivity
                 new InternetConnection().execute(query.replaceAll(" ", ","));
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -255,4 +260,41 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("definitions", definitions);
         startActivity(intent);
     }
+
+    private void inputNameOfCategory() {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
+
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        nameOfCategory = editText.getText().toString();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                nameOfCategory = null;
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void createNewCategory() {
+        String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
+        nameOfCategory = null;
+        Toast.makeText(getApplicationContext(), nameOfCategory, Toast.LENGTH_SHORT).show();
+    }
+
 }
