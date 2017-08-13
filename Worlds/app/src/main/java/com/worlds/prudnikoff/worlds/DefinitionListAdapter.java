@@ -59,7 +59,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         TextView headWordTextView;
@@ -86,7 +86,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         @Override
         public void onClick(View view) {
             if (view.getId() == addButton.getId()) {
-                Toast.makeText(view.getContext(), "ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                WordActivity.addDefinitionToCategory(view);
             }
         }
     }

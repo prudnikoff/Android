@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -40,8 +41,9 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ArrayList<CategoryModel> categories;
-    RecyclerView categoriesRecyclerView;
+    private ArrayList<CategoryModel> categories;
+    private RecyclerView categoriesRecyclerView;
+    private String searchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity
         categories = new ArrayList<>();
         setContentView(R.layout.main_activity);
         setUpActions();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (categories.size() == 0) {
+            Toast.makeText(getApplicationContext(), "Please, click plus button to add a new category",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void setUpActions() {
@@ -101,12 +112,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchQuery = query;
                 new InternetConnection().execute(query.replaceAll(" ", ","));
                 return true;
             }
@@ -146,7 +158,8 @@ public class MainActivity extends AppCompatActivity
     private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
 
         ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
-        private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=";
+        private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries" +
+                "/ldoce5/entries?headword=";
         private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
 
         @Override
@@ -162,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         protected JSONObject doInBackground(String... params) {
             JSONObject root = null;
             try {
-                root = getJSONObjectFromURL(params[0]);
+                root = getJSONObjectFromURL();
             } catch (IOException IOEx) {
                 Log.e("IOException", "IO stream error");
                 IOEx.printStackTrace();
@@ -179,9 +192,9 @@ public class MainActivity extends AppCompatActivity
             progDailog.dismiss();
         }
 
-        private JSONObject getJSONObjectFromURL(String query) throws IOException, JSONException {
+        private JSONObject getJSONObjectFromURL() throws IOException, JSONException {
 
-            String urlString = DIRECT_URL_START + query + DIRECT_URL_END;
+            String urlString = DIRECT_URL_START + searchQuery + DIRECT_URL_END;
             HttpURLConnection urlConnection;
             URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -202,9 +215,7 @@ public class MainActivity extends AppCompatActivity
             br.close();
 
             String jsonString = sb.toString();
-            System.out.println("JSON: " + jsonString);
             return new JSONObject(jsonString);
-
         }
     }
 
@@ -244,7 +255,8 @@ public class MainActivity extends AppCompatActivity
                             definition = sensesObj.getString("signpost");
                         }
                         if (sensesObj.has("examples")) {
-                            example = sensesObj.getJSONArray("examples").getJSONObject(0).getString("text");
+                            example = sensesObj.getJSONArray("examples").getJSONObject(0)
+                                    .getString("text");
                         }
                         DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
                                 definition, example, americanPronunciations, britishPronunciations);
@@ -252,23 +264,27 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             }
-            goWordActivity(definitions);
+            if (definitions.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found",
+                        Toast.LENGTH_SHORT).show();
+            } else goWordActivity(definitions);
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
         } catch (IndexOutOfBoundsException indexOutEx) {
             Log.e("JSON", "IndexOutOfBoundsException");
-            Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found", Toast.LENGTH_SHORT).show();
             indexOutEx.printStackTrace();
         } catch (NullPointerException nullPointerEx) {
             Log.e("Internet", "Internet connection failed");
-            Toast.makeText(getApplicationContext(), "Internet connection failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Internet connection failed",
+                    Toast.LENGTH_SHORT).show();
 
         }
     }
 
     private void goWordActivity(ArrayList<DefinitionModel> definitions) {
         Intent intent = new Intent(this, WordActivity.class);
+        intent.putExtra("query", searchQuery);
         intent.putExtra("definitions", definitions);
         startActivity(intent);
     }
@@ -298,16 +314,23 @@ public class MainActivity extends AppCompatActivity
 
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.show();
     }
 
     private void createNewCategory(String nameOfCategory) {
-        if (!nameOfCategory.equals("")) {
+        if (checkName(nameOfCategory)) {
             String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
             categories.add(newCategory);
             categoriesRecyclerView.invalidate();
-        }
+        } else Toast.makeText(this, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
+    }
+
+    private boolean checkName(String name) {
+        name = name.replaceAll(" ", "");
+        return name.length() > 0;
     }
 
 }

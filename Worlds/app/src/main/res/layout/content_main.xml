@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.worlds.prudnikoff.worlds.MainActivity"
-    tools:showIn="@layout/app_hub">
+    tools:showIn="@layout/app_hub"
+    android:background="@color/mainBackground">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
