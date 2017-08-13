@@ -1,6 +1,5 @@
 package com.worlds.prudnikoff.worlds;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,18 +36,18 @@ public class WordActivity extends AppCompatActivity {
 
     public static void addDefinitionToCategory(View view) {
 
-        final CharSequence[] items = {"A", "B", "C"};
+        final String[] namesOfCategories = MainActivity.getListOfCategories();
+        if (namesOfCategories.length > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("Choose a category: ");
+            builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Make your selection");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else Toast.makeText(view.getContext(), "You should add at least one category at first",
+                Toast.LENGTH_LONG).show();
     }
 }

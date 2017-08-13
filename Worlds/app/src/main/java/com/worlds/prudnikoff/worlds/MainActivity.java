@@ -41,7 +41,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ArrayList<CategoryModel> categories;
+    private static ArrayList<CategoryModel> categories;
     private RecyclerView categoriesRecyclerView;
     private String searchQuery;
 
@@ -331,6 +331,14 @@ public class MainActivity extends AppCompatActivity
     private boolean checkName(String name) {
         name = name.replaceAll(" ", "");
         return name.length() > 0;
+    }
+
+    public static String[] getListOfCategories() {
+        String[] listOfCategories = new String[categories.size()];
+        for (int i = 0; i < categories.size(); i++) {
+            listOfCategories[i] = categories.get(i).getNameOfCategory();
+        }
+        return listOfCategories;
     }
 
 }
