@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class WordActivity extends AppCompatActivity {
 
+    private static CategoriesData categoriesData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,7 @@ public class WordActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        categoriesData = (CategoriesData)getIntent().getSerializableExtra("categoriesData");
         ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent().getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
         DefinitionListAdapter adapter = new DefinitionListAdapter(definitions);
@@ -34,15 +37,17 @@ public class WordActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void addDefinitionToCategory(View view) {
+    public static void addDefinitionToCategory(final View view, final DefinitionModel definition) {
 
-        final String[] namesOfCategories = MainActivity.getListOfCategories();
+        final String[] namesOfCategories = categoriesData.getStringListOfCategories();
         if (namesOfCategories.length > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Choose a category: ");
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-
+                    categoriesData.getCategoryByPosition(item).addDefinition(definition);
+                    Toast.makeText(view.getContext(), "The word has been successfully added",
+                            Toast.LENGTH_LONG).show();
                 }
             });
             AlertDialog alert = builder.create();

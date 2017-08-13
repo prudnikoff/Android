@@ -86,7 +86,8 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         @Override
         public void onClick(View view) {
             if (view.getId() == addButton.getId()) {
-                WordActivity.addDefinitionToCategory(view);
+                DefinitionModel definition = definitions.get(getAdapterPosition());
+                WordActivity.addDefinitionToCategory(view, definition);
             }
         }
     }

@@ -41,14 +41,14 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static ArrayList<CategoryModel> categories;
+    private static CategoriesData categoriesData;
     private RecyclerView categoriesRecyclerView;
     private String searchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categories = new ArrayList<>();
+        categoriesData = new CategoriesData();
         setContentView(R.layout.main_activity);
         setUpActions();
     }
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (categories.size() == 0) {
+        if (categoriesData.getNumOfCategories() == 0) {
             Toast.makeText(getApplicationContext(), "Please, click plus button to add a new category",
                     Toast.LENGTH_LONG).show();
         }
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         categoriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         categoriesRecyclerView.setLayoutManager(layoutManager);
-        CategoryListAdapter adapter = new CategoryListAdapter(categories);
+        CategoryListAdapter adapter = new CategoryListAdapter(categoriesData.getCategories());
         categoriesRecyclerView.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -285,6 +285,7 @@ public class MainActivity extends AppCompatActivity
     private void goWordActivity(ArrayList<DefinitionModel> definitions) {
         Intent intent = new Intent(this, WordActivity.class);
         intent.putExtra("query", searchQuery);
+        intent.putExtra("categoriesData", categoriesData);
         intent.putExtra("definitions", definitions);
         startActivity(intent);
     }
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity
         if (checkName(nameOfCategory)) {
             String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
-            categories.add(newCategory);
+            categoriesData.addCategory(newCategory);
             categoriesRecyclerView.invalidate();
         } else Toast.makeText(this, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
     }
@@ -331,14 +332,6 @@ public class MainActivity extends AppCompatActivity
     private boolean checkName(String name) {
         name = name.replaceAll(" ", "");
         return name.length() > 0;
-    }
-
-    public static String[] getListOfCategories() {
-        String[] listOfCategories = new String[categories.size()];
-        for (int i = 0; i < categories.size(); i++) {
-            listOfCategories[i] = categories.get(i).getNameOfCategory();
-        }
-        return listOfCategories;
     }
 
 }
