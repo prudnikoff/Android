@@ -30,7 +30,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,9 +73,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        saveCurrentState();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        saveCurrentState();
+        //saveCurrentState();
     }
 
     private void setUpActions() {
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override public void onLongItemClick(View view, int position) {
-                // do whatever
+                showCategoryOptions(view, position);
             }
         })
         );
@@ -329,7 +334,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void inputNameOfCategory() {
-
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
@@ -360,7 +364,8 @@ public class MainActivity extends AppCompatActivity
 
     private void createNewCategory(String nameOfCategory) {
         if (checkName(nameOfCategory)) {
-            String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+            String currentDateAndTime = java.text.DateFormat.getDateTimeInstance()
+                    .format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
             CategoriesData.addCategory(newCategory);
             adapter.notifyDataSetChanged();
@@ -391,5 +396,57 @@ public class MainActivity extends AppCompatActivity
             CategoriesData.setCategories(categories);
         }
 
+    }
+
+    private void showCategoryOptions(View view, final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        String[] items = {"Rename", "Delete"};
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0: {
+                        renameCategory(position);
+                    } break;
+                    case 1: {
+                        CategoriesData.deleteCategory(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void renameCategory(final int position) {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
+
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        CategoriesData.getCategoryByPosition(position)
+                                .setNameOfCategory(editText.getText().toString());
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.show();
     }
 }

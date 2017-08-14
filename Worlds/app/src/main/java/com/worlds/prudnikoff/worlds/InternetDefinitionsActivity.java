@@ -45,12 +45,12 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
                     CategoryModel category = CategoriesData.getCategoryByPosition(item);
                     category.addDefinition(definition);
                     Toast.makeText(view.getContext(), "The word has been successfully added",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             });
             AlertDialog alert = builder.create();
             alert.show();
         } else Toast.makeText(view.getContext(), "You should add at least one category at first",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
     }
 }

@@ -28,6 +28,10 @@ public class CategoriesData implements Serializable {
         return categories.get(position);
     }
 
+    public static void deleteCategory(int position) {
+        categories.remove(position);
+    }
+
     public static String[] getStringListOfCategories() {
         String[] listOfCategories = new String[categories.size()];
         for (int i = 0; i < categories.size(); i++) {

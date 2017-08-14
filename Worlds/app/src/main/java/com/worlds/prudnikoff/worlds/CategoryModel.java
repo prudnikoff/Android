@@ -19,6 +19,10 @@ public class CategoryModel implements Serializable {
         definitions.add(definition);
     }
 
+    public void setNameOfCategory(String nameOfCategory) {
+        this.nameOfCategory = nameOfCategory;
+    }
+
     public String getNumOfWords() {
         return String.valueOf(definitions.size());
     }
