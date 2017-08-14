@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.worlds.prudnikoff.worlds.WordActivity"
+    tools:context="com.worlds.prudnikoff.worlds.InternetDefinitionsActivity"
     android:background="@color/mainBackground">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rowDefinitionsRecyclerView" />
+        android:id="@+id/category_words_recyclerView" />
 
 </RelativeLayout>
 

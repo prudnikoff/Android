@@ -12,21 +12,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class WordActivity extends AppCompatActivity {
-
-    private static CategoriesData categoriesData;
+public class InternetDefinitionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.word_activity);
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rowDefinitionsRecyclerView);
+        setContentView(R.layout.internet_definitions_activity);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.internet_definitions_recyclerView);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent().getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
-        DefinitionListAdapter adapter = new DefinitionListAdapter(definitions);
+        InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);
         recyclerView.setAdapter(adapter);
     }
 

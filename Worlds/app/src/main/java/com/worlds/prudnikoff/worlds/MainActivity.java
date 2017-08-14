@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,12 +28,16 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,16 +46,17 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    CategoryListAdapter adapter;
+    CategoriesAdapter adapter;
     private String searchQuery;
+    private final String nameToSave = "categories";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        restoreState();
         setUpActions();
     }
-
 
     @Override
     protected void onRestart() {
@@ -67,6 +73,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveCurrentState();
+    }
+
     private void setUpActions() {
 
         //setting up the RecyclerView of categories
@@ -76,17 +88,20 @@ public class MainActivity extends AppCompatActivity
         categoriesRecyclerView.setLayoutManager(layoutManager);
 
         //setting up OnItemTouchListener for RecyclerView items
-        categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+        categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
+                categoriesRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override public void onItemClick(View view, int position) {
-                // do whatever
+                CategoryModel category = CategoriesData.getCategoryByPosition(position);
+                goCategoryWordsActivity(category.getDefinitions(), category.getNameOfCategory());
             }
 
             @Override public void onLongItemClick(View view, int position) {
                 // do whatever
             }
-        });
+        })
+        );
 
-        adapter = new CategoryListAdapter(CategoriesData.getCategories());
+        adapter = new CategoriesAdapter(CategoriesData.getCategories());
         categoriesRecyclerView.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -284,7 +299,7 @@ public class MainActivity extends AppCompatActivity
             if (definitions.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found",
                         Toast.LENGTH_SHORT).show();
-            } else goWordActivity(definitions);
+            } else goInternetDefinitionsActivity(definitions);
         } catch (JSONException ex) {
             Log.e("JSON", "Something wrong with JSON parsing");
             ex.printStackTrace();
@@ -299,10 +314,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void goWordActivity(ArrayList<DefinitionModel> definitions) {
-        Intent intent = new Intent(this, WordActivity.class);
+    private void goInternetDefinitionsActivity(ArrayList<DefinitionModel> definitions) {
+        Intent intent = new Intent(this, InternetDefinitionsActivity.class);
         intent.putExtra("query", searchQuery);
         intent.putExtra("definitions", definitions);
+        startActivity(intent);
+    }
+
+    private void goCategoryWordsActivity(ArrayList<DefinitionModel> words, String nameOfCategory) {
+        Intent intent = new Intent(this, CategoryWordsActivity.class);
+        intent.putExtra("nameOfCategory", nameOfCategory);
+        intent.putExtra("definitions", words);
         startActivity(intent);
     }
 
@@ -348,5 +370,26 @@ public class MainActivity extends AppCompatActivity
     private boolean checkName(String name) {
         name = name.replaceAll(" ", "");
         return name.length() > 0;
+    }
+
+    private void saveCurrentState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getApplicationInfo().name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        editor.putString(nameToSave, gson.toJson(CategoriesData.getCategories()));
+        editor.apply();
+    }
+
+    private void restoreState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getApplicationInfo().name, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(nameToSave, "");
+        if (json.length() > 0) {
+            Type type = new TypeToken<ArrayList<CategoryModel>>() {
+            }.getType();
+            ArrayList<CategoryModel> categories = gson.fromJson(json, type);
+            CategoriesData.setCategories(categories);
+        }
+
     }
 }

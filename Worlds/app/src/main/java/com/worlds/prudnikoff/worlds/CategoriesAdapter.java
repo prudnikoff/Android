@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
     private ArrayList<CategoryModel> categories;
 
-    public CategoryListAdapter(ArrayList<CategoryModel> categories) {
+    public CategoriesAdapter(ArrayList<CategoryModel> categories) {
         this.categories = categories;
     }
 

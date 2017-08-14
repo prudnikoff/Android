@@ -20,6 +20,10 @@ public class CategoriesData implements Serializable {
         return categories;
     }
 
+    public static void setCategories(ArrayList<CategoryModel> mCategories) {
+        categories = mCategories;
+    }
+
     public static CategoryModel getCategoryByPosition(int position) {
         return categories.get(position);
     }

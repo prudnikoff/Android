@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAdapter.DefinitionHolder> {
+public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinitionsAdapter.DefinitionHolder> {
 
     private ArrayList<DefinitionModel> definitions;
 
-    public DefinitionListAdapter(ArrayList<DefinitionModel> definitions) {
+    public InternetDefinitionsAdapter(ArrayList<DefinitionModel> definitions) {
         this.definitions = definitions;
     }
 
@@ -87,7 +86,7 @@ public class DefinitionListAdapter extends RecyclerView.Adapter<DefinitionListAd
         public void onClick(View view) {
             if (view.getId() == addButton.getId()) {
                 DefinitionModel definition = definitions.get(getAdapterPosition());
-                WordActivity.addDefinitionToCategory(view, definition);
+                InternetDefinitionsActivity.addDefinitionToCategory(view, definition);
             }
         }
     }
