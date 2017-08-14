@@ -5,29 +5,26 @@ import java.util.ArrayList;
 
 public class CategoriesData implements Serializable {
 
-    ArrayList<CategoryModel> categories;
+    private static ArrayList<CategoryModel> categories = new ArrayList<>();
 
-    public CategoriesData() {
-        categories = new ArrayList<>();
-    }
 
-    public void addCategory(CategoryModel category){
+    public static void addCategory(CategoryModel category){
         categories.add(category);
     }
 
-    public int getNumOfCategories() {
+    public static int getNumOfCategories() {
         return categories.size();
     }
 
-    public ArrayList<CategoryModel> getCategories() {
+    public static ArrayList<CategoryModel> getCategories() {
         return categories;
     }
 
-    public CategoryModel getCategoryByPosition(int position) {
+    public static CategoryModel getCategoryByPosition(int position) {
         return categories.get(position);
     }
 
-    public String[] getStringListOfCategories() {
+    public static String[] getStringListOfCategories() {
         String[] listOfCategories = new String[categories.size()];
         for (int i = 0; i < categories.size(); i++) {
             listOfCategories[i] = categories.get(i).getNameOfCategory();

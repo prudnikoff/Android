@@ -7,22 +7,20 @@ public class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
-    private int numOfWords;
     private ArrayList<DefinitionModel> definitions;
 
     public CategoryModel(String nameOfCategory, String dateAndTime) {
         this.nameOfCategory = nameOfCategory;
         this.dateAndTime = dateAndTime;
-        numOfWords = 0;
+        definitions = new ArrayList<>();
     }
 
     public void addDefinition(DefinitionModel definition) {
         definitions.add(definition);
-        numOfWords++;
     }
 
     public String getNumOfWords() {
-        return String.valueOf(numOfWords);
+        return String.valueOf(definitions.size());
     }
 
     public String getNameOfCategory() {

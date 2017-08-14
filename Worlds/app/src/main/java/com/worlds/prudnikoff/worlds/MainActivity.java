@@ -41,22 +41,27 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static CategoriesData categoriesData;
-    private RecyclerView categoriesRecyclerView;
+    CategoryListAdapter adapter;
     private String searchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoriesData = new CategoriesData();
         setContentView(R.layout.main_activity);
         setUpActions();
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (categoriesData.getNumOfCategories() == 0) {
+        if (CategoriesData.getNumOfCategories() == 0) {
             Toast.makeText(getApplicationContext(), "Please, click plus button to add a new category",
                     Toast.LENGTH_LONG).show();
         }
@@ -65,11 +70,23 @@ public class MainActivity extends AppCompatActivity
     private void setUpActions() {
 
         //setting up the RecyclerView of categories
-        categoriesRecyclerView = (RecyclerView)findViewById(R.id.categoriesRecyclerView);
+        RecyclerView categoriesRecyclerView = (RecyclerView)findViewById(R.id.categoriesRecyclerView);
         categoriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         categoriesRecyclerView.setLayoutManager(layoutManager);
-        CategoryListAdapter adapter = new CategoryListAdapter(categoriesData.getCategories());
+
+        //setting up OnItemTouchListener for RecyclerView items
+        categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+            @Override public void onItemClick(View view, int position) {
+                // do whatever
+            }
+
+            @Override public void onLongItemClick(View view, int position) {
+                // do whatever
+            }
+        });
+
+        adapter = new CategoryListAdapter(CategoriesData.getCategories());
         categoriesRecyclerView.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -285,7 +302,6 @@ public class MainActivity extends AppCompatActivity
     private void goWordActivity(ArrayList<DefinitionModel> definitions) {
         Intent intent = new Intent(this, WordActivity.class);
         intent.putExtra("query", searchQuery);
-        intent.putExtra("categoriesData", categoriesData);
         intent.putExtra("definitions", definitions);
         startActivity(intent);
     }
@@ -324,8 +340,8 @@ public class MainActivity extends AppCompatActivity
         if (checkName(nameOfCategory)) {
             String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
-            categoriesData.addCategory(newCategory);
-            categoriesRecyclerView.invalidate();
+            CategoriesData.addCategory(newCategory);
+            adapter.notifyDataSetChanged();
         } else Toast.makeText(this, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
     }
 
@@ -333,5 +349,4 @@ public class MainActivity extends AppCompatActivity
         name = name.replaceAll(" ", "");
         return name.length() > 0;
     }
-
 }

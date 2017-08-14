@@ -40,7 +40,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class CategoryHolder extends RecyclerView.ViewHolder {
+    public class CategoryHolder extends RecyclerView.ViewHolder {
 
         TextView nameOfCategory;
         TextView dateAndTime;

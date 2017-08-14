@@ -24,7 +24,6 @@ public class WordActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        categoriesData = (CategoriesData)getIntent().getSerializableExtra("categoriesData");
         ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent().getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
         DefinitionListAdapter adapter = new DefinitionListAdapter(definitions);
@@ -39,13 +38,14 @@ public class WordActivity extends AppCompatActivity {
 
     public static void addDefinitionToCategory(final View view, final DefinitionModel definition) {
 
-        final String[] namesOfCategories = categoriesData.getStringListOfCategories();
+        final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
         if (namesOfCategories.length > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Choose a category: ");
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    categoriesData.getCategoryByPosition(item).addDefinition(definition);
+                    CategoryModel category = CategoriesData.getCategoryByPosition(item);
+                    category.addDefinition(definition);
                     Toast.makeText(view.getContext(), "The word has been successfully added",
                             Toast.LENGTH_LONG).show();
                 }
