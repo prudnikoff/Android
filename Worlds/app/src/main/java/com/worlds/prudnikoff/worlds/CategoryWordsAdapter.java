@@ -15,23 +15,30 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
     private ArrayList<DefinitionModel> words;
 
     public CategoryWordsAdapter(ArrayList<DefinitionModel> words) {
+
         this.words = words;
+
     }
 
     @Override
     public int getItemCount() {
+
         return words.size();
+
     }
 
     @Override
     public WordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_view,
                 parent, false);
         return new WordHolder(viewItem);
+
     }
 
     @Override
     public void onBindViewHolder(WordHolder wordHolder, int position) {
+
         DefinitionModel word = words.get(position);
         if (word.getPartOfSpeech() != null) {
             wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
@@ -51,11 +58,14 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
         if (word.getExample() != null) {
             wordHolder.exampleTextView.setText(word.getExample());
         } else wordHolder.exampleTextView.setText("-");
+
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+
         super.onAttachedToRecyclerView(recyclerView);
+
     }
 
     public class WordHolder extends RecyclerView.ViewHolder {
@@ -69,6 +79,7 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
         TextView exampleTextView;
 
         WordHolder(View itemView) {
+
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.w_card_View);
             headWordTextView = (TextView)itemView.findViewById(R.id.w_headword_textView);
@@ -77,7 +88,9 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
             britishPronunciationTextView = (TextView)itemView.findViewById(R.id.w_british_pronunciation_textView);
             americanPronunciationTextView = (TextView)itemView.findViewById(R.id.w_american_pronunciation_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.w_example_textView);
+
         }
 
     }
+
 }

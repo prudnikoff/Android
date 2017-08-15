@@ -16,6 +16,7 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.internet_definitions_activity);
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.internet_definitions_recyclerView);
@@ -26,17 +27,21 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
         setTitle(getIntent().getExtras().getString("query"));
         InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == android.R.id.home) finish();
         return super.onOptionsItemSelected(item);
+
     }
 
     public static void addDefinitionToCategory(final View view, final DefinitionModel definition) {
 
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
+
         if (namesOfCategories.length > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Choose a category: ");
@@ -52,5 +57,7 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
             alert.show();
         } else Toast.makeText(view.getContext(), "You should add at least one category at first",
                 Toast.LENGTH_SHORT).show();
+
     }
+
 }

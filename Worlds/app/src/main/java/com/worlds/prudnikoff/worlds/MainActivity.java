@@ -3,19 +3,15 @@ package com.worlds.prudnikoff.worlds;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,63 +21,58 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.Toast;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    CategoriesAdapter adapter;
+    private static CategoriesAdapter adapter;
     private String searchQuery;
-    private final String nameToSave = "categories";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        restoreState();
+        CategoriesData.restoreState(MainActivity.this);
         setUpActions();
+
     }
 
     @Override
     protected void onRestart() {
+
         super.onRestart();
         adapter.notifyDataSetChanged();
+
     }
 
     @Override
     protected void onStart() {
+
         super.onStart();
         if (CategoriesData.getNumOfCategories() == 0) {
             Toast.makeText(getApplicationContext(), "Please, click plus button to add a new category",
                     Toast.LENGTH_LONG).show();
         }
+
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
-        saveCurrentState();
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //saveCurrentState();
+        super.onPause();
+        CategoriesData.saveCurrentState(MainActivity.this);
+
     }
 
     private void setUpActions() {
@@ -101,7 +92,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override public void onLongItemClick(View view, int position) {
-                showCategoryOptions(view, position);
+                AppDialogs.showCategoryOptionsDialog(MainActivity.this, position);
             }
         })
         );
@@ -116,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputNameOfCategory();
+                AppDialogs.inputNameOfCategoryDialog(MainActivity.this);
             }
         });
 
@@ -128,25 +119,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     private void goInfoActivity() {
+
         Intent intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
+
     }
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -165,10 +162,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
         return true;
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -176,10 +175,12 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
 
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
@@ -201,15 +203,18 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
+
             progDailog.setMessage("Loading...");
             progDailog.setIndeterminate(false);
             progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progDailog.setCancelable(true);
             progDailog.show();
+
         }
 
         @Override
         protected JSONObject doInBackground(String... params) {
+
             JSONObject root = null;
             try {
                 root = getJSONObjectFromURL();
@@ -221,12 +226,15 @@ public class MainActivity extends AppCompatActivity
                 JSONEx.printStackTrace();
             }
             return root;
+
         }
 
         @Override
         protected void onPostExecute(JSONObject root) {
+
             parseJSON(root);
             progDailog.dismiss();
+
         }
 
         private JSONObject getJSONObjectFromURL() throws IOException, JSONException {
@@ -253,10 +261,12 @@ public class MainActivity extends AppCompatActivity
 
             String jsonString = sb.toString();
             return new JSONObject(jsonString);
+
         }
     }
 
     private void parseJSON(JSONObject root) {
+
         try {
             JSONArray resultsArray = root.getJSONArray("results");
             ArrayList<DefinitionModel> definitions = new ArrayList<>();
@@ -315,138 +325,32 @@ public class MainActivity extends AppCompatActivity
             Log.e("Internet", "Internet connection failed");
             Toast.makeText(getApplicationContext(), "Internet connection failed",
                     Toast.LENGTH_SHORT).show();
-
         }
+
     }
 
     private void goInternetDefinitionsActivity(ArrayList<DefinitionModel> definitions) {
+
         Intent intent = new Intent(this, InternetDefinitionsActivity.class);
         intent.putExtra("query", searchQuery);
         intent.putExtra("definitions", definitions);
         startActivity(intent);
+
     }
 
     private void goCategoryWordsActivity(ArrayList<DefinitionModel> words, String nameOfCategory) {
+
         Intent intent = new Intent(this, CategoryWordsActivity.class);
         intent.putExtra("nameOfCategory", nameOfCategory);
         intent.putExtra("definitions", words);
         startActivity(intent);
-    }
-
-    private void inputNameOfCategory() {
-        // get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setView(promptView);
-        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
-
-        // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                         createNewCategory(editText.getText().toString());
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        alert.show();
-    }
-
-    private void createNewCategory(String nameOfCategory) {
-        if (checkName(nameOfCategory)) {
-            String currentDateAndTime = java.text.DateFormat.getDateTimeInstance()
-                    .format(Calendar.getInstance().getTime());
-            CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
-            CategoriesData.addCategory(newCategory);
-            adapter.notifyDataSetChanged();
-        } else Toast.makeText(this, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
-    }
-
-    private boolean checkName(String name) {
-        name = name.replaceAll(" ", "");
-        return name.length() > 0;
-    }
-
-    private void saveCurrentState() {
-        SharedPreferences sharedPreferences = getSharedPreferences(getApplicationInfo().name, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        editor.putString(nameToSave, gson.toJson(CategoriesData.getCategories()));
-        editor.apply();
-    }
-
-    private void restoreState() {
-        SharedPreferences sharedPreferences = getSharedPreferences(getApplicationInfo().name, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(nameToSave, "");
-        if (json.length() > 0) {
-            Type type = new TypeToken<ArrayList<CategoryModel>>() {
-            }.getType();
-            ArrayList<CategoryModel> categories = gson.fromJson(json, type);
-            CategoriesData.setCategories(categories);
-        }
 
     }
 
-    private void showCategoryOptions(View view, final int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        String[] items = {"Rename", "Delete"};
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    case 0: {
-                        renameCategory(position);
-                    } break;
-                    case 1: {
-                        CategoriesData.deleteCategory(position);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+    public static void notifyAboutDataChanging() {
+
+        adapter.notifyDataSetChanged();
+
     }
-
-    private void renameCategory(final int position) {
-
-        // get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setView(promptView);
-        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
-
-        // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        CategoriesData.getCategoryByPosition(position)
-                                .setNameOfCategory(editText.getText().toString());
-                        adapter.notifyDataSetChanged();
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        alert.show();
-    }
+    
 }
