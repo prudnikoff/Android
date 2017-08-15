@@ -86,14 +86,20 @@ public class MainActivity extends AppCompatActivity
         //setting up OnItemTouchListener for RecyclerView items
         categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
                 categoriesRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+
             @Override public void onItemClick(View view, int position) {
+
                 CategoryModel category = CategoriesData.getCategoryByPosition(position);
-                goCategoryWordsActivity(category.getDefinitions(), category.getNameOfCategory());
+                goCategoryWordsActivity(category.getNameOfCategory(), position);
+
             }
 
             @Override public void onLongItemClick(View view, int position) {
+
                 AppDialogs.showCategoryOptionsDialog(MainActivity.this, position);
+
             }
+
         })
         );
 
@@ -216,6 +222,7 @@ public class MainActivity extends AppCompatActivity
         protected JSONObject doInBackground(String... params) {
 
             JSONObject root = null;
+
             try {
                 root = getJSONObjectFromURL();
             } catch (IOException IOEx) {
@@ -338,19 +345,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void goCategoryWordsActivity(ArrayList<DefinitionModel> words, String nameOfCategory) {
+    private void goCategoryWordsActivity(String nameOfCategory, int position) {
 
         Intent intent = new Intent(this, CategoryWordsActivity.class);
+        intent.putExtra("categoryPosition", position);
         intent.putExtra("nameOfCategory", nameOfCategory);
-        intent.putExtra("definitions", words);
         startActivity(intent);
 
     }
 
-    public static void notifyAboutDataChanging() {
+    public static void notifyAboutCategoriesChanging() {
 
         adapter.notifyDataSetChanged();
 
     }
-    
+
 }

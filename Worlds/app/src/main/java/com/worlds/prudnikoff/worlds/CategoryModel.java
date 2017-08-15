@@ -7,19 +7,19 @@ public class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
-    private ArrayList<DefinitionModel> definitions;
+    private ArrayList<DefinitionModel> words;
 
     public CategoryModel(String nameOfCategory, String dateAndTime) {
 
         this.nameOfCategory = nameOfCategory;
         this.dateAndTime = dateAndTime;
-        definitions = new ArrayList<>();
+        words = new ArrayList<>();
 
     }
 
-    public void addDefinition(DefinitionModel definition) {
+    public void addWord(DefinitionModel word) {
 
-        definitions.add(definition);
+        words.add(word);
 
     }
 
@@ -31,7 +31,7 @@ public class CategoryModel implements Serializable {
 
     public String getNumOfWords() {
 
-        return String.valueOf(definitions.size());
+        return String.valueOf(words.size());
 
     }
 
@@ -47,9 +47,9 @@ public class CategoryModel implements Serializable {
 
     }
 
-    public ArrayList<DefinitionModel> getDefinitions() {
+    public ArrayList<DefinitionModel> getWords() {
 
-        return definitions;
+        return words;
 
     }
 

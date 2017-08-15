@@ -54,7 +54,7 @@ public class CategoriesData implements Serializable {
                     .format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
             categories.add(newCategory);
-            MainActivity.notifyAboutDataChanging();
+            MainActivity.notifyAboutCategoriesChanging();
         } else Toast.makeText(context, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
 
     }

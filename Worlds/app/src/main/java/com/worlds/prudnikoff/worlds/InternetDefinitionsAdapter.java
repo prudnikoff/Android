@@ -99,7 +99,7 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
 
             if (view.getId() == addButton.getId()) {
                 DefinitionModel definition = definitions.get(getAdapterPosition());
-                InternetDefinitionsActivity.addDefinitionToCategory(view, definition);
+                AppDialogs.addWordToCategoryDialog(view.getContext(), definition);
             }
 
         }
