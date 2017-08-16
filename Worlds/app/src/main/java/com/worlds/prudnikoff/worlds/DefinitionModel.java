@@ -10,8 +10,12 @@ public class DefinitionModel implements Serializable {
     private String example;
     private String americanPronunciations;
     private String britishPronunciations;
+    private String soundAmericanPronunciationUrl;
+    private String soundBritishPronunciationUrl;
 
-    public DefinitionModel(String partOfSpeech, String headWord, String definition, String example, String americanPronunciations, String britishPronunciations) {
+    public DefinitionModel(String partOfSpeech, String headWord, String definition, String example,
+                           String americanPronunciations, String britishPronunciations,
+                           String soundAmericanPronunciationUrl, String soundBritishPronunciationUrl) {
 
         this.partOfSpeech = partOfSpeech;
         this.headWord = headWord;
@@ -19,12 +23,26 @@ public class DefinitionModel implements Serializable {
         this.example = example;
         this.americanPronunciations = americanPronunciations;
         this.britishPronunciations = britishPronunciations;
+        this.soundAmericanPronunciationUrl = soundAmericanPronunciationUrl;
+        this.soundBritishPronunciationUrl = soundBritishPronunciationUrl;
 
     }
 
     public String getPartOfSpeech() {
 
         return partOfSpeech;
+
+    }
+
+    public String getSoundAmericanPronunciationUrl() {
+
+        return soundAmericanPronunciationUrl;
+
+    }
+
+    public String getSoundBritishPronunciationUrl() {
+
+        return soundBritishPronunciationUrl;
 
     }
 

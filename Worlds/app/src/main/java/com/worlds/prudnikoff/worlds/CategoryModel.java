@@ -53,4 +53,10 @@ public class CategoryModel implements Serializable {
 
     }
 
+    public DefinitionModel getWordByPosition(int position) {
+
+        return words.get(position);
+
+    }
+
 }

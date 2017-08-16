@@ -1,5 +1,7 @@
 package com.worlds.prudnikoff.worlds;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +25,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         wordsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         wordsRecyclerView.setLayoutManager(layoutManager);
-        int categoryPosition = getIntent().getExtras().getInt("categoryPosition");
+        final int categoryPosition = getIntent().getExtras().getInt("categoryPosition");
         ArrayList<DefinitionModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
@@ -33,6 +35,12 @@ public class CategoryWordsActivity extends AppCompatActivity {
                         wordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
                     @Override public void onItemClick(View view, int position) {
+
+                        String url = CategoriesData.getCategoryByPosition(categoryPosition)
+                                .getWordByPosition(position).getSoundBritishPronunciationUrl();
+                        MediaPlayer mediaPlayer = MediaPlayer.create(view.getContext(),
+                                Uri.parse(url));
+                        mediaPlayer.start();
 
                     }
 

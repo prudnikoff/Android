@@ -289,12 +289,26 @@ public class MainActivity extends AppCompatActivity
                         }
                         String americanPronunciations = null;
                         String britishPronunciations = null;
+                        String soundAmericanPronunciationUrl = null;
+                        String soundBritishPronunciationUrl = null;
                         if (definitionElem.has("pronunciations")) {
                             britishPronunciations = definitionElem
                                     .getJSONArray("pronunciations")
                                     .getJSONObject(0)
                                     .getString("ipa");
+                            soundBritishPronunciationUrl = definitionElem
+                                    .getJSONArray("pronunciations")
+                                    .getJSONObject(0)
+                                    .getJSONArray("audio")
+                                    .getJSONObject(0)
+                                    .getString("url");
                             if (definitionElem.getJSONArray("pronunciations").length() > 1) {
+                                soundAmericanPronunciationUrl = definitionElem
+                                        .getJSONArray("pronunciations")
+                                        .getJSONObject(0)
+                                        .getJSONArray("audio")
+                                        .getJSONObject(0)
+                                        .getString("url");
                                 americanPronunciations = definitionElem
                                         .getJSONArray("pronunciations")
                                         .getJSONObject(1)
@@ -313,7 +327,8 @@ public class MainActivity extends AppCompatActivity
                                     .getString("text");
                         }
                         DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
-                                definition, example, americanPronunciations, britishPronunciations);
+                                definition, example, americanPronunciations, britishPronunciations,
+                                soundAmericanPronunciationUrl, soundBritishPronunciationUrl);
                         definitions.add(definitionModel);
                     }
                 }
