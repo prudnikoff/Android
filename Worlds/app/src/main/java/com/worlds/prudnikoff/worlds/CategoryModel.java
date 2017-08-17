@@ -19,7 +19,7 @@ public class CategoryModel implements Serializable {
 
     public void addWord(DefinitionModel word) {
 
-        words.add(word);
+        words.add(0, word);
 
     }
 
