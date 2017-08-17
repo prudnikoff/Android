@@ -158,9 +158,12 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 searchQuery = query;
                 new InternetConnection().execute(query.replaceAll(" ", ","));
+                searchView.clearFocus();
                 return true;
+
             }
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -274,6 +277,8 @@ public class MainActivity extends AppCompatActivity
 
     private void parseJSON(JSONObject root) {
 
+        final String DIRECT_URL_START = "https://api.pearson.com";
+
         try {
             JSONArray resultsArray = root.getJSONArray("results");
             ArrayList<DefinitionModel> definitions = new ArrayList<>();
@@ -296,14 +301,14 @@ public class MainActivity extends AppCompatActivity
                                     .getJSONArray("pronunciations")
                                     .getJSONObject(0)
                                     .getString("ipa");
-                            soundBritishPronunciationUrl = definitionElem
+                            soundBritishPronunciationUrl = DIRECT_URL_START + definitionElem
                                     .getJSONArray("pronunciations")
                                     .getJSONObject(0)
                                     .getJSONArray("audio")
                                     .getJSONObject(0)
                                     .getString("url");
                             if (definitionElem.getJSONArray("pronunciations").length() > 1) {
-                                soundAmericanPronunciationUrl = definitionElem
+                                soundAmericanPronunciationUrl = DIRECT_URL_START + definitionElem
                                         .getJSONArray("pronunciations")
                                         .getJSONObject(0)
                                         .getJSONArray("audio")

@@ -1,27 +1,35 @@
 package com.worlds.prudnikoff.worlds;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CategoryWordsActivity extends AppCompatActivity {
 
     private static CategoryWordsAdapter adapter;
-    private static RecyclerView wordsRecyclerView;
+    TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        textToSpeech = new TextToSpeech(getApplicationContext(),
+                new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+
+                    }
+                }, "com.google.android.tts");
+        textToSpeech.setLanguage(Locale.UK);
         setContentView(R.layout.category_words_activity);
-        wordsRecyclerView = (RecyclerView)findViewById(R.id.category_words_recyclerView);
+        RecyclerView wordsRecyclerView = (RecyclerView)findViewById(R.id.category_words_recyclerView);
         wordsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         wordsRecyclerView.setLayoutManager(layoutManager);
@@ -36,11 +44,14 @@ public class CategoryWordsActivity extends AppCompatActivity {
 
                     @Override public void onItemClick(View view, int position) {
 
-                        String url = CategoriesData.getCategoryByPosition(categoryPosition)
-                                .getWordByPosition(position).getSoundBritishPronunciationUrl();
-                        MediaPlayer mediaPlayer = MediaPlayer.create(view.getContext(),
-                                Uri.parse(url));
-                        mediaPlayer.start();
+                        String textToPronounce = CategoriesData.getCategoryByPosition(categoryPosition)
+                                .getWordByPosition(position).getHeadWord();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            textToSpeech.speak(textToPronounce, TextToSpeech.QUEUE_FLUSH, null, null);
+                        }else{
+                            textToSpeech.speak(textToPronounce, TextToSpeech.QUEUE_FLUSH, null);
+                        }
 
                     }
 
@@ -54,6 +65,17 @@ public class CategoryWordsActivity extends AppCompatActivity {
                 })
         );
 
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
 
     }
 
