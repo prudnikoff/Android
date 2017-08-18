@@ -299,20 +299,6 @@ public class MainActivity extends AppCompatActivity
                         if (definitionElem.has("part_of_speech")) {
                             partOfSpeech = definitionElem.getString("part_of_speech");
                         }
-                        String americanPronunciations = null;
-                        String britishPronunciations = null;
-                        if (definitionElem.has("pronunciations")) {
-                            britishPronunciations = definitionElem
-                                    .getJSONArray("pronunciations")
-                                    .getJSONObject(0)
-                                    .getString("ipa");
-                            if (definitionElem.getJSONArray("pronunciations").length() > 1) {
-                                americanPronunciations = definitionElem
-                                        .getJSONArray("pronunciations")
-                                        .getJSONObject(1)
-                                        .getString("ipa");
-                            }
-                        }
                         String definition = null;
                         String example = null;
                         if (sensesObj.has("definition")) {
@@ -325,7 +311,7 @@ public class MainActivity extends AppCompatActivity
                                     .getString("text");
                         }
                         DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
-                                definition, example, americanPronunciations, britishPronunciations);
+                                definition, example);
                         definitions.add(definitionModel);
                     }
                 }

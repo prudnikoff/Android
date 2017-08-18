@@ -44,12 +44,6 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         if (definition.getPartOfSpeech() != null) {
             definitionHolder.partOfSpeechTextView.setText("(" + definition.getPartOfSpeech() + ")");
         } else definitionHolder.partOfSpeechTextView.setText("");
-        if (definition.getAmericanPronunciations() != null) {
-            definitionHolder.americanPronunciationTextView.setText("[ " + definition.getAmericanPronunciations() + " ]");
-        } else definitionHolder.americanPronunciationTextView.setText("-");
-        if (definition.getBritishPronunciations() != null) {
-            definitionHolder.britishPronunciationTextView.setText("[ " + definition.getBritishPronunciations() + " ]");
-        } else definitionHolder.britishPronunciationTextView.setText("-");
         if (definition.getDefinition() != null) {
             definitionHolder.definitionTextView.setText(definition.getDefinition());
         } else definitionHolder.definitionTextView.setText("-");
@@ -75,8 +69,6 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         TextView headWordTextView;
         TextView definitionTextView;
         TextView partOfSpeechTextView;
-        TextView britishPronunciationTextView;
-        TextView americanPronunciationTextView;
         TextView exampleTextView;
         ImageButton addButton;
 
@@ -87,8 +79,6 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
             headWordTextView = (TextView)itemView.findViewById(R.id.headword_textView);
             definitionTextView = (TextView)itemView.findViewById(R.id.definition_textView);
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.partOfSpeech_textView);
-            britishPronunciationTextView = (TextView)itemView.findViewById(R.id.british_pronunciation_textView);
-            americanPronunciationTextView = (TextView)itemView.findViewById(R.id.american_pronunciation_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.example_textView);
             addButton = (ImageButton)itemView.findViewById(R.id.add_button);
             cardView.setOnClickListener(this);
