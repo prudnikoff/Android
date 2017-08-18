@@ -203,7 +203,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_about: goInfoActivity();
+            case R.id.nav_about: goInfoActivity(); break;
+            case R.id.nav_share: startShareIntent();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -349,6 +350,17 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("categoryPosition", position);
         intent.putExtra("nameOfCategory", nameOfCategory);
         startActivity(intent);
+
+    }
+
+    private void startShareIntent() {
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Worlds App - the worlds of English in your phone!\nDownload it in Google Play: google.play.etc";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
     }
 
