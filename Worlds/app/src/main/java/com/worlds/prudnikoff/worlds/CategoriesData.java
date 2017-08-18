@@ -53,7 +53,7 @@ public class CategoriesData implements Serializable {
             String currentDateAndTime = java.text.DateFormat.getDateTimeInstance()
                     .format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
-            categories.add(newCategory);
+            categories.add(0, newCategory);
             MainActivity.notifyAboutCategoriesChanging();
         } else Toast.makeText(context, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
 
