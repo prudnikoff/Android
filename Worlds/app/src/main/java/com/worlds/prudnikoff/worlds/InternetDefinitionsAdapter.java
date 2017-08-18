@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -90,6 +91,7 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
             americanPronunciationTextView = (TextView)itemView.findViewById(R.id.american_pronunciation_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.example_textView);
             addButton = (ImageButton)itemView.findViewById(R.id.add_button);
+            cardView.setOnClickListener(this);
             addButton.setOnClickListener(this);
 
         }
@@ -97,9 +99,11 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         @Override
         public void onClick(View view) {
 
+            DefinitionModel definition = definitions.get(getAdapterPosition());
             if (view.getId() == addButton.getId()) {
-                DefinitionModel definition = definitions.get(getAdapterPosition());
                 AppDialogs.addWordToCategoryDialog(view.getContext(), definition);
+            } else if (view.getId() == cardView.getId()) {
+                TextPronunciation.pronounce(definition.getHeadWord());
             }
 
         }

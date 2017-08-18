@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-
 import java.util.ArrayList;
 
 public class InternetDefinitionsActivity extends AppCompatActivity {
@@ -15,15 +14,16 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.internet_definitions_activity);
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.internet_definitions_recyclerView);
-        recyclerView.setHasFixedSize(true);
+        RecyclerView internetDefinitionsRecyclerView = (RecyclerView)findViewById
+                (R.id.internet_definitions_recyclerView);
+        internetDefinitionsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent()
+        internetDefinitionsRecyclerView.setLayoutManager(layoutManager);
+        final ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent()
                 .getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
         InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);
-        recyclerView.setAdapter(adapter);
+        internetDefinitionsRecyclerView.setAdapter(adapter);
 
     }
 

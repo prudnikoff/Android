@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        TextPronunciation.prepare(getApplicationContext());
         CategoriesData.restoreState(MainActivity.this);
         setUpActions();
 
@@ -72,6 +73,14 @@ public class MainActivity extends AppCompatActivity
 
         super.onPause();
         CategoriesData.saveCurrentState(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        TextPronunciation.destroyTextToSpeech();
 
     }
 
@@ -276,8 +285,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void parseJSON(JSONObject root) {
-
-        final String DIRECT_URL_START = "https://api.pearson.com";
 
         try {
             JSONArray resultsArray = root.getJSONArray("results");
