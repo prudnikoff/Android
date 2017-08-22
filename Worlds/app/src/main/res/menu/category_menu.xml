@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/mainSearch_item"
+        android:id="@+id/categorySearch_item"
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:icon="@drawable/ic_search_white"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="@string/search" />
+
+    <item
+        android:id="@+id/wordsCards_item"
+        android:icon="@drawable/ic_library_books_white"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/wordsCards" />
 
 </menu>

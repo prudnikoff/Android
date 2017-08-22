@@ -16,4 +16,5 @@
     <string name="british">British</string>
     <string name="example">Example:</string>
     <string name="enter_a_category_name">Enter a category name:</string>
+    <string name="wordsCards">wordsCards</string>
 </resources>
