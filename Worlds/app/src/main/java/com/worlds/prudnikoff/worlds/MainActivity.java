@@ -40,73 +40,57 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         TextPronunciation.prepare(getApplicationContext());
         CategoriesData.restoreState(MainActivity.this);
         setUpActions();
-
     }
 
     @Override
     protected void onRestart() {
-
         super.onRestart();
         adapter.notifyDataSetChanged();
-
     }
 
     @Override
     protected void onStart() {
-
         super.onStart();
         if (CategoriesData.getNumOfCategories() == 0) {
             Toast.makeText(getApplicationContext(), "Please, click plus button to add a new category",
                     Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
     protected void onPause() {
-
         super.onPause();
         CategoriesData.saveCurrentState(MainActivity.this);
-
     }
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
         TextPronunciation.destroyTextToSpeech();
-
     }
 
     private void setUpActions() {
-
         //setting up the RecyclerView of categories
         RecyclerView categoriesRecyclerView = (RecyclerView)findViewById(R.id.categoriesRecyclerView);
         categoriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         categoriesRecyclerView.setLayoutManager(layoutManager);
-
         //setting up OnItemTouchListener for RecyclerView items
         categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
                 categoriesRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override public void onItemClick(View view, int position) {
-
                 CategoryModel category = CategoriesData.getCategoryByPosition(position);
                 goCategoryWordsActivity(category.getNameOfCategory(), position);
-
             }
 
             @Override public void onLongItemClick(View view, int position) {
-
                 AppDialogs.showCategoryOptionsDialog(MainActivity.this, position);
-
             }
 
         })
@@ -134,31 +118,25 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private void goInfoActivity() {
-
         Intent intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
-
     }
 
     @Override
     public void onBackPressed() {
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -167,12 +145,10 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 searchQuery = query;
                 new InternetConnection().execute(query.replaceAll(" ", ","));
                 searchView.clearFocus();
                 return true;
-
             }
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -180,25 +156,20 @@ public class MainActivity extends AppCompatActivity
             }
         });
         return true;
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -206,11 +177,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_about: goInfoActivity(); break;
             case R.id.nav_share: startShareIntent();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-
     }
 
     private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
@@ -222,20 +191,16 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-
             progDailog.setMessage("Loading...");
             progDailog.setIndeterminate(false);
             progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progDailog.setCancelable(true);
             progDailog.show();
-
         }
 
         @Override
         protected JSONObject doInBackground(String... params) {
-
             JSONObject root = null;
-
             try {
                 root = getJSONObjectFromURL();
             } catch (IOException IOEx) {
@@ -246,19 +211,15 @@ public class MainActivity extends AppCompatActivity
                 JSONEx.printStackTrace();
             }
             return root;
-
         }
 
         @Override
         protected void onPostExecute(JSONObject root) {
-
             parseJSON(root);
             progDailog.dismiss();
-
         }
 
         private JSONObject getJSONObjectFromURL() throws IOException, JSONException {
-
             String urlString = DIRECT_URL_START + searchQuery + DIRECT_URL_END;
             HttpURLConnection urlConnection;
             URL url = new URL(urlString);
@@ -281,12 +242,10 @@ public class MainActivity extends AppCompatActivity
 
             String jsonString = sb.toString();
             return new JSONObject(jsonString);
-
         }
     }
 
     private void parseJSON(JSONObject root) {
-
         try {
             JSONArray resultsArray = root.getJSONArray("results");
             ArrayList<DefinitionModel> definitions = new ArrayList<>();
@@ -332,42 +291,32 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Internet connection failed",
                     Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void goInternetDefinitionsActivity(ArrayList<DefinitionModel> definitions) {
-
         Intent intent = new Intent(this, InternetDefinitionsActivity.class);
         intent.putExtra("query", searchQuery);
         intent.putExtra("definitions", definitions);
         startActivity(intent);
-
     }
 
     private void goCategoryWordsActivity(String nameOfCategory, int position) {
-
         Intent intent = new Intent(this, CategoryWordsActivity.class);
         intent.putExtra("categoryPosition", position);
         intent.putExtra("nameOfCategory", nameOfCategory);
         startActivity(intent);
-
     }
 
     private void startShareIntent() {
-
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         String shareBody = "Worlds App - the worlds of English in your phone!\nDownload it in Google Play: google.play.etc";
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
     }
 
     public static void notifyAboutCategoriesChanging() {
-
         adapter.notifyDataSetChanged();
-
     }
-
 }

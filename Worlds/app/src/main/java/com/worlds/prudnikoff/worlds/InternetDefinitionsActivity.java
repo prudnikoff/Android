@@ -11,7 +11,6 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.internet_definitions_activity);
         RecyclerView internetDefinitionsRecyclerView = (RecyclerView)findViewById
@@ -24,15 +23,11 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
         setTitle(getIntent().getExtras().getString("query"));
         InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);
         internetDefinitionsRecyclerView.setAdapter(adapter);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) finish();
         return super.onOptionsItemSelected(item);
-
     }
-
 }

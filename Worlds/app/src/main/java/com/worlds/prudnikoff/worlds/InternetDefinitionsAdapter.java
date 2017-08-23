@@ -16,30 +16,23 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
     private ArrayList<DefinitionModel> definitions;
 
     public InternetDefinitionsAdapter(ArrayList<DefinitionModel> definitions) {
-
         this.definitions = definitions;
-
     }
 
     @Override
     public int getItemCount() {
-
         return definitions.size();
-
     }
 
     @Override
     public DefinitionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.definition_view,
                 parent, false);
         return new DefinitionHolder(viewItem);
-
     }
 
     @Override
     public void onBindViewHolder(DefinitionHolder definitionHolder, int position) {
-
         DefinitionModel definition = definitions.get(position);
         if (definition.getPartOfSpeech() != null) {
             definitionHolder.partOfSpeechTextView.setText("(" + definition.getPartOfSpeech() + ")");
@@ -53,14 +46,11 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         if (definition.getExample() != null) {
             definitionHolder.exampleTextView.setText(definition.getExample());
         } else definitionHolder.exampleTextView.setText("-");
-
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-
         super.onAttachedToRecyclerView(recyclerView);
-
     }
 
     public class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -73,7 +63,6 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         ImageButton addButton;
 
         DefinitionHolder(View itemView) {
-
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.card_View);
             headWordTextView = (TextView)itemView.findViewById(R.id.headword_textView);
@@ -83,21 +72,16 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
             addButton = (ImageButton)itemView.findViewById(R.id.add_button);
             cardView.setOnClickListener(this);
             addButton.setOnClickListener(this);
-
         }
 
         @Override
         public void onClick(View view) {
-
             DefinitionModel definition = definitions.get(getAdapterPosition());
             if (view.getId() == addButton.getId()) {
                 AppDialogs.addWordToCategoryDialog(view.getContext(), definition);
             } else if (view.getId() == cardView.getId()) {
                 TextPronunciation.pronounce(definition.getHeadWord());
             }
-
         }
-
     }
-
 }

@@ -2,6 +2,7 @@ package com.worlds.prudnikoff.worlds;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +18,10 @@ import java.util.ArrayList;
 public class CategoryWordsActivity extends AppCompatActivity {
 
     private static CategoryWordsAdapter adapter;
+    private int numOfCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_words_activity);
         RecyclerView wordsRecyclerView = (RecyclerView)findViewById(R.id.category_words_recyclerView);
@@ -28,6 +29,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         wordsRecyclerView.setLayoutManager(layoutManager);
         final int categoryPosition = getIntent().getExtras().getInt("categoryPosition");
+        numOfCategory = categoryPosition;
         ArrayList<DefinitionModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
@@ -37,29 +39,22 @@ public class CategoryWordsActivity extends AppCompatActivity {
                         wordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
                     @Override public void onItemClick(View view, int position) {
-
                         String textToPronounce = CategoriesData.getCategoryByPosition(categoryPosition)
                                 .getWordByPosition(position).getHeadWord();
                         TextPronunciation.pronounce(textToPronounce);
-
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-
                         AppDialogs.showWordOptionsDialog(view.getContext(),
                                 getIntent().getExtras().getInt("categoryPosition"), position);
-
                     }
 
                 })
         );
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.category_menu, menu);
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -81,7 +76,6 @@ public class CategoryWordsActivity extends AppCompatActivity {
             }
         });
         return true;
-
     }
 
     @Override
@@ -91,17 +85,18 @@ public class CategoryWordsActivity extends AppCompatActivity {
 
         switch (id) {
             case android.R.id.home: finish(); break;
-            case R.id.wordsCards_item: Toast.makeText(CategoryWordsActivity.this, "Starting a quiz!", Toast.LENGTH_SHORT).show();
+            case R.id.wordsCards_item: goQuizActivity();
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
+    private void goQuizActivity() {
+        Intent intent = new Intent(CategoryWordsActivity.this, WordsSlideQuizActivity.class);
+        intent.putExtra("categoryPosition", numOfCategory);
+        startActivity(intent);
+    }
     public static void notifyAboutWordsChanging() {
-
         adapter.notifyDataSetChanged();
-
     }
-
 }

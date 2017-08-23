@@ -52,7 +52,5 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             dateAndTime = (TextView)itemView.findViewById(R.id.date_and_time_textView);
             numOfWords = (TextView)itemView.findViewById(R.id.num_of_words_textView);
         }
-
     }
-
 }

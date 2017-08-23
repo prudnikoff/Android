@@ -13,7 +13,6 @@ import android.widget.Toast;
 public class AppDialogs {
 
     public static void inputNameOfCategoryDialog(final Context context) {
-
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
@@ -40,11 +39,9 @@ public class AppDialogs {
         alert.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.show();
-
     }
 
     public static void showCategoryOptionsDialog(final Context context, final int position) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Rename", "Delete"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -62,11 +59,9 @@ public class AppDialogs {
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     public static void renameCategoryDialog(Context context, final int position) {
-
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
@@ -95,7 +90,6 @@ public class AppDialogs {
         alert.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.show();
-
     }
 
     public static void addWordToCategoryDialog(final Context context, final DefinitionModel word) {
@@ -117,12 +111,10 @@ public class AppDialogs {
             alert.show();
         } else Toast.makeText(context, "You should add at least one category at first",
                 Toast.LENGTH_SHORT).show();
-
     }
 
     public static void showWordOptionsDialog(final Context context,
                                              final int categoryPosition, final int wordPosition) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Move to", "Delete"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -141,12 +133,10 @@ public class AppDialogs {
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     private static void moveToAnotherCategoryDialog
             (final Context context, final int fromCategoryPosition, final int wordPosition) {
-
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
         if (namesOfCategories.length > 1) {
@@ -168,7 +158,5 @@ public class AppDialogs {
             alert.show();
         } else Toast.makeText(context, "You should have at least two categories",
                 Toast.LENGTH_SHORT).show();
-
     }
-
 }
