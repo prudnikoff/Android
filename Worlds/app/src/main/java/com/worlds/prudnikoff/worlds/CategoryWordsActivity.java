@@ -63,16 +63,12 @@ public class CategoryWordsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                String searchQuery = query;
-                Toast.makeText(CategoryWordsActivity.this, searchQuery, Toast.LENGTH_SHORT).show();
-                //searchView.clearFocus();
-                return true;
-
+                return false;
             }
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public boolean onQueryTextChange(String query) {
+                adapter.filter(query);
+                return true;
             }
         });
         return true;

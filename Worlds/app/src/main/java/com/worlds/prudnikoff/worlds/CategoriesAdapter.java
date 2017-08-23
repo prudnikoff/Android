@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
+class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
     private ArrayList<CategoryModel> categories;
 
-    public CategoriesAdapter(ArrayList<CategoryModel> categories) {
+    CategoriesAdapter(ArrayList<CategoryModel> categories) {
         this.categories = categories;
     }
 
@@ -40,7 +40,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public class CategoryHolder extends RecyclerView.ViewHolder {
+    class CategoryHolder extends RecyclerView.ViewHolder {
 
         TextView nameOfCategory;
         TextView dateAndTime;

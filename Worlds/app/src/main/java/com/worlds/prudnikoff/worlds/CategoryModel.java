@@ -3,43 +3,43 @@ package com.worlds.prudnikoff.worlds;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CategoryModel implements Serializable {
+class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
     private ArrayList<DefinitionModel> words;
 
-    public CategoryModel(String nameOfCategory, String dateAndTime) {
+    CategoryModel(String nameOfCategory, String dateAndTime) {
         this.nameOfCategory = nameOfCategory;
         this.dateAndTime = dateAndTime;
         words = new ArrayList<>();
     }
 
-    public void addWord(DefinitionModel word) {
+    void addWord(DefinitionModel word) {
         words.add(0, word);
     }
 
-    public void setNameOfCategory(String nameOfCategory) {
+    void setNameOfCategory(String nameOfCategory) {
         this.nameOfCategory = nameOfCategory;
     }
 
-    public String getNumOfWords() {
+    String getNumOfWords() {
         return String.valueOf(words.size());
     }
 
-    public String getNameOfCategory() {
+    String getNameOfCategory() {
         return nameOfCategory;
     }
 
-    public String getDateAndTime() {
+    String getDateAndTime() {
         return dateAndTime;
     }
 
-    public ArrayList<DefinitionModel> getWords() {
+    ArrayList<DefinitionModel> getWords() {
         return words;
     }
 
-    public DefinitionModel getWordByPosition(int position) {
+    DefinitionModel getWordByPosition(int position) {
         return words.get(position);
     }
 

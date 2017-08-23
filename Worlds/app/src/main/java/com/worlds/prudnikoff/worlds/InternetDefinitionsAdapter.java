@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinitionsAdapter.DefinitionHolder> {
+class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinitionsAdapter.DefinitionHolder> {
 
     private ArrayList<DefinitionModel> definitions;
 
-    public InternetDefinitionsAdapter(ArrayList<DefinitionModel> definitions) {
+    InternetDefinitionsAdapter(ArrayList<DefinitionModel> definitions) {
         this.definitions = definitions;
     }
 
@@ -53,7 +53,7 @@ public class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDef
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         TextView headWordTextView;

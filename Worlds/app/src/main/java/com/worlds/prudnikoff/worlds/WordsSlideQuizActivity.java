@@ -1,16 +1,17 @@
 package com.worlds.prudnikoff.worlds;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class WordsSlideQuizActivity extends FragmentActivity {
-
+public class WordsSlideQuizActivity extends AppCompatActivity {
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
@@ -18,21 +19,30 @@ public class WordsSlideQuizActivity extends FragmentActivity {
     private ViewPager mPager;
     private ArrayList<DefinitionModel> words;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_slide_quiz_activity);
         int numOfCategory = getIntent().getIntExtra("categoryPosition", 0);
-        words = CategoriesData.getCategoryByPosition(numOfCategory).getWords();
+        words = new ArrayList<>(CategoriesData.getCategoryByPosition(numOfCategory).getWords());
+        Collections.shuffle(words);
+        setTitle("Quiz");
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.viewPager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home: finish(); break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -46,13 +56,12 @@ public class WordsSlideQuizActivity extends FragmentActivity {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
-
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

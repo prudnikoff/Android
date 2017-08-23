@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class AppDialogs {
+class AppDialogs {
 
-    public static void inputNameOfCategoryDialog(final Context context) {
+    static void inputNameOfCategoryDialog(final Context context) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
@@ -41,7 +41,7 @@ public class AppDialogs {
         alert.show();
     }
 
-    public static void showCategoryOptionsDialog(final Context context, final int position) {
+    static void showCategoryOptionsDialog(final Context context, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Rename", "Delete"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -61,7 +61,7 @@ public class AppDialogs {
         alert.show();
     }
 
-    public static void renameCategoryDialog(Context context, final int position) {
+    private static void renameCategoryDialog(Context context, final int position) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
@@ -92,7 +92,7 @@ public class AppDialogs {
         alert.show();
     }
 
-    public static void addWordToCategoryDialog(final Context context, final DefinitionModel word) {
+    static void addWordToCategoryDialog(final Context context, final DefinitionModel word) {
 
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
@@ -113,7 +113,7 @@ public class AppDialogs {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public static void showWordOptionsDialog(final Context context,
+    static void showWordOptionsDialog(final Context context,
                                              final int categoryPosition, final int wordPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Move to", "Delete"};

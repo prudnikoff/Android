@@ -9,12 +9,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.WordHolder> {
+class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.WordHolder> {
 
     private ArrayList<DefinitionModel> words;
+    private ArrayList<DefinitionModel> wordsCopy;
 
-    public CategoryWordsAdapter(ArrayList<DefinitionModel> words) {
+    CategoryWordsAdapter(ArrayList<DefinitionModel> words) {
         this.words = words;
+        wordsCopy = new ArrayList<>(words);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public class WordHolder extends RecyclerView.ViewHolder {
+    class WordHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
         TextView headWordTextView;
@@ -67,5 +69,30 @@ public class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdap
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.w_partOfSpeech_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.w_example_textView);
         }
+    }
+
+    void filter(String query) {
+        words.clear();
+        if (query.isEmpty()) {
+            words.addAll(wordsCopy);
+        } else {
+            query = query.toLowerCase();
+            boolean isHeadWordFound = false;
+            for (DefinitionModel word: wordsCopy) {
+                if (word.getHeadWord().toLowerCase().contains(query)) {
+                    words.add(0, word);
+                    isHeadWordFound = true;
+                }
+            }
+            if (!isHeadWordFound) {
+                for (DefinitionModel word : wordsCopy) {
+                    if (word.getHeadWord().toLowerCase().contains(query) ||
+                            word.getDefinition().toLowerCase().contains(query)) {
+                        words.add(0, word);
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

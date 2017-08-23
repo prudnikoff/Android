@@ -6,11 +6,11 @@ import android.speech.tts.TextToSpeech;
 
 import java.util.Locale;
 
-public class TextPronunciation {
+class TextPronunciation {
 
     private static TextToSpeech textToSpeech;
 
-    public static void prepare(Context context) {
+    static void prepare(Context context) {
         textToSpeech = new TextToSpeech(context,
                 new TextToSpeech.OnInitListener() {
                     @Override
@@ -20,7 +20,7 @@ public class TextPronunciation {
         textToSpeech.setLanguage(Locale.UK);
     }
 
-    public static void pronounce(String textToPronounce) {
+    static void pronounce(String textToPronounce) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech.speak(textToPronounce, TextToSpeech.QUEUE_FLUSH, null, null);
         } else {
@@ -28,7 +28,7 @@ public class TextPronunciation {
         }
     }
 
-    public static void destroyTextToSpeech () {
+    static void destroyTextToSpeech () {
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
