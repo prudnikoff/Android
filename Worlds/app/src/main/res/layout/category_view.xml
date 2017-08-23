@@ -43,23 +43,27 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginBottom="7dp">
 
                 <TextView
                     android:id="@+id/date_and_time_textView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="25.06.2017, 15:06"
                     android:textSize="14sp"
-                    android:layout_weight="15"
+                    android:layout_weight="0.9"
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:id="@+id/num_of_words_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textAlignment="textEnd"
+                    android:layout_weight="0.1"
+                    android:textSize="14sp"
                     android:text="77"/>
 
             </LinearLayout>
