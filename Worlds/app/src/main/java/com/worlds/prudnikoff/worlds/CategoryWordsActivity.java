@@ -33,7 +33,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         ArrayList<DefinitionModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
-        adapter = new CategoryWordsAdapter(words);
+        adapter = new CategoryWordsAdapter(new ArrayList<>(words));
         wordsRecyclerView.setAdapter(adapter);
         wordsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
                         wordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
