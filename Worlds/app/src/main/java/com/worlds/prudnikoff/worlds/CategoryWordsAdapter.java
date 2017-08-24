@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.WordHolder> {
 
-    private ArrayList<DefinitionModel> words;
-    private ArrayList<DefinitionModel> wordsCopy;
+    private ArrayList<WordModel> words;
+    private ArrayList<WordModel> wordsCopy;
 
-    CategoryWordsAdapter(ArrayList<DefinitionModel> words) {
+    CategoryWordsAdapter(ArrayList<WordModel> words) {
         this.words = words;
         wordsCopy = new ArrayList<>(words);
     }
@@ -34,7 +34,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
 
     @Override
     public void onBindViewHolder(WordHolder wordHolder, int position) {
-        DefinitionModel word = words.get(position);
+        WordModel word = words.get(position);
         if (word.getPartOfSpeech() != null) {
             wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         } else wordHolder.partOfSpeechTextView.setText("");
@@ -109,14 +109,14 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         } else {
             query = query.toLowerCase();
             boolean isHeadWordFound = false;
-            for (DefinitionModel word: wordsCopy) {
+            for (WordModel word: wordsCopy) {
                 if (word.getHeadWord().toLowerCase().contains(query)) {
                     words.add(0, word);
                     isHeadWordFound = true;
                 }
             }
             if (!isHeadWordFound) {
-                for (DefinitionModel word: wordsCopy) {
+                for (WordModel word: wordsCopy) {
                     if (word.getHeadWord().toLowerCase().contains(query) ||
                             word.getDefinition().toLowerCase().contains(query)) {
                         words.add(0, word);

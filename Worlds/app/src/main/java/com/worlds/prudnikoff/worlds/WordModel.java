@@ -2,7 +2,7 @@ package com.worlds.prudnikoff.worlds;
 
 import java.io.Serializable;
 
-public class DefinitionModel implements Serializable {
+public class WordModel implements Serializable {
 
     private String partOfSpeech;
     private String headWord;
@@ -10,7 +10,7 @@ public class DefinitionModel implements Serializable {
     private String example;
     private boolean isMemorized;
 
-    public DefinitionModel(String partOfSpeech, String headWord, String definition, String example) {
+    public WordModel(String partOfSpeech, String headWord, String definition, String example) {
         this.partOfSpeech = partOfSpeech;
         this.headWord = headWord;
         this.definition = definition;

@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinitionsAdapter.DefinitionHolder> {
 
-    private ArrayList<DefinitionModel> definitions;
+    private ArrayList<WordModel> definitions;
 
-    InternetDefinitionsAdapter(ArrayList<DefinitionModel> definitions) {
+    InternetDefinitionsAdapter(ArrayList<WordModel> definitions) {
         this.definitions = definitions;
     }
 
@@ -33,7 +32,7 @@ class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinition
 
     @Override
     public void onBindViewHolder(DefinitionHolder definitionHolder, int position) {
-        DefinitionModel definition = definitions.get(position);
+        WordModel definition = definitions.get(position);
         if (definition.getPartOfSpeech() != null) {
             definitionHolder.partOfSpeechTextView.setText("(" + definition.getPartOfSpeech() + ")");
         } else definitionHolder.partOfSpeechTextView.setText("");
@@ -76,7 +75,7 @@ class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinition
 
         @Override
         public void onClick(View view) {
-            DefinitionModel definition = definitions.get(getAdapterPosition());
+            WordModel definition = definitions.get(getAdapterPosition());
             if (view.getId() == addButton.getId()) {
                 AppDialogs.addWordToCategoryDialog(view.getContext(), definition);
             } else if (view.getId() == cardView.getId()) {

@@ -2,7 +2,6 @@ package com.worlds.prudnikoff.worlds;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.ArrayList;
 
@@ -29,7 +27,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         wordsRecyclerView.setLayoutManager(layoutManager);
         final int categoryPosition = getIntent().getExtras().getInt("categoryPosition");
         numOfCategory = categoryPosition;
-        ArrayList<DefinitionModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
+        ArrayList<WordModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
         adapter = new CategoryWordsAdapter(words);
@@ -78,9 +76,10 @@ public class CategoryWordsActivity extends AppCompatActivity {
 
     private void goQuizActivity() {
         adapter.immediateWordsReload();
-        Intent intent = new Intent(CategoryWordsActivity.this, WordsSlideQuizActivity.class);
-        intent.putExtra("categoryPosition", numOfCategory);
-        startActivity(intent);
+        AppDialogs.chooseQuizOptionDialog(CategoryWordsActivity.this, numOfCategory);
+        //Intent intent = new Intent(CategoryWordsActivity.this, WordsSlideQuizActivity.class);
+        //intent.putExtra("categoryPosition", numOfCategory);
+        //startActivity(intent);
     }
 
     public static void notifyAboutWordsChanging() {

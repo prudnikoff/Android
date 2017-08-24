@@ -17,7 +17,7 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
      * and next wizard steps.
      */
     private ViewPager mPager;
-    private ArrayList<DefinitionModel> words;
+    private ArrayList<WordModel> words;
     private ArrayList<Integer> randomIndexes;
     private int categoryPosition;
 

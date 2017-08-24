@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity
     private void parseJSON(JSONObject root) {
         try {
             JSONArray resultsArray = root.getJSONArray("results");
-            ArrayList<DefinitionModel> definitions = new ArrayList<>();
+            ArrayList<WordModel> definitions = new ArrayList<>();
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject definitionElem = resultsArray.getJSONObject(i);
                 if (definitionElem.has("headword") && !definitionElem.isNull("senses")) {
@@ -270,9 +270,9 @@ public class MainActivity extends AppCompatActivity
                             example = sensesObj.getJSONArray("examples").getJSONObject(0)
                                     .getString("text");
                         }
-                        DefinitionModel definitionModel = new DefinitionModel(partOfSpeech, headword,
+                        WordModel wordModel = new WordModel(partOfSpeech, headword,
                                 definition, example);
-                        definitions.add(definitionModel);
+                        definitions.add(wordModel);
                     }
                 }
             }
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void goInternetDefinitionsActivity(ArrayList<DefinitionModel> definitions) {
+    private void goInternetDefinitionsActivity(ArrayList<WordModel> definitions) {
         Intent intent = new Intent(this, InternetDefinitionsActivity.class);
         intent.putExtra("query", searchQuery);
         intent.putExtra("definitions", definitions);

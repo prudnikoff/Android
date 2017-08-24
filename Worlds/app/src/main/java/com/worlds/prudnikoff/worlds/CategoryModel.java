@@ -7,7 +7,7 @@ class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
-    private ArrayList<DefinitionModel> words;
+    private ArrayList<WordModel> words;
 
     CategoryModel(String nameOfCategory, String dateAndTime) {
         this.nameOfCategory = nameOfCategory;
@@ -15,7 +15,7 @@ class CategoryModel implements Serializable {
         words = new ArrayList<>();
     }
 
-    void addWord(DefinitionModel word) {
+    void addWord(WordModel word) {
         words.add(0, word);
     }
 
@@ -35,11 +35,11 @@ class CategoryModel implements Serializable {
         return dateAndTime;
     }
 
-    ArrayList<DefinitionModel> getWords() {
+    ArrayList<WordModel> getWords() {
         return words;
     }
 
-    DefinitionModel getWordByPosition(int position) {
+    WordModel getWordByPosition(int position) {
         return words.get(position);
     }
 

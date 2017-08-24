@@ -18,7 +18,7 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
         internetDefinitionsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         internetDefinitionsRecyclerView.setLayoutManager(layoutManager);
-        final ArrayList<DefinitionModel> definitions = (ArrayList<DefinitionModel>) getIntent()
+        final ArrayList<WordModel> definitions = (ArrayList<WordModel>) getIntent()
                 .getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
         InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);

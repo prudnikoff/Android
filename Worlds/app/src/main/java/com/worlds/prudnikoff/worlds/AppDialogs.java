@@ -94,7 +94,7 @@ class AppDialogs {
         alert.show();
     }
 
-    static void addWordToCategoryDialog(final Context context, final DefinitionModel word) {
+    static void addWordToCategoryDialog(final Context context, final WordModel word) {
 
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
@@ -115,7 +115,7 @@ class AppDialogs {
                 Toast.LENGTH_SHORT).show();
     }
 
-    static void showWordOptionsDialog(final Context context, final ArrayList<DefinitionModel> words,
+    static void showWordOptionsDialog(final Context context, final ArrayList<WordModel> words,
                                       final int wordPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Move to", "Delete"};
@@ -137,7 +137,7 @@ class AppDialogs {
     }
 
     private static void moveToAnotherCategoryDialog
-            (final Context context, final ArrayList<DefinitionModel> words, final int wordPosition) {
+            (final Context context, final ArrayList<WordModel> words, final int wordPosition) {
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
         if (namesOfCategories.length > 1) {
@@ -146,7 +146,7 @@ class AppDialogs {
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
 
-                    DefinitionModel word = words.get(wordPosition);
+                    WordModel word = words.get(wordPosition);
                     words.remove(wordPosition);
                     CategoriesData.getCategoryByPosition(item).addWord(word);
                     CategoryWordsActivity.notifyAboutWordsChanging();
@@ -157,5 +157,31 @@ class AppDialogs {
             alert.show();
         } else Toast.makeText(context, "You should have at least two categories",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    static void chooseQuizOptionDialog(final Context context, int categoryPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final String[] items = {"By words (not memorized)", "By definitions (not memorized)",
+                "By words (all)", "By definitions (all)"};
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Toast.makeText(context, items[item], Toast.LENGTH_SHORT).show();
+                /*
+                switch (item) {
+                    Toast.makeText(context, items[item], Toast.LENGTH_SHORT).show();
+                    case 0: {
+                        AppDialogs.moveToAnotherCategoryDialog(context, words, wordPosition);
+                    } break;
+                    case 1: {
+                        words.remove(wordPosition);
+                        CategoryWordsActivity.notifyAboutWordsChanging();
+                    }
+
+                }
+                */
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

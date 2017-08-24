@@ -24,7 +24,7 @@ public class WordsSlideFragment extends Fragment {
     public static WordsSlideFragment getWordFragment(int categoryPosition, int wordPosition) {
         WordsSlideFragment fragment = new WordsSlideFragment();
         Bundle args = new Bundle();
-        DefinitionModel word = CategoriesData.getCategoryByPosition(categoryPosition)
+        WordModel word = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWordByPosition(wordPosition);
         args.putString("partOfSpeech", word.getPartOfSpeech());
         args.putString("headWord", word.getHeadWord());
