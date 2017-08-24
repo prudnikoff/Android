@@ -11,7 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,24 +32,14 @@ public class CategoryWordsActivity extends AppCompatActivity {
         ArrayList<DefinitionModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
-        adapter = new CategoryWordsAdapter(new ArrayList<>(words));
+        adapter = new CategoryWordsAdapter(words);
         wordsRecyclerView.setAdapter(adapter);
-        wordsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
-                        wordsRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+    }
 
-                    @Override public void onItemClick(View view, int position) {
-                        String textToPronounce = CategoriesData.getCategoryByPosition(categoryPosition)
-                                .getWordByPosition(position).getHeadWord();
-                        TextPronunciation.pronounce(textToPronounce);
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        AppDialogs.showWordOptionsDialog(view.getContext(),
-                                getIntent().getExtras().getInt("categoryPosition"), position);
-                    }
-
-                })
-        );
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CategoriesData.saveCurrentState(CategoryWordsActivity.this);
     }
 
     @Override
@@ -88,10 +77,12 @@ public class CategoryWordsActivity extends AppCompatActivity {
     }
 
     private void goQuizActivity() {
+        adapter.immediateWordsReload();
         Intent intent = new Intent(CategoryWordsActivity.this, WordsSlideQuizActivity.class);
         intent.putExtra("categoryPosition", numOfCategory);
         startActivity(intent);
     }
+
     public static void notifyAboutWordsChanging() {
         adapter.notifyDataSetChanged();
     }

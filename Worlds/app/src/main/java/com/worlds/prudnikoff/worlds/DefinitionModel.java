@@ -8,28 +8,37 @@ public class DefinitionModel implements Serializable {
     private String headWord;
     private String definition;
     private String example;
+    private boolean isMemorized;
 
     public DefinitionModel(String partOfSpeech, String headWord, String definition, String example) {
         this.partOfSpeech = partOfSpeech;
         this.headWord = headWord;
         this.definition = definition;
         this.example = example;
+        this.isMemorized = false;
     }
 
-    public String getPartOfSpeech() {
+    String getPartOfSpeech() {
         return partOfSpeech;
     }
 
+    boolean isMemorized() {
+        return isMemorized;
+    }
 
-    public String getHeadWord() {
+    void setMemorized(boolean isMemorized) {
+        this.isMemorized = isMemorized;
+    }
+
+    String getHeadWord() {
         return headWord;
     }
 
-    public String getDefinition() {
+    String getDefinition() {
         return definition;
     }
 
-    public String getExample() {
+    String getExample() {
         return example;
     }
 }

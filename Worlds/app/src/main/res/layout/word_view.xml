@@ -98,6 +98,31 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/w_memorized_checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/w_memorized_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="14sp"
+                    android:text="@string/memorized" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -18,19 +18,32 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
      */
     private ViewPager mPager;
     private ArrayList<DefinitionModel> words;
+    private ArrayList<Integer> randomIndexes;
+    private int categoryPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_slide_quiz_activity);
-        int numOfCategory = getIntent().getIntExtra("categoryPosition", 0);
-        words = new ArrayList<>(CategoriesData.getCategoryByPosition(numOfCategory).getWords());
-        Collections.shuffle(words);
-        setTitle("Quiz");
+        categoryPosition = getIntent().getIntExtra("categoryPosition", 0);
+        words = CategoriesData.getCategoryByPosition(categoryPosition).getWords();
+        randomIndexes = new ArrayList<>();
+        for (int i = 0; i < words.size(); i++) {
+            randomIndexes.add(i);
+        }
+        Collections.shuffle(randomIndexes);
+        String categoryName = CategoriesData.getCategoryByPosition(categoryPosition).getNameOfCategory();
+        setTitle("Quiz: " + categoryName);
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CategoriesData.saveCurrentState(WordsSlideQuizActivity.this);
     }
 
     @Override
@@ -67,7 +80,13 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return WordsSlideFragment.getWordFragment(words.get(position));
+            int wordPosition = 0;
+            for (int i = 0; i < randomIndexes.size(); i++) {
+                if (randomIndexes.get(i) == position) {
+                    wordPosition = i;
+                }
+            }
+            return WordsSlideFragment.getWordFragment(categoryPosition, wordPosition);
         }
 
         @Override

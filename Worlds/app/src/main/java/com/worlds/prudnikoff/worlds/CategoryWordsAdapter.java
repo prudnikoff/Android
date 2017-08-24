@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.WordHolder> {
@@ -46,6 +47,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         if (word.getExample() != null) {
             wordHolder.exampleTextView.setText(word.getExample());
         } else wordHolder.exampleTextView.setText("-");
+        wordHolder.isMemorized.setChecked(word.isMemorized());
     }
 
     @Override
@@ -53,13 +55,15 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    class WordHolder extends RecyclerView.ViewHolder {
+    class WordHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
 
         CardView cardView;
         TextView headWordTextView;
         TextView definitionTextView;
         TextView partOfSpeechTextView;
         TextView exampleTextView;
+        CheckBox isMemorized;
 
         WordHolder(View itemView) {
             super(itemView);
@@ -68,6 +72,33 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
             definitionTextView = (TextView)itemView.findViewById(R.id.w_definition_textView);
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.w_partOfSpeech_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.w_example_textView);
+            isMemorized = (CheckBox)itemView.findViewById(R.id.w_memorized_checkBox);
+            isMemorized.setOnCheckedChangeListener(this);
+            cardView.setOnClickListener(this);
+            cardView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == cardView.getId()) {
+                String textToPronounce = words.get(getAdapterPosition()).getHeadWord();
+                TextPronunciation.pronounce(textToPronounce);
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (v.getId() == cardView.getId()) {
+                AppDialogs.showWordOptionsDialog(v.getContext(), words, getAdapterPosition());
+            }
+            return true;
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView.getId() == isMemorized.getId()) {
+                words.get(getAdapterPosition()).setMemorized(isChecked);
+            }
         }
     }
 
@@ -85,7 +116,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
                 }
             }
             if (!isHeadWordFound) {
-                for (DefinitionModel word : wordsCopy) {
+                for (DefinitionModel word: wordsCopy) {
                     if (word.getHeadWord().toLowerCase().contains(query) ||
                             word.getDefinition().toLowerCase().contains(query)) {
                         words.add(0, word);
@@ -94,5 +125,10 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
             }
         }
         notifyDataSetChanged();
+    }
+
+    void immediateWordsReload() {
+        words.clear();
+        words.addAll(wordsCopy);
     }
 }

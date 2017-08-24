@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 class AppDialogs {
 
@@ -113,19 +115,18 @@ class AppDialogs {
                 Toast.LENGTH_SHORT).show();
     }
 
-    static void showWordOptionsDialog(final Context context,
-                                             final int categoryPosition, final int wordPosition) {
+    static void showWordOptionsDialog(final Context context, final ArrayList<DefinitionModel> words,
+                                      final int wordPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String[] items = {"Move to", "Delete"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
                     case 0: {
-                       AppDialogs.moveToAnotherCategoryDialog(context, categoryPosition, wordPosition);
+                       AppDialogs.moveToAnotherCategoryDialog(context, words, wordPosition);
                     } break;
                     case 1: {
-                        CategoriesData.getCategoryByPosition(categoryPosition)
-                                .getWords().remove(wordPosition);
+                        words.remove(wordPosition);
                         CategoryWordsActivity.notifyAboutWordsChanging();
                     }
                 }
@@ -136,7 +137,7 @@ class AppDialogs {
     }
 
     private static void moveToAnotherCategoryDialog
-            (final Context context, final int fromCategoryPosition, final int wordPosition) {
+            (final Context context, final ArrayList<DefinitionModel> words, final int wordPosition) {
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
         if (namesOfCategories.length > 1) {
@@ -145,10 +146,8 @@ class AppDialogs {
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
 
-                    CategoryModel fromCategory = CategoriesData
-                            .getCategoryByPosition(fromCategoryPosition);
-                    DefinitionModel word = fromCategory.getWords().get(wordPosition);
-                    fromCategory.getWords().remove(wordPosition);
+                    DefinitionModel word = words.get(wordPosition);
+                    words.remove(wordPosition);
                     CategoriesData.getCategoryByPosition(item).addWord(word);
                     CategoryWordsActivity.notifyAboutWordsChanging();
 
