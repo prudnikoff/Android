@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import java.util.ArrayList;
 
 public class CategoryWordsActivity extends AppCompatActivity {
@@ -50,7 +49,9 @@ public class CategoryWordsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                new InternetConnection(CategoryWordsActivity.this, query    ).execute();
+                searchView.clearFocus();
+                return true;
             }
             @Override
             public boolean onQueryTextChange(String query) {
@@ -77,9 +78,6 @@ public class CategoryWordsActivity extends AppCompatActivity {
     private void goQuizActivity() {
         adapter.immediateWordsReload();
         AppDialogs.chooseQuizOptionDialog(CategoryWordsActivity.this, numOfCategory);
-        //Intent intent = new Intent(CategoryWordsActivity.this, WordsSlideQuizActivity.class);
-        //intent.putExtra("categoryPosition", numOfCategory);
-        //startActivity(intent);
     }
 
     public static void notifyAboutWordsChanging() {

@@ -170,9 +170,9 @@ class AppDialogs {
                 switch (item) {
                     case 0: {
                         intent.putExtra("categoryPosition", categoryPosition);
-                        intent.putExtra("notMemorized", true);
-                        intent.putExtra("byWords", true);
-                        context.startActivity(intent);
+                            intent.putExtra("notMemorized", true);
+                            intent.putExtra("byWords", true);
+                            context.startActivity(intent);
                     } break;
                     case 1: {
                         intent.putExtra("categoryPosition", categoryPosition);

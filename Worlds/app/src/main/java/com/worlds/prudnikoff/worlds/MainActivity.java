@@ -1,17 +1,14 @@
 package com.worlds.prudnikoff.worlds;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,15 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -146,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
-                new InternetConnection().execute(query.replaceAll(" ", ","));
+                new InternetConnection(MainActivity.this, searchQuery).execute();
                 searchView.clearFocus();
                 return true;
             }
@@ -180,124 +168,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
-
-        ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
-        private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries" +
-                "/ldoce5/entries?headword=";
-        private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
-
-        @Override
-        protected void onPreExecute() {
-            progDailog.setMessage("Loading...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
-            progDailog.show();
-        }
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            JSONObject root = null;
-            try {
-                root = getJSONObjectFromURL();
-            } catch (IOException IOEx) {
-                Log.e("IOException", "IO stream error");
-                IOEx.printStackTrace();
-            } catch (JSONException JSONEx) {
-                Log.e("JSON", "Something wrong with converting String to JSON");
-                JSONEx.printStackTrace();
-            }
-            return root;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject root) {
-            parseJSON(root);
-            progDailog.dismiss();
-        }
-
-        private JSONObject getJSONObjectFromURL() throws IOException, JSONException {
-            String urlString = DIRECT_URL_START + searchQuery + DIRECT_URL_END;
-            HttpURLConnection urlConnection;
-            URL url = new URL(urlString);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
-            urlConnection.setDoOutput(true);
-            urlConnection.connect();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuilder sb = new StringBuilder();
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
-            }
-            br.close();
-
-            String jsonString = sb.toString();
-            return new JSONObject(jsonString);
-        }
-    }
-
-    private void parseJSON(JSONObject root) {
-        try {
-            JSONArray resultsArray = root.getJSONArray("results");
-            ArrayList<WordModel> definitions = new ArrayList<>();
-            for (int i = 0; i < resultsArray.length(); i++) {
-                JSONObject definitionElem = resultsArray.getJSONObject(i);
-                if (definitionElem.has("headword") && !definitionElem.isNull("senses")) {
-                    JSONObject sensesObj = definitionElem.getJSONArray("senses").getJSONObject(0);
-                    if (sensesObj.has("definition") || sensesObj.has("signpost")) {
-                        String headword = definitionElem.getString("headword");
-                        String partOfSpeech = null;
-                        if (definitionElem.has("part_of_speech")) {
-                            partOfSpeech = definitionElem.getString("part_of_speech");
-                        }
-                        String definition = null;
-                        String example = null;
-                        if (sensesObj.has("definition")) {
-                            definition = sensesObj.getJSONArray("definition").getString(0);
-                        } else if (sensesObj.has("signpost")) {
-                            definition = sensesObj.getString("signpost");
-                        }
-                        if (sensesObj.has("examples")) {
-                            example = sensesObj.getJSONArray("examples").getJSONObject(0)
-                                    .getString("text");
-                        }
-                        WordModel wordModel = new WordModel(partOfSpeech, headword,
-                                definition, example);
-                        definitions.add(wordModel);
-                    }
-                }
-            }
-            if (definitions.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Sorry, the word wasn't found",
-                        Toast.LENGTH_SHORT).show();
-            } else goInternetDefinitionsActivity(definitions);
-        } catch (JSONException ex) {
-            Log.e("JSON", "Something wrong with JSON parsing");
-            ex.printStackTrace();
-        } catch (IndexOutOfBoundsException indexOutEx) {
-            Log.e("JSON", "IndexOutOfBoundsException");
-            indexOutEx.printStackTrace();
-        } catch (NullPointerException nullPointerEx) {
-            Log.e("Internet", "Internet connection failed");
-            Toast.makeText(getApplicationContext(), "Internet connection failed",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void goInternetDefinitionsActivity(ArrayList<WordModel> definitions) {
-        Intent intent = new Intent(this, InternetDefinitionsActivity.class);
-        intent.putExtra("query", searchQuery);
-        intent.putExtra("definitions", definitions);
-        startActivity(intent);
     }
 
     private void goCategoryWordsActivity(String nameOfCategory, int position) {
