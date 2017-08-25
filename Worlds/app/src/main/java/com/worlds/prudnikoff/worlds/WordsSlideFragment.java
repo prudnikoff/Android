@@ -19,9 +19,11 @@ public class WordsSlideFragment extends Fragment {
     private String headWord;
     private int categoryPosition;
     private int wordPosition;
+    private boolean byWords;
     private boolean isMemorized;
 
-    public static WordsSlideFragment getWordFragment(int categoryPosition, int wordPosition) {
+    public static WordsSlideFragment getWordFragment(int categoryPosition, int wordPosition,
+                                                     boolean byWords) {
         WordsSlideFragment fragment = new WordsSlideFragment();
         Bundle args = new Bundle();
         WordModel word = CategoriesData.getCategoryByPosition(categoryPosition)
@@ -30,6 +32,7 @@ public class WordsSlideFragment extends Fragment {
         args.putString("headWord", word.getHeadWord());
         args.putString("definition", word.getDefinition());
         args.putBoolean("isMemorized", word.isMemorized());
+        args.putBoolean("byWords", byWords);
         args.putInt("wordPosition", wordPosition);
         args.putInt("categoryPosition", categoryPosition);
         fragment.setArguments(args);
@@ -43,6 +46,7 @@ public class WordsSlideFragment extends Fragment {
         partOfSpeech = args.getString("partOfSpeech");
         headWord = args.getString("headWord");
         definition = args.getString("definition");
+        byWords = args.getBoolean("byWords");
         isMemorized = args.getBoolean("isMemorized");
         categoryPosition = args.getInt("categoryPosition");
         wordPosition = args.getInt("wordPosition");
@@ -56,23 +60,34 @@ public class WordsSlideFragment extends Fragment {
                 R.layout.card_quiz, container, false);
         TextView partOfSpeechTextView = (TextView)view.findViewById(R.id.card_quiz_partOfSpeech_textView);
         TextView headWordTextView = (TextView)view.findViewById(R.id.card_quiz_headword_textView);
-        TextView definitionTextView = (TextView)view.findViewById(R.id.card_quiz_definition_textView);
+        TextView headWord = (TextView)view.findViewById(R.id.card_quiz_definition_textView);
         CardView cardView = (CardView)view.findViewById(R.id.card_quiz_card_View);
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.card_quiz_memorized_checkBox);
         if (partOfSpeech == null) partOfSpeechTextView.setVisibility(View.GONE);
         partOfSpeechTextView.setText(partOfSpeech);
-        headWordTextView.setText(headWord);
-        definitionTextView.setText(definition);
-        definitionTextView.setVisibility(View.GONE);
+        headWordTextView.setText(this.headWord);
+        headWord.setText(definition);
+        if (byWords) {
+            headWord.setVisibility(View.GONE);
+        } else headWordTextView.setVisibility(View.GONE);
         checkBox.setChecked(isMemorized);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView definitionTextView = (TextView)v.findViewById(R.id.card_quiz_definition_textView);
-                if (definitionTextView.getVisibility() == View.GONE) {
-                    definitionTextView.setVisibility(View.VISIBLE);
-                    definitionTextView.startAnimation(AnimationUtils.loadAnimation(v.getContext(),
-                            android.R.anim.slide_in_left));
+                if (byWords) {
+                    TextView definitionTextView = (TextView) v.findViewById(R.id.card_quiz_definition_textView);
+                    if (definitionTextView.getVisibility() == View.GONE) {
+                        definitionTextView.setVisibility(View.VISIBLE);
+                        definitionTextView.startAnimation(AnimationUtils.loadAnimation(v.getContext(),
+                                android.R.anim.slide_in_left));
+                    }
+                } else {
+                    TextView headWord = (TextView) v.findViewById(R.id.card_quiz_headword_textView);
+                    if (headWord.getVisibility() == View.GONE) {
+                        headWord.setVisibility(View.VISIBLE);
+                        headWord.startAnimation(AnimationUtils.loadAnimation(v.getContext(),
+                                android.R.anim.slide_in_left));
+                    }
                 }
             }
         });
