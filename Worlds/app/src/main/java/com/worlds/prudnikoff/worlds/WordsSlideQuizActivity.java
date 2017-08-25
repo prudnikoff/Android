@@ -8,8 +8,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class WordsSlideQuizActivity extends AppCompatActivity {
     /**
@@ -17,21 +15,17 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
      * and next wizard steps.
      */
     private ViewPager mPager;
-    private ArrayList<WordModel> words;
-    private ArrayList<Integer> randomIndexes;
     private int categoryPosition;
+    private boolean byWords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_slide_quiz_activity);
         categoryPosition = getIntent().getIntExtra("categoryPosition", 0);
-        words = CategoriesData.getCategoryByPosition(categoryPosition).getWords();
-        randomIndexes = new ArrayList<>();
-        for (int i = 0; i < words.size(); i++) {
-            randomIndexes.add(i);
-        }
-        Collections.shuffle(randomIndexes);
+        byWords = getIntent().getBooleanExtra("byWords", true);
+        boolean notMemorized = getIntent().getBooleanExtra("notMemorized", true);
+        CategoriesData.getCategoryByPosition(categoryPosition).prepareToQuiz(notMemorized);
         String categoryName = CategoriesData.getCategoryByPosition(categoryPosition).getNameOfCategory();
         setTitle("Quiz: " + categoryName);
         // Instantiate a ViewPager and a PagerAdapter.
@@ -79,19 +73,13 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem(int position) {
-            int wordPosition = 0;
-            for (int i = 0; i < randomIndexes.size(); i++) {
-                if (randomIndexes.get(i) == position) {
-                    wordPosition = i;
-                }
-            }
+        public Fragment getItem(int wordPosition) {
             return WordsSlideFragment.getWordFragment(categoryPosition, wordPosition);
         }
 
         @Override
         public int getCount() {
-            return words.size();
+            return CategoriesData.getCategoryByPosition(categoryPosition).getWordsToQuiz().size();
         }
     }
 }

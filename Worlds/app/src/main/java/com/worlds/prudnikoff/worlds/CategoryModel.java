@@ -2,17 +2,20 @@ package com.worlds.prudnikoff.worlds;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 class CategoryModel implements Serializable {
 
     private String nameOfCategory;
     private String dateAndTime;
     private ArrayList<WordModel> words;
+    private ArrayList<WordModel> wordsToQuiz;
 
     CategoryModel(String nameOfCategory, String dateAndTime) {
         this.nameOfCategory = nameOfCategory;
         this.dateAndTime = dateAndTime;
         words = new ArrayList<>();
+        wordsToQuiz = new ArrayList<>();
     }
 
     void addWord(WordModel word) {
@@ -43,4 +46,19 @@ class CategoryModel implements Serializable {
         return words.get(position);
     }
 
+    void prepareToQuiz(boolean notMemorized) {
+        wordsToQuiz.clear();
+        for (int i = 0; i < words.size(); i++) {
+            if (!notMemorized) {
+                wordsToQuiz.add(i, words.get(i));
+            } else if (!words.get(i).isMemorized()) {
+                wordsToQuiz.add(words.get(i));
+            }
+        }
+        Collections.shuffle(wordsToQuiz);
+    }
+
+    ArrayList<WordModel> getWordsToQuiz() {
+        return wordsToQuiz;
+    }
 }

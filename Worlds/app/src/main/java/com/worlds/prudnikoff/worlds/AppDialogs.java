@@ -2,6 +2,7 @@ package com.worlds.prudnikoff.worlds;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,26 +160,39 @@ class AppDialogs {
                 Toast.LENGTH_SHORT).show();
     }
 
-    static void chooseQuizOptionDialog(final Context context, int categoryPosition) {
+    static void chooseQuizOptionDialog(final Context context, final int categoryPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final String[] items = {"By words (not memorized)", "By definitions (not memorized)",
                 "By words (all)", "By definitions (all)"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(context, items[item], Toast.LENGTH_SHORT).show();
-                /*
+                Intent intent = new Intent(context, WordsSlideQuizActivity.class);
                 switch (item) {
-                    Toast.makeText(context, items[item], Toast.LENGTH_SHORT).show();
                     case 0: {
-                        AppDialogs.moveToAnotherCategoryDialog(context, words, wordPosition);
+                        intent.putExtra("categoryPosition", categoryPosition);
+                        intent.putExtra("notMemorized", true);
+                        intent.putExtra("byWords", true);
+                        context.startActivity(intent);
                     } break;
                     case 1: {
-                        words.remove(wordPosition);
-                        CategoryWordsActivity.notifyAboutWordsChanging();
+                        intent.putExtra("categoryPosition", categoryPosition);
+                        intent.putExtra("notMemorized", true);
+                        intent.putExtra("byWords", false);
+                        context.startActivity(intent);
+                    } break;
+                    case 2: {
+                        intent.putExtra("categoryPosition", categoryPosition);
+                        intent.putExtra("notMemorized", false);
+                        intent.putExtra("byWords", true);
+                        context.startActivity(intent);
+                    } break;
+                    case 3: {
+                        intent.putExtra("categoryPosition", categoryPosition);
+                        intent.putExtra("notMemorized", false);
+                        intent.putExtra("byWords", false);
+                        context.startActivity(intent);
                     }
-
                 }
-                */
             }
         });
         AlertDialog alert = builder.create();
