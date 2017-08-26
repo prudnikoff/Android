@@ -164,6 +164,7 @@ class AppDialogs {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final String[] items = {"By words (not memorized)", "By definitions (not memorized)",
                 "By words (all)", "By definitions (all)"};
+        builder.setTitle("Choose a quiz type: ");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Intent intent = new Intent(context, WordsSlideQuizActivity.class);

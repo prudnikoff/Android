@@ -49,7 +49,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new InternetConnection(CategoryWordsActivity.this, query    ).execute();
+                new InternetConnection(CategoryWordsActivity.this, query).execute();
                 searchView.clearFocus();
                 return true;
             }

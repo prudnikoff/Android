@@ -3,9 +3,13 @@ package com.worlds.prudnikoff.worlds;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,6 +23,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -143,7 +150,73 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+
+        final List<String> suggestions = new ArrayList<>();
+        suggestions.add("Hello");
+        suggestions.add("Metro");
+        suggestions.add("Minsk");
+        suggestions.add("Mama");
+        suggestions.add("Hell");
+
+        final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1,
+                null,
+                new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
+                new int[]{android.R.id.text1},
+                0);
+
+        searchView.setSuggestionsAdapter(suggestionAdapter);
+
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                searchView.setQuery(suggestions.get(position), true);
+                searchView.clearFocus();
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; //false if you want implicit call to searchable activity
+                // or true if you want to handle submit yourself
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Hit the network and take all the suggestions and store them in List 'suggestions'
+
+                String[] columns = { BaseColumns._ID,
+                        SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+                };
+                MatrixCursor cursor = new MatrixCursor(columns);
+
+                for (int i = 0; i < suggestions.size(); i++) {
+                    String suggestion = suggestions.get(i);
+                    if (suggestion.contains(newText)) {
+                        String[] tmp = {Integer.toString(i), suggestions.get(i), suggestions.get(i)};
+                        cursor.addRow(tmp);
+                    }
+                }
+                suggestionAdapter.swapCursor(cursor);
+                return true;
+            }
+        });
         return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(MainActivity.this, query, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
