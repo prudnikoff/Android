@@ -32,7 +32,7 @@ class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryH
         CategoryModel category = categories.get(position);
         categoryHolder.nameOfCategory.setText(category.getNameOfCategory());
         categoryHolder.dateAndTime.setText(category.getDateAndTime());
-        categoryHolder.numOfWords.setText(category.getNumOfWords());
+        categoryHolder.numOfWords.setText(String.valueOf(category.getNumOfWords()));
     }
 
     @Override

@@ -23,9 +23,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -134,32 +133,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        // setting up an application search
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.mainSearch_item).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchQuery = query;
-                new InternetConnection(MainActivity.this, searchQuery).execute();
-                searchView.clearFocus();
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
 
-        final List<String> suggestions = new ArrayList<>();
-        suggestions.add("Hello");
-        suggestions.add("Metro");
-        suggestions.add("Minsk");
-        suggestions.add("Mama");
-        suggestions.add("Hell");
-
+        final Suggestions querySuggestions = new Suggestions(MainActivity.this);
         final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1,
+                R.layout.search_suggestion,
                 null,
                 new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
                 new int[]{android.R.id.text1},
@@ -168,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setSuggestionsAdapter(suggestionAdapter);
 
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+
             @Override
             public boolean onSuggestionSelect(int position) {
                 return false;
@@ -175,35 +157,36 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onSuggestionClick(int position) {
-                searchView.setQuery(suggestions.get(position), true);
-                searchView.clearFocus();
+                searchQuery = querySuggestions.getSuggestions().get(position);
+                searchView.setQuery(searchQuery, true);
                 return true;
             }
         });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false; //false if you want implicit call to searchable activity
-                // or true if you want to handle submit yourself
+                searchQuery = query;
+                new InternetConnection(MainActivity.this, searchQuery).execute();
+                searchView.clearFocus();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Hit the network and take all the suggestions and store them in List 'suggestions'
-
+                ArrayList<String> suggestions = querySuggestions.getSuggestions(newText);
                 String[] columns = { BaseColumns._ID,
                         SearchManager.SUGGEST_COLUMN_TEXT_1,
                         SearchManager.SUGGEST_COLUMN_INTENT_DATA,
                 };
+
                 MatrixCursor cursor = new MatrixCursor(columns);
 
                 for (int i = 0; i < suggestions.size(); i++) {
-                    String suggestion = suggestions.get(i);
-                    if (suggestion.contains(newText)) {
-                        String[] tmp = {Integer.toString(i), suggestions.get(i), suggestions.get(i)};
-                        cursor.addRow(tmp);
-                    }
+                    String[] tmp = {Integer.toString(i), suggestions.get(i), suggestions.get(i)};
+                    cursor.addRow(tmp);
                 }
+
                 suggestionAdapter.swapCursor(cursor);
                 return true;
             }

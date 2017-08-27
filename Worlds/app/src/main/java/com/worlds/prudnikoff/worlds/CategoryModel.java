@@ -26,8 +26,8 @@ class CategoryModel implements Serializable {
         this.nameOfCategory = nameOfCategory;
     }
 
-    String getNumOfWords() {
-        return String.valueOf(words.size());
+    int getNumOfWords() {
+        return words.size();
     }
 
     String getNameOfCategory() {

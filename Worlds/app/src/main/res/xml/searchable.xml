@@ -6,5 +6,6 @@
     android:searchMode="queryRewriteFromText"
     android:searchSettingsDescription="string resource"
     android:searchSuggestThreshold="2"
+    android:textColorHint="@android:color/white"
     android:searchSuggestSelection = " ?"
     android:searchSuggestIntentAction="android.intent.action.SEARCH"/>
