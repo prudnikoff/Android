@@ -25,7 +25,7 @@ class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinition
 
     @Override
     public DefinitionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.definition_view,
+        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.internet_word_view,
                 parent, false);
         return new DefinitionHolder(viewItem);
     }

@@ -1,20 +1,18 @@
 package com.worlds.prudnikoff.worlds;
 
 import android.content.Context;
-
+import android.util.Log;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 class Suggestions {
 
     private String query;
     private ArrayList<String> suggestions;
     private Context context;
+    private final int SUGGESTIONS_MAX_SIZE = 10;
 
     Suggestions(Context context) {
         this.context = context;
@@ -33,7 +31,7 @@ class Suggestions {
                 }
             }
         }
-        if (query.length() > 1 && suggestions.size() < 5) allWordsSearch();
+        if (query.length() > 1 && suggestions.size() < SUGGESTIONS_MAX_SIZE) allWordsSearch();
         return suggestions;
     }
 
@@ -41,21 +39,22 @@ class Suggestions {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open("words.txt")));
+                    new InputStreamReader(context.getAssets().open(query.substring(0, 1)
+                            .toUpperCase() + " Words.txt")));
             String line;
-            while ((line = reader.readLine()) != null && suggestions.size() < 5) {
+            while ((line = reader.readLine()) != null && suggestions.size() < SUGGESTIONS_MAX_SIZE) {
                 if (line.toLowerCase().startsWith(query.toLowerCase())) {
                     suggestions.add(line);
                 }
             }
         } catch (IOException e) {
-            //log the exception
+            Log.e("IOException", "Something wrong with the words database");
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    //log the exception
+                    Log.e("IOException", "Something wrong with the words database");
                 }
             }
         }
