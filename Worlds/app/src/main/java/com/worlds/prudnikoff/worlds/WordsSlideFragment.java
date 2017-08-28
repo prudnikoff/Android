@@ -56,8 +56,7 @@ public class WordsSlideFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(
-                R.layout.card_quiz, container, false);
+        final View view = inflater.inflate(R.layout.card_quiz, container, false);
         TextView partOfSpeechTextView = (TextView)view.findViewById(R.id.card_quiz_partOfSpeech_textView);
         TextView headWordTextView = (TextView)view.findViewById(R.id.card_quiz_headword_textView);
         TextView headWord = (TextView)view.findViewById(R.id.card_quiz_definition_textView);

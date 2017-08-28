@@ -28,7 +28,7 @@ class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
     InternetConnection(Context context, String searchQuery) {
         this.context = context;
         this.searchQuery = searchQuery.replaceAll(" ", ",");
-        progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context, R.style.AppCompatAlertDialogStyle);
     }
 
     @Override

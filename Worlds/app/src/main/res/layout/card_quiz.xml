@@ -12,7 +12,7 @@
         android:id="@+id/card_quiz_card_View"
         android:focusable="true"
         android:clickable="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="70dp"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="#ffffff"
         card_view:cardUseCompatPadding="true"
