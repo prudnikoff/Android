@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/enter_a_category_name"
-        android:id="@+id/category_name_textView"
+        android:id="@+id/dialog_category_name_textView"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"/>
 
     <EditText
-        android:id="@+id/category_name_editText"
+        android:id="@+id/dialog_category_name_editText"
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

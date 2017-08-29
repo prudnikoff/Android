@@ -35,7 +35,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
     @Override
     public void onBindViewHolder(WordHolder wordHolder, int position) {
         WordModel word = words.get(position);
-        if (word.getPartOfSpeech() != null) {
+        if (word.getPartOfSpeech() != null && word.getPartOfSpeech().length() > 0) {
             wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         } else wordHolder.partOfSpeechTextView.setText("");
         if (word.getDefinition() != null) {
@@ -100,35 +100,5 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
                 words.get(getAdapterPosition()).setMemorized(isChecked);
             }
         }
-    }
-
-    void filter(String query) {
-        words.clear();
-        if (query.isEmpty()) {
-            words.addAll(wordsCopy);
-        } else {
-            query = query.toLowerCase();
-            boolean isHeadWordFound = false;
-            for (WordModel word: wordsCopy) {
-                if (word.getHeadWord().toLowerCase().contains(query)) {
-                    words.add(0, word);
-                    isHeadWordFound = true;
-                }
-            }
-            if (!isHeadWordFound) {
-                for (WordModel word: wordsCopy) {
-                    if (word.getHeadWord().toLowerCase().contains(query) ||
-                            word.getDefinition().toLowerCase().contains(query)) {
-                        words.add(0, word);
-                    }
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-    void immediateWordsReload() {
-        words.clear();
-        words.addAll(wordsCopy);
     }
 }

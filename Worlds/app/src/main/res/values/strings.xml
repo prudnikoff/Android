@@ -18,4 +18,7 @@
     <string name="enter_a_category_name">Enter a category name:</string>
     <string name="wordsCards">wordsCards</string>
     <string name="memorized">memorized</string>
+    <string name="enter_a_headword">Headword:</string>
+    <string name="part_of_speech">Part of speech:</string>
+    <string name="definition">Definition:</string>
 </resources>

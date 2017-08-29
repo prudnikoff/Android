@@ -18,16 +18,58 @@ class AppDialogs {
     static void inputNameOfCategoryDialog(final Context context) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
+        View promptView = layoutInflater.inflate(R.layout.input_category_name_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
-        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
+        final EditText editText = (EditText) promptView.findViewById(R.id.dialog_category_name_editText);
 
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         CategoriesData.createNewCategory(context, editText.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.show();
+    }
+
+    static void createNewWordDialog(final Context context, final int categoryPosition) {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.create_new_word_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        final EditText headwordEditText = (EditText) promptView.findViewById(R.id.dialog_headword_editText);
+        final EditText partOfSpeechEditText = (EditText) promptView.findViewById(R.id.dialog_partOfSpeech_textEdit);
+        final EditText definitionEditText = (EditText) promptView.findViewById(R.id.dialog_definition_textEdit);
+        final CategoryModel category = CategoriesData.getCategoryByPosition(categoryPosition);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String partOfSpeech = partOfSpeechEditText.getText().toString();
+                        String headword = headwordEditText.getText().toString();
+                        String definition = definitionEditText.getText().toString();
+                        if (headword.length() == 0 || definition.length() == 0) {
+                            Toast.makeText(context, "Sorry, fields can't be empty",
+                                    Toast.LENGTH_SHORT).show();
+                            createNewWordDialog(context, categoryPosition);
+                        } else {
+                            category.addWord(new WordModel(partOfSpeech, headword, definition, null));
+                            CategoryWordsActivity.notifyAboutWordsChanging();
+                            MainActivity.notifyAboutCategoriesChanging();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -67,10 +109,10 @@ class AppDialogs {
     private static void renameCategoryDialog(Context context, final int position) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.input_category_name, null);
+        View promptView = layoutInflater.inflate(R.layout.input_category_name_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
-        final EditText editText = (EditText) promptView.findViewById(R.id.category_name_editText);
+        final EditText editText = (EditText) promptView.findViewById(R.id.dialog_category_name_editText);
 
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)

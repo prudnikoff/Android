@@ -96,11 +96,21 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton mainFab = (FloatingActionButton) findViewById(R.id.main_fab);
+        mainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppDialogs.inputNameOfCategoryDialog(MainActivity.this);
+            }
+        });
+
+        categoriesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0)
+                    mainFab.hide();
+                else if (dy < 0)
+                    mainFab.show();
             }
         });
 
