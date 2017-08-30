@@ -297,20 +297,23 @@ class AppDialogs {
         alert.show();
     }
 
-    static String fileNameDialog(final Context context) {
+    static void backUpRestoreDialog(final Context context, final int option) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.file_name, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         final EditText editText = (EditText) promptView.findViewById(R.id.dialog_file_name_editText);
-        editText.setText("WorldsAppBackUp");
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    String name;
                     public void onClick(DialogInterface dialog, int id) {
-                        name = editText.getText().toString();
+                        String fileName = editText.getText().toString();
+                        if (option == 0) {
+                            CategoriesData.backUpData(context, fileName);
+                        } else {
+                            CategoriesData.restoreData(context, fileName);
+                        }
                     }
                 })
                 .setNegativeButton("Cancel",

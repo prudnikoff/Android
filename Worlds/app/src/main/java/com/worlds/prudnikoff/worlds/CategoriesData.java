@@ -93,7 +93,7 @@ class CategoriesData implements Serializable {
         }
     }
 
-    static void backUpData(Context context) {
+    static void backUpData(Context context, String fileName) {
         FileOutputStream fos = null;
         Gson gson = new Gson();
         try {
@@ -101,7 +101,7 @@ class CategoriesData implements Serializable {
             if (!root.exists()) {
                 root.mkdirs();
             }
-            File backUp = new File(root, "WorldsAppBackUp.txt");
+            File backUp = new File(root, fileName + ".txt");
             fos = new FileOutputStream(backUp);
             byte[] buffer = gson.toJson(categories).getBytes();
             fos.write(buffer, 0, buffer.length);
@@ -127,7 +127,7 @@ class CategoriesData implements Serializable {
         FileInputStream fis = null;
         Gson gson = new Gson();
         try {
-            File backUp = new File(Environment.getExternalStorageDirectory().getPath(), "Worlds/" + fileName);
+            File backUp = new File(Environment.getExternalStorageDirectory().getPath(), "Worlds/" + fileName + ".txt");
             fis = new FileInputStream(backUp);
             int length = (int)backUp.length();
             byte[] buffer = new byte[length];

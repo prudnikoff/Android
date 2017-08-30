@@ -22,5 +22,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:text="@string/back_up_default_name"
         android:layout_height="wrap_content"/>
 </LinearLayout>

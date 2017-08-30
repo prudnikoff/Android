@@ -225,8 +225,8 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_about: goInfoActivity(); break;
             case R.id.nav_share: startShareIntent(); break;
-            case R.id.back_up_data: CategoriesData.backUpData(MainActivity.this); break;
-            case R.id.restore_data: CategoriesData.restoreData(MainActivity.this, "WorldsAppBackUp.txt");
+            case R.id.back_up_data: AppDialogs.backUpRestoreDialog(MainActivity.this, 0); break;
+            case R.id.restore_data: AppDialogs.backUpRestoreDialog(MainActivity.this, 1);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
