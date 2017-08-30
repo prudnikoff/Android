@@ -15,14 +15,13 @@ import java.util.ArrayList;
 
 class AppDialogs {
 
-    static void inputNameOfCategoryDialog(final Context context) {
+    static void createCategoryDialog(final Context context) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.input_category_name_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         final EditText editText = (EditText) promptView.findViewById(R.id.dialog_category_name_editText);
-
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -200,6 +199,7 @@ class AppDialogs {
                 public void onClick(DialogInterface dialog, int item) {
                     CategoryModel category = CategoriesData.getCategory(item);
                     category.addWord(word);
+                    CategoryWordsActivity.notifyAboutWordsChanging();
                     Toast.makeText(context, "The word has been successfully added",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -294,6 +294,36 @@ class AppDialogs {
             }
         });
         AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    static String fileNameDialog(final Context context) {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.file_name, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        final EditText editText = (EditText) promptView.findViewById(R.id.dialog_file_name_editText);
+        editText.setText("WorldsAppBackUp");
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    String name;
+                    public void onClick(DialogInterface dialog, int id) {
+                        name = editText.getText().toString();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.show();
     }
 }
