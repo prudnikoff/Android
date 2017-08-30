@@ -23,7 +23,7 @@ class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
     private String searchQuery;
     private static final String DIRECT_URL_START = "https://api.pearson.com/v2/dictionaries" +
             "/ldoce5/entries?headword=";
-    private static final String DIRECT_URL_END = "&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
+    private static final String DIRECT_URL_END = "&limit=20&apikey=7drciBe92KwDL2ukNdkq0YpbWJmUhPhg";
 
     InternetConnection(Context context, String searchQuery) {
         this.context = context;

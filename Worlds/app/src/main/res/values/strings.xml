@@ -10,7 +10,7 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="app_info">App: Worlds 1.9\nDeveloper: Prudnikoff\nThe worlds of English in your phone!</string>
+    <string name="app_info">App: Worlds 2.0\nDeveloper: Prudnikoff\nThe worlds of English in your phone!</string>
     <string name="search_hint">Search</string>
     <string name="american">American</string>
     <string name="british">British</string>
@@ -18,7 +18,8 @@
     <string name="enter_a_category_name">Enter a category name:</string>
     <string name="wordsCards">wordsCards</string>
     <string name="memorized">memorized</string>
-    <string name="enter_a_headword">Headword:</string>
-    <string name="part_of_speech">Part of speech:</string>
-    <string name="definition">Definition:</string>
+    <string name="dialog_example">example</string>
+    <string name="dialog_headword">headword</string>
+    <string name="dialog_part_of_speech">part of speech</string>
+    <string name="dialog_definition">definition</string>
 </resources>

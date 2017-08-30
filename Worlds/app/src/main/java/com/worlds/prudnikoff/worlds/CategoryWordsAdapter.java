@@ -35,7 +35,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
     @Override
     public void onBindViewHolder(WordHolder wordHolder, int position) {
         WordModel word = words.get(position);
-        if (word.getPartOfSpeech() != null && word.getPartOfSpeech().length() > 0) {
+        if (word.getPartOfSpeech() != null) {
             wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         } else wordHolder.partOfSpeechTextView.setText("");
         if (word.getDefinition() != null) {

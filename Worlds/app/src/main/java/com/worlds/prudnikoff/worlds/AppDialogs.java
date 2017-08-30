@@ -44,7 +44,7 @@ class AppDialogs {
         alert.show();
     }
 
-    static void createNewWordDialog(final Context context, final int categoryPosition) {
+    static void createNewWordDialog(final Context context, final CategoryModel category) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.create_new_word_dialog, null);
@@ -53,20 +53,72 @@ class AppDialogs {
         final EditText headwordEditText = (EditText) promptView.findViewById(R.id.dialog_headword_editText);
         final EditText partOfSpeechEditText = (EditText) promptView.findViewById(R.id.dialog_partOfSpeech_textEdit);
         final EditText definitionEditText = (EditText) promptView.findViewById(R.id.dialog_definition_textEdit);
-        final CategoryModel category = CategoriesData.getCategoryByPosition(categoryPosition);
+        final EditText exampleEditText = (EditText) promptView.findViewById(R.id.dialog_example_textEdit);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String partOfSpeech = partOfSpeechEditText.getText().toString();
+                        if (partOfSpeech.length() == 0) partOfSpeech = null;
+                        String example = exampleEditText.getText().toString();
+                        if (example.length() == 0) example = null;
                         String headword = headwordEditText.getText().toString();
                         String definition = definitionEditText.getText().toString();
                         if (headword.length() == 0 || definition.length() == 0) {
                             Toast.makeText(context, "Sorry, fields can't be empty",
                                     Toast.LENGTH_SHORT).show();
-                            createNewWordDialog(context, categoryPosition);
+                            createNewWordDialog(context, category);
                         } else {
-                            category.addWord(new WordModel(partOfSpeech, headword, definition, null));
+                            category.addWord(new WordModel(partOfSpeech, headword, definition, example));
+                            CategoryWordsActivity.notifyAboutWordsChanging();
+                            MainActivity.notifyAboutCategoriesChanging();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.show();
+    }
+
+    static void editWordDialog(final Context context, final WordModel word) {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.create_new_word_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        final EditText headwordEditText = (EditText) promptView.findViewById(R.id.dialog_headword_editText);
+        final EditText partOfSpeechEditText = (EditText) promptView.findViewById(R.id.dialog_partOfSpeech_textEdit);
+        final EditText definitionEditText = (EditText) promptView.findViewById(R.id.dialog_definition_textEdit);
+        final EditText exampleEditText = (EditText) promptView.findViewById(R.id.dialog_example_textEdit);
+        headwordEditText.setText(word.getHeadWord());
+        partOfSpeechEditText.setText(word.getPartOfSpeech());
+        definitionEditText.setText(word.getDefinition());
+        exampleEditText.setText(word.getExample());
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String partOfSpeech = partOfSpeechEditText.getText().toString();
+                        if (partOfSpeech.length() == 0) partOfSpeech = null;
+                        String example = exampleEditText.getText().toString();
+                        if (example.length() == 0) example = null;
+                        String headword = headwordEditText.getText().toString();
+                        String definition = definitionEditText.getText().toString();
+                        if (headword.length() == 0 || definition.length() == 0) {
+                            Toast.makeText(context, "Sorry, fields can't be empty",
+                                    Toast.LENGTH_SHORT).show();
+                            editWordDialog(context, word);
+                        } else {
+                            word.setData(partOfSpeech, headword, definition, example);
                             CategoryWordsActivity.notifyAboutWordsChanging();
                             MainActivity.notifyAboutCategoriesChanging();
                         }
@@ -161,7 +213,7 @@ class AppDialogs {
     static void showWordOptionsDialog(final Context context, final ArrayList<WordModel> words,
                                       final int wordPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String[] items = {"Move to", "Delete"};
+        String[] items = {"Move to", "Edit", "Delete"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
@@ -169,6 +221,9 @@ class AppDialogs {
                        AppDialogs.moveToAnotherCategoryDialog(context, words, wordPosition);
                     } break;
                     case 1: {
+                        editWordDialog(context, words.get(wordPosition));
+                    } break;
+                    case 2: {
                         words.remove(wordPosition);
                         CategoryWordsActivity.notifyAboutWordsChanging();
                     }

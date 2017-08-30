@@ -5,63 +5,48 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/enter_a_headword"
-        android:id="@+id/dialog_headword_textView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"/>
-
     <EditText
         android:id="@+id/dialog_headword_editText"
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_height="wrap_content"
-        android:hint=""/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/part_of_speech"
-        android:id="@+id/dialog_partOfSpeech_textView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"/>
+        android:hint="@string/dialog_headword"/>
 
     <EditText
         android:id="@+id/dialog_partOfSpeech_textEdit"
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_height="wrap_content"
-        android:hint=""/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/definition"
-        android:id="@+id/dialog_definition_textView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"/>
+        android:hint="@string/dialog_part_of_speech"/>
 
     <EditText
         android:id="@+id/dialog_definition_textEdit"
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_height="wrap_content"
-        android:hint=""/>
+        android:hint="@string/dialog_definition"/>
+
+    <EditText
+        android:id="@+id/dialog_example_textEdit"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/dialog_example"/>
+
 </LinearLayout>

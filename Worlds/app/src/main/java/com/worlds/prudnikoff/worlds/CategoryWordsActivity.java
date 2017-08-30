@@ -43,7 +43,8 @@ public class CategoryWordsActivity extends AppCompatActivity {
         categoryFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppDialogs.createNewWordDialog(v.getContext(), categoryPosition);
+                AppDialogs.createNewWordDialog(v.getContext(),
+                        CategoriesData.getCategoryByPosition(categoryPosition));
             }
         });
         wordsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
