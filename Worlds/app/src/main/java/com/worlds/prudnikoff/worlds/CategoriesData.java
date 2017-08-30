@@ -10,32 +10,50 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class CategoriesData implements Serializable {
+class CategoriesData implements Serializable {
 
     private static final String nameToSave = "categories";
     private static ArrayList<CategoryModel> categories = new ArrayList<>();
 
-    public static int getNumOfCategories() {
+    static int getNumOfCategories() {
         return categories.size();
     }
 
-    public static ArrayList<CategoryModel> getCategories() {
+    static ArrayList<CategoryModel> getCategories() {
         return categories;
     }
 
-    public static void setCategories(ArrayList<CategoryModel> mCategories) {
+    static void setCategories(ArrayList<CategoryModel> mCategories) {
         categories = mCategories;
     }
 
-    public static CategoryModel getCategoryByPosition(int position) {
+    static CategoryModel getCategory(int position) {
         return categories.get(position);
     }
 
-    public static void deleteCategory(int position) {
+    static CategoryModel getCategory(String name) {
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getNameOfCategory().equals(name)) {
+                return categories.get(i);
+            }
+        }
+        return null;
+    }
+
+    static int getCategoryPosition(String name) {
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getNameOfCategory().equals(name)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    static void deleteCategory(int position) {
         categories.remove(position);
     }
 
-    public static void createNewCategory(Context context, String nameOfCategory) {
+    static void createNewCategory(Context context, String nameOfCategory) {
         String name = nameOfCategory.replaceAll(" ", "");
         if (name.length() > 0) {
             String currentDateAndTime = java.text.DateFormat.getDateTimeInstance()
@@ -46,7 +64,7 @@ public class CategoriesData implements Serializable {
         } else Toast.makeText(context, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
     }
 
-    public static String[] getStringListOfCategories() {
+    static String[] getStringListOfCategories() {
         String[] listOfCategories = new String[categories.size()];
         for (int i = 0; i < categories.size(); i++) {
             listOfCategories[i] = categories.get(i).getNameOfCategory();
@@ -54,7 +72,7 @@ public class CategoriesData implements Serializable {
         return listOfCategories;
     }
 
-    public static void saveCurrentState(Context context) {
+    static void saveCurrentState(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -63,7 +81,7 @@ public class CategoriesData implements Serializable {
         editor.apply();
     }
 
-    public static void restoreState(Context context) {
+    static void restoreState(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
         Gson gson = new Gson();

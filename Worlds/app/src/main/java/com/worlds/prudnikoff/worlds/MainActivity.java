@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity
                 categoriesRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override public void onItemClick(View view, int position) {
-                CategoryModel category = CategoriesData.getCategoryByPosition(position);
-                goCategoryWordsActivity(category.getNameOfCategory(), position);
+                CategoryModel category = CategoriesData.getCategory(position);
+                goCategoryWordsActivity(category.getNameOfCategory(), position, false, null);
             }
 
             @Override public void onLongItemClick(View view, int position) {
@@ -177,7 +177,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
-                new InternetConnection(MainActivity.this, searchQuery).execute();
+                if (searchQuery.endsWith(")")) {
+                    String headword = query.substring(0, query.indexOf("(") - 1);
+                    String categoryName = query.substring(query.indexOf("(") + 1, query.length() - 1);
+                    goCategoryWordsActivity(categoryName, CategoriesData
+                            .getCategoryPosition(categoryName), true, headword);
+                    searchView.setQuery("", false);
+                } else new InternetConnection(MainActivity.this, searchQuery).execute();
                 searchView.clearFocus();
                 return true;
             }
@@ -236,9 +242,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void goCategoryWordsActivity(String nameOfCategory, int position) {
+    private void goCategoryWordsActivity(String nameOfCategory, int position,
+                                         boolean ifCategoryWord, String headword) {
         Intent intent = new Intent(this, CategoryWordsActivity.class);
         intent.putExtra("categoryPosition", position);
+        intent.putExtra("ifCategoryWord", ifCategoryWord);
+        intent.putExtra("headword", headword);
         intent.putExtra("nameOfCategory", nameOfCategory);
         startActivity(intent);
     }

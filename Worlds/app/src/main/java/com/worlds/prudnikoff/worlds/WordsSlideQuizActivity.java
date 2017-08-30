@@ -32,15 +32,15 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
         categoryPosition = getIntent().getIntExtra("categoryPosition", 0);
         byWords = getIntent().getBooleanExtra("byWords", true);
         boolean notMemorized = getIntent().getBooleanExtra("notMemorized", true);
-        CategoriesData.getCategoryByPosition(categoryPosition).prepareToQuiz(notMemorized);
-        numOfQuizWords = CategoriesData.getCategoryByPosition(categoryPosition).getWordsToQuiz().size();
+        CategoriesData.getCategory(categoryPosition).prepareToQuiz(notMemorized);
+        numOfQuizWords = CategoriesData.getCategory(categoryPosition).getWordsToQuiz().size();
         if (numOfQuizWords == 0) {
             Toast.makeText(WordsSlideQuizActivity.this, "Sorry, there are no words to start a quiz",
                     Toast.LENGTH_SHORT).show();
             progressTextView.setText("0/0");
         }
         progressBar.setMax(numOfQuizWords);
-        String categoryName = CategoriesData.getCategoryByPosition(categoryPosition).getNameOfCategory();
+        String categoryName = CategoriesData.getCategory(categoryPosition).getNameOfCategory();
         setTitle("Quiz: " + categoryName);
         // Instantiate a ViewPager and a PagerAdapter.
         ViewPager mPager = (ViewPager) findViewById(R.id.viewPager);
@@ -98,7 +98,7 @@ public class WordsSlideQuizActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return CategoriesData.getCategoryByPosition(categoryPosition).getWordsToQuiz().size();
+            return CategoriesData.getCategory(categoryPosition).getWordsToQuiz().size();
         }
     }
 }

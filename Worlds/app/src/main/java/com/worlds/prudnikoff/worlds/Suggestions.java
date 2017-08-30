@@ -23,11 +23,11 @@ class Suggestions {
         this.query = query;
         suggestions.clear();
         for (int i = 0; i < CategoriesData.getNumOfCategories(); i++) {
-            CategoryModel category = CategoriesData.getCategoryByPosition(i);
+            CategoryModel category = CategoriesData.getCategory(i);
             for (int j = 0; j < category.getNumOfWords(); j++) {
-                String wordStr = category.getWordByPosition(j).getHeadWord();
+                String wordStr = category.getWord(j).getHeadWord();
                 if (wordStr.toLowerCase().startsWith(query.toLowerCase())) {
-                    suggestions.add(wordStr);
+                    suggestions.add(wordStr + " (" + category.getNameOfCategory() + ")");
                 }
             }
         }

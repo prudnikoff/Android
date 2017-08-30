@@ -26,7 +26,7 @@ public class WordsSlideFragment extends Fragment {
                                                      boolean byWords) {
         WordsSlideFragment fragment = new WordsSlideFragment();
         Bundle args = new Bundle();
-        WordModel word = CategoriesData.getCategoryByPosition(categoryPosition)
+        WordModel word = CategoriesData.getCategory(categoryPosition)
                 .getWordsToQuiz().get(wordPosition);
         args.putString("partOfSpeech", word.getPartOfSpeech());
         args.putString("headWord", word.getHeadWord());
@@ -93,7 +93,7 @@ public class WordsSlideFragment extends Fragment {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                CategoriesData.getCategoryByPosition(categoryPosition).getWordsToQuiz()
+                CategoriesData.getCategory(categoryPosition).getWordsToQuiz()
                         .get(wordPosition).setMemorized(isChecked);
                 CategoryWordsActivity.notifyAboutWordsChanging();
             }

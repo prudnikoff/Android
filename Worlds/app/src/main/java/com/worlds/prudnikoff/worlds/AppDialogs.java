@@ -170,7 +170,7 @@ class AppDialogs {
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        CategoriesData.getCategoryByPosition(position)
+                        CategoriesData.getCategory(position)
                                 .setNameOfCategory(editText.getText().toString());
                         MainActivity.notifyAboutCategoriesChanging();
                     }
@@ -198,7 +198,7 @@ class AppDialogs {
             builder.setTitle("Choose a category: ");
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    CategoryModel category = CategoriesData.getCategoryByPosition(item);
+                    CategoryModel category = CategoriesData.getCategory(item);
                     category.addWord(word);
                     Toast.makeText(context, "The word has been successfully added",
                             Toast.LENGTH_SHORT).show();
@@ -246,7 +246,7 @@ class AppDialogs {
 
                     WordModel word = words.get(wordPosition);
                     words.remove(wordPosition);
-                    CategoriesData.getCategoryByPosition(item).addWord(word);
+                    CategoriesData.getCategory(item).addWord(word);
                     CategoryWordsActivity.notifyAboutWordsChanging();
 
                 }

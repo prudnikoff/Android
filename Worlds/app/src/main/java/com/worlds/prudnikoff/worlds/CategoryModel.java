@@ -42,8 +42,17 @@ class CategoryModel implements Serializable {
         return words;
     }
 
-    WordModel getWordByPosition(int position) {
+    WordModel getWord(int position) {
         return words.get(position);
+    }
+
+    int getWordPosition(String headword) {
+        for (int i = 0; i < this.getNumOfWords(); i++) {
+            if (this.getWord(i).getHeadWord().equals(headword)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     void prepareToQuiz(boolean notMemorized) {

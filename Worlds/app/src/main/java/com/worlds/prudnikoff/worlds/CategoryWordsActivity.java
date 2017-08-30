@@ -2,6 +2,7 @@ package com.worlds.prudnikoff.worlds;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.MatrixCursor;
 import android.provider.BaseColumns;
 import android.support.design.widget.FloatingActionButton;
@@ -34,17 +35,24 @@ public class CategoryWordsActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         wordsRecyclerView.setLayoutManager(layoutManager);
         final int categoryPosition = getIntent().getExtras().getInt("categoryPosition");
+        int scrollPosition = 0;
+        if (getIntent().getExtras().getBoolean("ifCategoryWord")) {
+            scrollPosition = CategoriesData.getCategory(categoryPosition)
+                    .getWordPosition(getIntent().getExtras().getString("headword"));
+        };
+
         numOfCategory = categoryPosition;
-        ArrayList<WordModel> words = CategoriesData.getCategoryByPosition(categoryPosition)
+        ArrayList<WordModel> words = CategoriesData.getCategory(categoryPosition)
                 .getWords();
         setTitle(getIntent().getExtras().getString("nameOfCategory"));
         adapter = new CategoryWordsAdapter(words);
         wordsRecyclerView.setAdapter(adapter);
+        wordsRecyclerView.scrollToPosition(scrollPosition);
         categoryFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppDialogs.createNewWordDialog(v.getContext(),
-                        CategoriesData.getCategoryByPosition(categoryPosition));
+                        CategoriesData.getCategory(categoryPosition));
             }
         });
         wordsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -98,7 +106,17 @@ public class CategoryWordsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
-                new InternetConnection(CategoryWordsActivity.this, searchQuery).execute();
+                if (searchQuery.endsWith(")")) {
+                    String headword = query.substring(0, query.indexOf("(") - 1);
+                    String categoryName = query.substring(query.indexOf("(") + 1, query.length() - 1);
+                    Intent intent = new Intent(CategoryWordsActivity.this, CategoryWordsActivity.class);
+                    intent.putExtra("categoryPosition", CategoriesData.getCategoryPosition(categoryName));
+                    intent.putExtra("ifCategoryWord", true);
+                    intent.putExtra("headword", headword);
+                    intent.putExtra("nameOfCategory", categoryName);
+                    startActivity(intent);
+                    searchView.setQuery("", false);
+                } else new InternetConnection(CategoryWordsActivity.this, searchQuery).execute();
                 searchView.clearFocus();
                 return true;
             }
