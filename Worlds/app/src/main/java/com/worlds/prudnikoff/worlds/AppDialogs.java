@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 class AppDialogs {
@@ -192,7 +193,7 @@ class AppDialogs {
 
         final String[] namesOfCategories = CategoriesData.getStringListOfCategories();
 
-        if (namesOfCategories.length > 0) {
+            if (namesOfCategories.length > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Choose a category: ");
             builder.setItems(namesOfCategories, new DialogInterface.OnClickListener() {

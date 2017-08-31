@@ -160,6 +160,6 @@ public class CategoryWordsActivity extends AppCompatActivity {
     }
 
     public static void notifyAboutWordsChanging() {
-        adapter.notifyDataSetChanged();
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
 }

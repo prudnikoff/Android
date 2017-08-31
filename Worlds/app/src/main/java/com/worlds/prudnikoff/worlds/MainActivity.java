@@ -246,9 +246,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startShareIntent() {
+        final String appPackageName = getPackageName();
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Worlds App - the worlds of English in your phone!\nDownload it in Google Play: google.play.etc";
+        String shareBody = "Worlds is a really amazing English-English dictionary and thesaurus " +
+                "for learners of English. Definitions of words with pronunciations, examples and " +
+                "effective quizzes for learning are waiting for you. Download it in Google Play: https://play.google." +
+                "com/store/apps/details?id=" + appPackageName;
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
