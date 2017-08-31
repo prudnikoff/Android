@@ -25,9 +25,9 @@
                 android:actionProviderClass=
                     "android.widget.ShareActionProvider"/>
             <item
-                android:id="@+id/nav_report"
+                android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="@string/report" />
+                android:title="@string/feedback" />
         </menu>
     </item>
 

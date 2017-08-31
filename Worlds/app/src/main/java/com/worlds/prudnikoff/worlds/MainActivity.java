@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.MatrixCursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -226,7 +227,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_about: goInfoActivity(); break;
             case R.id.nav_share: startShareIntent(); break;
             case R.id.back_up_data: AppDialogs.backUpRestoreDialog(MainActivity.this, 0); break;
-            case R.id.restore_data: AppDialogs.backUpRestoreDialog(MainActivity.this, 1);
+            case R.id.restore_data: AppDialogs.backUpRestoreDialog(MainActivity.this, 1); break;
+            case R.id.nav_feedback: openInGooglePlay();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -250,6 +252,15 @@ public class MainActivity extends AppCompatActivity
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    private void openInGooglePlay() {
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     public static void notifyAboutCategoriesChanging() {

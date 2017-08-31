@@ -3,12 +3,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="motto">The worlds of English in your phone!</string>
-    <string name="report">Report</string>
+    <string name="feedback">Feedback</string>
     <string name="share">Share</string>
     <string name="communicate">Communicate</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="app_info">App: Worlds 2.1\nDeveloper: Prudnikoff\nThe worlds of English in your phone!</string>
+    <string name="app_info">App: Worlds 2.1\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
     <string name="search_hint">Search</string>
     <string name="american">American</string>
     <string name="british">British</string>
