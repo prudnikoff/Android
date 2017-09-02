@@ -7,7 +7,7 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/card_View"
+        android:id="@+id/category_cardView"
         card_view:cardBackgroundColor="#ffffff"
         android:focusable="true"
         android:clickable="true"
@@ -16,55 +16,69 @@
         card_view:cardElevation="3dp"
         card_view:cardCornerRadius="1dp">
 
-        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_star_border"
+                android:id="@+id/star_button"
+                android:layout_gravity="center_vertical"
+                android:minWidth="50dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/name_of_category_textView"
-                    android:layout_width="wrap_content"
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="My awesome words"/>
+                    android:layout_marginTop="7dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/name_of_category_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:text="My awesome words"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="7dp">
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/date_and_time_textView"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="25.06.2017, 15:06"
-                    android:textSize="14sp"
-                    android:layout_weight="0.9"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="7dp">
 
-                <TextView
-                    android:id="@+id/num_of_words_textView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:textAlignment="textEnd"
-                    android:layout_weight="0.1"
-                    android:textSize="14sp"
-                    android:text="77"/>
+                    <TextView
+                        android:id="@+id/date_and_time_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="25.06.2017, 15:06"
+                        android:textSize="14sp"
+                        android:layout_weight="0.9"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/num_of_words_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textAlignment="textEnd"
+                        android:layout_weight="0.1"
+                        android:textSize="14sp"
+                        android:text="77"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -10,12 +10,23 @@ class CategoryModel implements Serializable {
     private String dateAndTime;
     private ArrayList<WordModel> words;
     private ArrayList<WordModel> wordsToQuiz;
+    private boolean isTop;
 
     CategoryModel(String nameOfCategory, String dateAndTime) {
         this.nameOfCategory = nameOfCategory;
         this.dateAndTime = dateAndTime;
         words = new ArrayList<>();
         wordsToQuiz = new ArrayList<>();
+    }
+
+    void changeTop() {
+        if (isTop) {
+            isTop = false;
+        } else  isTop = true;
+    }
+
+    boolean isTop() {
+        return isTop;
     }
 
     void addWord(WordModel word) {

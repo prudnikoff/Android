@@ -75,22 +75,6 @@ public class MainActivity extends AppCompatActivity
         categoriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         categoriesRecyclerView.setLayoutManager(layoutManager);
-        //setting up OnItemTouchListener for RecyclerView items
-        categoriesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
-                categoriesRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-
-            @Override public void onItemClick(View view, int position) {
-                CategoryModel category = CategoriesData.getCategory(position);
-                goCategoryWordsActivity(category.getNameOfCategory(), position, false, null);
-            }
-
-            @Override public void onLongItemClick(View view, int position) {
-                AppDialogs.showCategoryOptionsDialog(MainActivity.this, position);
-            }
-
-        })
-        );
-
         adapter = new CategoriesAdapter(CategoriesData.getCategories());
         categoriesRecyclerView.setAdapter(adapter);
 
@@ -249,10 +233,10 @@ public class MainActivity extends AppCompatActivity
         final String appPackageName = getPackageName();
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Worlds is a really amazing English-English dictionary and thesaurus " +
+        String shareBody = "Worlds is an amazing English-English dictionary and thesaurus " +
                 "for learners of English. Definitions of words with pronunciations, examples and " +
-                "effective quizzes for learning are waiting for you. Download it in Google Play: https://play.google." +
-                "com/store/apps/details?id=" + appPackageName;
+                "effective quizzes for learning are waiting for you. Download it in Google Play: " +
+                "https://play.google.com/store/apps/details?id=" + appPackageName;
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));

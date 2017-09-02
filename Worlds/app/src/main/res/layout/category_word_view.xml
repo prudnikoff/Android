@@ -27,9 +27,8 @@
                 android:layout_marginTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -38,9 +37,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:maxWidth="150dp"
+                        android:minWidth="100dp"
                         android:textAlignment="center"
                         android:textSize="20sp"
-                        android:text="world" />
+                        android:text="word" />
 
                     <TextView
                         android:id="@+id/w_partOfSpeech_textView"
@@ -56,11 +57,10 @@
 
                 <TextView
                     android:id="@+id/w_definition_textView"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_weight="0.65"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="top"
                     android:textSize="14sp"
@@ -76,19 +76,17 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:layout_weight="0.35"
                     android:text="@string/example"
                     android:minWidth="100dp"
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/w_example_textView"
-                    android:layout_weight="0.65"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center_vertical"

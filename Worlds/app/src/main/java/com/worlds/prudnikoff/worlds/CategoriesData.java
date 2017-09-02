@@ -80,6 +80,23 @@ class CategoriesData implements Serializable {
         editor.apply();
     }
 
+    static void toTop(int categoryPosition) {
+        CategoryModel category = categories.get(categoryPosition);
+        categories.remove(categoryPosition);
+        categories.add(0, category);
+    }
+
+    static void toLow(int categoryPosition) {
+        CategoryModel category = categories.get(categoryPosition);
+        categories.remove(categoryPosition);
+        int i = 0;
+        while (i < categories.size()) {
+            if (!categories.get(i).isTop()) break;
+            i++;
+        }
+        categories.add(i, category);
+    }
+
     static void restoreState(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context
                 .getApplicationInfo().name, Context.MODE_PRIVATE);

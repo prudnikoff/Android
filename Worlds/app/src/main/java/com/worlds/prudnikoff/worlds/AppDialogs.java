@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 class AppDialogs {
@@ -301,7 +300,7 @@ class AppDialogs {
     static void backUpRestoreDialog(final Context context, final int option) {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.file_name, null);
+        View promptView = layoutInflater.inflate(R.layout.file_backup_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         final EditText editText = (EditText) promptView.findViewById(R.id.dialog_file_name_editText);
