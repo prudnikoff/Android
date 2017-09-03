@@ -3,6 +3,7 @@ package com.worlds.prudnikoff.worlds;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        SharedPreferences sharedPreferences = getSharedPreferences(this
+                .getApplicationInfo().name, Context.MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("isFirstLaunch", true)) {
+            CategoriesData.createFirstLaunchCategories(MainActivity.this);
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isFirstLaunch", false);
+            editor.apply();
+        }
         TextPronunciation.prepare(getApplicationContext());
         CategoriesData.restoreState(MainActivity.this);
         setUpActions();
@@ -252,6 +262,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void notifyAboutCategoriesChanging() {
-        adapter.notifyDataSetChanged();
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
 }

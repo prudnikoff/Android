@@ -59,6 +59,7 @@ class CategoriesData implements Serializable {
                     .format(Calendar.getInstance().getTime());
             CategoryModel newCategory = new CategoryModel(nameOfCategory, currentDateAndTime);
             categories.add(0, newCategory);
+            CategoriesData.toLow(0);
             MainActivity.notifyAboutCategoriesChanging();
         } else Toast.makeText(context, "Sorry, the field cant't be empty", Toast.LENGTH_LONG).show();
     }
@@ -69,15 +70,6 @@ class CategoriesData implements Serializable {
             listOfCategories[i] = categories.get(i).getNameOfCategory();
         }
         return listOfCategories;
-    }
-
-    static void saveCurrentState(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context
-                .getApplicationInfo().name, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        editor.putString(nameToSave, gson.toJson(categories));
-        editor.apply();
     }
 
     static void toTop(int categoryPosition) {
@@ -95,6 +87,15 @@ class CategoriesData implements Serializable {
             i++;
         }
         categories.add(i, category);
+    }
+
+    static void saveCurrentState(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context
+                .getApplicationInfo().name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        editor.putString(nameToSave, gson.toJson(categories));
+        editor.apply();
     }
 
     static void restoreState(Context context) {
@@ -146,7 +147,7 @@ class CategoriesData implements Serializable {
         try {
             File backUp = new File(Environment.getExternalStorageDirectory().getPath(), "Worlds/" + fileName + ".txt");
             fis = new FileInputStream(backUp);
-            int length = (int)backUp.length();
+            int length = (int) backUp.length();
             byte[] buffer = new byte[length];
             fis.read(buffer, 0, length);
             String json = new String(buffer, "UTF-8");
@@ -167,7 +168,7 @@ class CategoriesData implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("Restore", "Something wrong with IO");
-        }finally{
+        } finally {
             try {
                 if (fis != null)
                     fis.close();
@@ -176,5 +177,46 @@ class CategoriesData implements Serializable {
                 Log.e("Restore", "Something wrong with IO");
             }
         }
+    }
+
+    static void createFirstLaunchCategories(Context context) {
+        createNewCategory(context, "From books");
+        createNewCategory(context, "People");
+        createNewCategory(context, "Work");
+        CategoryModel category = categories.get(0);
+        category.changeTop();
+        category.addWord(new WordModel("verb", "employ", "to pay someone to work for you",
+                "The factory employs over 2,000 people."));
+        category.addWord(new WordModel("noun", "processing", "when a substance is changed as " +
+                "part of th manufacture of a product", "Fire broke out at a food processing " +
+                "plant in Hamlet, N. C."));
+        category.addWord(new WordModel("noun", "flash memory", "a type of computer memory that " +
+                "can continue storing information without a power supply. It is used, " +
+                "for example, in memory cards", null));
+        category.getWord(1).setMemorized(true);
+        category = categories.get(2);
+        category.addWord(new WordModel("verb", "domesticate", "to make an animal able to work " +
+                "for people or live with them as a pet", "She domesticated a cat."));
+        category.addWord(new WordModel("noun", "sail", "a large piece of strong cloth fixed " +
+                "onto a boat, so that the wind will push the boat along", "a yacht with white sails"));
+        category.getWord(0).setMemorized(true);
+        category = categories.get(1);
+        category.addWord(new WordModel(null, "Putin, Vladimir", "(1952–) a Russian politician " +
+                "who was President of Russia (2000–08). He has twice been Prime Minister of " +
+                "Russia (1999-2000 and 2008-). When he was president, he was known as a strong " +
+                "leader who supported the Russian military in Chechnya. Before becoming " +
+                "president, Putin worked for the KGB for many years.", null));
+        category.addWord(new WordModel(null, "London, Jack", "(1876–1916) a US writer of " +
+                "adventure novels, best known forThe Call of the Wild andWhite Fang", null));
+        category.addWord(new WordModel(null, "Chekhov, Anton", "(1860–1904) a Russian writer " +
+                "of plays and short stories, best known for his playsThe Seagull,Uncle Vanya, " +
+                "and The Cherry Orchard", null));
+        category.addWord(new WordModel(null, "Jobs, Steve", "(1955–) a US computer designer and " +
+                "businessman who, together with Steve Wozniak, designed and built the first real " +
+                "personal computer and started the Apple computer company. In 1985 he left Apple" +
+                " and bought the company Pixar which has made films such as Toy Story. In 1996 " +
+                "he returned to Apple and became CEO in 1997. He became a director of Disney when " +
+                "they bought Pixar in 2006.", null));
+        category.getWord(0).setMemorized(true);
     }
 }

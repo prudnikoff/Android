@@ -12,7 +12,7 @@ class WordModel implements Serializable {
 
     WordModel(String partOfSpeech, String headWord, String definition, String example) {
         this.partOfSpeech = partOfSpeech;
-        this.headWord = headWord;
+        this.headWord = headWord.replaceAll(" ", "\n");
         this.definition = definition;
         this.example = example;
         this.isMemorized = false;
