@@ -8,7 +8,7 @@
     <string name="communicate">Communicate</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="app_info">App: Worlds 2.3\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
+    <string name="app_info">App: Worlds 2.4\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
     <string name="search_hint">Search</string>
     <string name="american">American</string>
     <string name="british">British</string>
@@ -24,4 +24,6 @@
     <string name="back_up">Back up</string>
     <string name="enter_name_of_file">Enter a file name:</string>
     <string name="back_up_default_name">WorldsAppBackUp</string>
+    <string name="ads"><a href="https://vk.com/englishdiscovery">Awesome community for learners</a></string>
+    <string name="ads_dialog">Do you want to discover English more?</string>
 </resources>

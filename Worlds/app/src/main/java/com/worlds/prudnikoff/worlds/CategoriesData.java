@@ -94,6 +94,9 @@ class CategoriesData implements Serializable {
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
+        int numOfLaunches = sharedPreferences.getInt("numOfLaunches", 0);
+        numOfLaunches++;
+        editor.putInt("numOfLaunches", numOfLaunches);
         editor.putString(nameToSave, gson.toJson(categories));
         editor.apply();
     }

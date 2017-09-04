@@ -40,12 +40,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.main_activity);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("isFirstLaunch", true)) {
+        if (sharedPreferences.getInt("numOfLaunches", 0) == 0) {
             CategoriesData.createFirstLaunchCategories(MainActivity.this);
-        } else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isFirstLaunch", false);
-            editor.apply();
+        }
+        if (sharedPreferences.getInt("numOfLaunches", 0) == 9) {
+            AppDialogs.adsDialog(MainActivity.this);
         }
         TextPronunciation.prepare(getApplicationContext());
         CategoriesData.restoreState(MainActivity.this);

@@ -3,7 +3,9 @@ package com.worlds.prudnikoff.worlds;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -11,6 +13,8 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_activity);
+        TextView adsTextView = (TextView) findViewById(R.id.ads_textView);
+        adsTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
