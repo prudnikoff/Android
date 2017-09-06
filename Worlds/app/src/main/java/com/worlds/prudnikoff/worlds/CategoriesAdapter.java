@@ -37,7 +37,8 @@ class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryH
         CategoryModel category = categories.get(position);
         categoryHolder.nameOfCategory.setText(category.getNameOfCategory());
         categoryHolder.dateAndTime.setText(category.getDateAndTime());
-        categoryHolder.numOfWords.setText(String.valueOf(category.getNumOfWords()));
+        categoryHolder.numOfWords.setText( String.valueOf(category.getNumOfMemorizedWords())
+                + "/" + String.valueOf(category.getNumOfWords()));
         if (category.isTop()) {
             categoryHolder.starButton.setImageResource(R.drawable.ic_star);
         } else categoryHolder.starButton.setImageResource(R.drawable.ic_star_border);

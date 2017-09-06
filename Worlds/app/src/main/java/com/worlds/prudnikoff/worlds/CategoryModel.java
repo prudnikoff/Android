@@ -41,6 +41,17 @@ class CategoryModel implements Serializable {
         return words.size();
     }
 
+    int getNumOfMemorizedWords() {
+        int numOfMemorizedWords = 0;
+        for (int i = 0; i < words.size(); i++) {
+            if (words.get(i).isMemorized()) {
+                numOfMemorizedWords++;
+            }
+        }
+        return numOfMemorizedWords;
+    }
+
+
     String getNameOfCategory() {
         return nameOfCategory;
     }
