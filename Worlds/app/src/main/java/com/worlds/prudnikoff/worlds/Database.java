@@ -50,7 +50,7 @@ class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void getContact() {
+    /*public void getContact() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(WORDS, new String[] { KEY_ID,
                         KEY_HEADWORD, KEY_DEF, KEY_POS}, KEY_ID + "=?",
@@ -60,7 +60,7 @@ class Database extends SQLiteOpenHelper {
 
         Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2));
-        // return contact
+        return contact
         return contact;
-    }
+    }*/
 }
