@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Database database = new Database(MainActivity.this);
+        database.addWord();
+        database.getWord();
         setContentView(R.layout.main_activity);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);

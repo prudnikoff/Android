@@ -5,17 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.util.Log;
 
 class Database extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "wordsDatabase";
-    private static final String WORDS = "headwords";
-    private static final String KEY_ID = "id";
-    private static final String KEY_HEADWORD = "headword";
-    private static final String KEY_DEF = "definition";
-    private static final String KEY_POS = "partOfSpeech";
+    private static final String DATABASE_NAME = "wordsDatabase.db";
+    private static final String WORDS = "WORDS";
     private static final int DATABASE_VERSION = 1;
-
 
     Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,9 +25,12 @@ class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + WORDS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_HEADWORD + " TEXT,"
-                + KEY_DEF + " TEXT" + KEY_POS + " TEXT" + ")";
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + WORDS + " (" +
+                Fields._ID + " INTEGER PRIMARY KEY," +
+                Fields.KEY_HEADWORD + " TEXT," +
+                Fields.KEY_DEF + " TEXT," +
+                Fields.KEY_POS + " TEXT)";
+
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -40,27 +40,42 @@ class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addContact() {
+    public void addWord() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_HEADWORD, "hello");
-        values.put(KEY_DEF, "it's me");
-        values.put(KEY_POS, "noun");
+        values.put(Fields.KEY_HEADWORD, "hello");
+        values.put(Fields.KEY_DEF, "it's me");
+        values.put(Fields.KEY_POS, "noun");
         db.insert(WORDS, null, values);
+        /*values.put(Fields.KEY_HEADWORD, "vlad");
+        values.put(Fields.KEY_DEF, "perfect");
+        values.put(Fields.KEY_POS, "verb");
+        db.insert(WORDS, null, values);*/
         db.close();
     }
 
-    /*public void getContact() {
+    public void getWord() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(WORDS, new String[] { KEY_ID,
-                        KEY_HEADWORD, KEY_DEF, KEY_POS}, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        /*String[] projection = {
+                Fields._ID,
+                Fields.KEY_HEADWORD,
+                Fields.KEY_DEF,
+                Fields.KEY_POS
+        };*/
+        Cursor cursor = db.query(WORDS, null, null, null, null, null, null);
+        int i = cursor.getCount();
+        while (cursor.moveToNext()) {
+            Log.e("Database", String.valueOf(cursor.getInt(cursor.getColumnIndex(Fields._ID))) + " "
+                    + cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)) +
+                    " " + cursor.getString(cursor.getColumnIndex(Fields.KEY_DEF)) + " "
+                    + cursor.getString(cursor.getColumnIndex(Fields.KEY_POS)));
+        }
+        cursor.close();
+    }
 
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-        return contact
-        return contact;
-    }*/
+    private class Fields implements BaseColumns {
+        private static final String KEY_HEADWORD = "HEADWORD";
+        private static final String KEY_DEF = "DEFINITION";
+        private static final String KEY_POS = "PART_OF_SPEECH";
+    }
 }
