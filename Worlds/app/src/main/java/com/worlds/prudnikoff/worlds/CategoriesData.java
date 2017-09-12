@@ -3,16 +3,22 @@ package com.worlds.prudnikoff.worlds;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -31,7 +37,7 @@ class CategoriesData implements Serializable {
         return categories;
     }
 
-    static void setCategories(ArrayList<CategoryModel> mCategories) {
+    private static void setCategories(ArrayList<CategoryModel> mCategories) {
         categories = mCategories;
     }
 
@@ -179,6 +185,35 @@ class CategoriesData implements Serializable {
                 ex.printStackTrace();
                 Log.e("Restore", "Something wrong with IO");
             }
+        }
+    }
+
+    static void startParse(Context context, Database db) {
+        String start = "OPTED v0.03 Letter ";
+        String end = ".html";
+        for (int i = 0; i < 26; i++) {
+            String name = start + (char) (65 + i) + end;
+            parse(context, name, db);
+        }
+    }
+
+    static void parse(Context context, String path, Database db) {
+        try {
+            String pah = context.getAssets() + path;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(path)));
+            int i = 0;
+            do {
+                String headword = reader.readLine();
+                if (headword.equals("</body></html>")) break;
+                String pos = reader.readLine();
+                String def = reader.readLine();
+                db.addWord(headword, def, pos);
+                i++;
+            } while (true);
+            System.out.println(i);
+            reader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

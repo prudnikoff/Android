@@ -31,7 +31,8 @@ class Suggestions {
                 }
             }
         }
-        if (query.length() > 1 && suggestions.size() < SUGGESTIONS_MAX_SIZE) allWordsSearch();
+        if (query.length() > 1 && suggestions.size() < SUGGESTIONS_MAX_SIZE) //allWordsSearch();
+            new Database(context).getWords(suggestions, query);
         return suggestions;
     }
 

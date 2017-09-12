@@ -5,17 +5,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import java.io.File;
+import java.util.ArrayList;
 
 class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wordsDatabase.db";
     private static final String WORDS = "WORDS";
     private static final int DATABASE_VERSION = 1;
+    private SQLiteDatabase db = this.getWritableDatabase();
 
     Database(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Environment.getExternalStorageDirectory().getPath() + File.separator
+                + DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -40,21 +46,19 @@ class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addWord() {
-        SQLiteDatabase db = this.getWritableDatabase();
+    void addWord(String headword, String definition, String partOfSpeech) {
         ContentValues values = new ContentValues();
-        values.put(Fields.KEY_HEADWORD, "hello");
-        values.put(Fields.KEY_DEF, "it's me");
-        values.put(Fields.KEY_POS, "noun");
+        values.put(Fields.KEY_HEADWORD, headword);
+        values.put(Fields.KEY_DEF, definition);
+        values.put(Fields.KEY_POS, partOfSpeech);
         db.insert(WORDS, null, values);
-        /*values.put(Fields.KEY_HEADWORD, "vlad");
-        values.put(Fields.KEY_DEF, "perfect");
-        values.put(Fields.KEY_POS, "verb");
-        db.insert(WORDS, null, values);*/
+    }
+
+    void closeIt() {
         db.close();
     }
 
-    public void getWord() {
+    void getWords(ArrayList<String> suggestions, String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         /*String[] projection = {
                 Fields._ID,
@@ -62,13 +66,13 @@ class Database extends SQLiteOpenHelper {
                 Fields.KEY_DEF,
                 Fields.KEY_POS
         };*/
-        Cursor cursor = db.query(WORDS, null, null, null, null, null, null);
-        int i = cursor.getCount();
+        String[] columns = new String[] { Fields.KEY_HEADWORD };
+        //Cursor cursor = db.query(WORDS, columns, "WHERE ", null, null, null, null);
+        Cursor cursor =  db.rawQuery("SELECT " + Fields.KEY_HEADWORD +
+                " FROM " + WORDS +
+                " WHERE " + Fields.KEY_HEADWORD + " LIKE '%" + query + "%'", null);
         while (cursor.moveToNext()) {
-            Log.e("Database", String.valueOf(cursor.getInt(cursor.getColumnIndex(Fields._ID))) + " "
-                    + cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)) +
-                    " " + cursor.getString(cursor.getColumnIndex(Fields.KEY_DEF)) + " "
-                    + cursor.getString(cursor.getColumnIndex(Fields.KEY_POS)));
+            suggestions.add(String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD))));
         }
         cursor.close();
     }
