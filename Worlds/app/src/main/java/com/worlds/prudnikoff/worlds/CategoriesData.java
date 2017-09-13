@@ -4,10 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -36,6 +42,9 @@ class CategoriesData implements Serializable {
     static ArrayList<CategoryModel> getCategories() {
         return categories;
     }
+
+    static int hole = 0;
+    static int current = 0;
 
     private static void setCategories(ArrayList<CategoryModel> mCategories) {
         categories = mCategories;
@@ -188,30 +197,35 @@ class CategoriesData implements Serializable {
         }
     }
 
-    static void startParse(Context context, Database db) {
+    static void startParse(Context context, Database db) throws IOException {
         String start = "OPTED v0.03 Letter ";
         String end = ".html";
         for (int i = 0; i < 26; i++) {
-            String name = start + (char) (65 + i) + end;
-            parse(context, name, db);
+            String name = start + (char) ('A' + i) + end;
+            InputStream is = context.getAssets().open(name);
+            parse(db, is);
+            Log.d("Amount", (char)('A' + i) + " " + current);
+            current = 0;
         }
+        Log.d("Amount", "Hole = " + hole);
     }
 
-    static void parse(Context context, String path, Database db) {
+    static void parse(Database db, InputStream is) {
+        Document doc;
         try {
-            String pah = context.getAssets() + path;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(path)));
-            int i = 0;
-            do {
-                String headword = reader.readLine();
-                if (headword.equals("</body></html>")) break;
-                String pos = reader.readLine();
-                String def = reader.readLine();
-                db.addWord(headword, def, pos);
-                i++;
-            } while (true);
-            System.out.println(i);
-            reader.close();
+            doc = Jsoup.parse(is, "UTF-8", "");
+            Elements els = doc.select("p");
+            for (int i = 0; i < els.size(); i++) {
+                if (els.get(i).children().size() > 1) {
+                    String headword = els.get(i).child(0).text();
+                    String pos = els.get(i).child(1).text();
+                    String def = els.get(i).ownText();
+                    if (def.length() > 3) def = def.substring(3);
+                    db.addWord(headword, def, pos);
+                    hole++;
+                    current++;
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -7,17 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.provider.BaseColumns;
-import android.util.Log;
-
 import java.io.File;
 import java.util.ArrayList;
 
 class Database extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "wordsDatabase.db";
+    private static final String DATABASE_NAME = "words.db";
     private static final String WORDS = "WORDS";
     private static final int DATABASE_VERSION = 1;
-    private SQLiteDatabase db = this.getWritableDatabase();
 
     Database(Context context) {
         super(context, Environment.getExternalStorageDirectory().getPath() + File.separator
@@ -47,31 +44,23 @@ class Database extends SQLiteOpenHelper {
     }
 
     void addWord(String headword, String definition, String partOfSpeech) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Fields.KEY_HEADWORD, headword);
         values.put(Fields.KEY_DEF, definition);
         values.put(Fields.KEY_POS, partOfSpeech);
         db.insert(WORDS, null, values);
-    }
-
-    void closeIt() {
         db.close();
     }
 
     void getWords(ArrayList<String> suggestions, String query) {
         SQLiteDatabase db = this.getReadableDatabase();
-        /*String[] projection = {
-                Fields._ID,
-                Fields.KEY_HEADWORD,
-                Fields.KEY_DEF,
-                Fields.KEY_POS
-        };*/
-        String[] columns = new String[] { Fields.KEY_HEADWORD };
-        //Cursor cursor = db.query(WORDS, columns, "WHERE ", null, null, null, null);
         Cursor cursor =  db.rawQuery("SELECT " + Fields.KEY_HEADWORD +
                 " FROM " + WORDS +
-                " WHERE " + Fields.KEY_HEADWORD + " LIKE '%" + query + "%'", null);
+                " WHERE " + Fields.KEY_HEADWORD + " LIKE '%" + query + "%' LIMIT 10", null);
+        int i = cursor.getCount();
         while (cursor.moveToNext()) {
+            String l = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
             suggestions.add(String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD))));
         }
         cursor.close();

@@ -38,8 +38,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Database database = new Database(MainActivity.this);
-        CategoriesData.startParse(MainActivity.this, database);
-        database.close();
+        /*try {
+            CategoriesData.startParse(MainActivity.this, database);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
         setContentView(R.layout.main_activity);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
