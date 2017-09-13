@@ -4,43 +4,32 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.provider.BaseColumns;
-import java.io.File;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.ArrayList;
 
-class Database extends SQLiteOpenHelper {
-
-    private static final String DATABASE_NAME = "words.db";
-    private static final String WORDS = "WORDS";
-    private static final int DATABASE_VERSION = 1;
+class Database extends SQLiteAssetHelper {
 
     Database(Context context) {
-        super(context, Environment.getExternalStorageDirectory().getPath() + File.separator
-                + DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + WORDS + " (" +
-                Fields._ID + " INTEGER PRIMARY KEY," +
-                Fields.KEY_HEADWORD + " TEXT," +
-                Fields.KEY_DEF + " TEXT," +
-                Fields.KEY_POS + " TEXT)";
-
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        super(context, Fields.DATABASE_NAME, null, Fields.DATABASE_VERSION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + WORDS);
+        db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_NAME);
         onCreate(db);
+    }
+
+    void addColumn() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            //db.execSQL("ALTER TABLE " + Fields.TABLE_NAME + " ADD COLUMN " + Fields.KEY_EXM + " TEXT;");
+            Cursor cursor = db.rawQuery("SELECT * FROM " + Fields.TABLE_NAME, null);
+            i = cursor.getColumnCount();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     void addWord(String headword, String definition, String partOfSpeech) {
@@ -49,14 +38,14 @@ class Database extends SQLiteOpenHelper {
         values.put(Fields.KEY_HEADWORD, headword);
         values.put(Fields.KEY_DEF, definition);
         values.put(Fields.KEY_POS, partOfSpeech);
-        db.insert(WORDS, null, values);
+        db.insert(Fields.TABLE_NAME, null, values);
         db.close();
     }
 
     void getWords(ArrayList<String> suggestions, String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery("SELECT " + Fields.KEY_HEADWORD +
-                " FROM " + WORDS +
+                " FROM " + Fields.TABLE_NAME +
                 " WHERE " + Fields.KEY_HEADWORD + " LIKE '%" + query + "%' LIMIT 10", null);
         int i = cursor.getCount();
         while (cursor.moveToNext()) {
@@ -70,5 +59,9 @@ class Database extends SQLiteOpenHelper {
         private static final String KEY_HEADWORD = "HEADWORD";
         private static final String KEY_DEF = "DEFINITION";
         private static final String KEY_POS = "PART_OF_SPEECH";
+        private static final String KEY_EXM = "EXAMPLE";
+        private static final String DATABASE_NAME = "words.db";
+        private static final String TABLE_NAME = "WORDS";
+        private static final int DATABASE_VERSION = 1;
     }
 }

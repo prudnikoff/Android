@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Database database = new Database(MainActivity.this);
+        database.addColumn();
         /*try {
             CategoriesData.startParse(MainActivity.this, database);
         } catch (Exception ex) {
