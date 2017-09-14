@@ -79,7 +79,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.categorySearch_item).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        final Suggestions querySuggestions = new Suggestions(CategoryWordsActivity.this);
+        final Suggestions querySuggestions = new Suggestions();
         final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
                 R.layout.search_suggestion,
                 null,

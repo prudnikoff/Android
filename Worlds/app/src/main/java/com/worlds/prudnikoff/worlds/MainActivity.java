@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        new Background().execute(MainActivity.this);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
         if (sharedPreferences.getInt("numOfLaunches", 0) == 0) {
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.mainSearch_item).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        final Suggestions querySuggestions = new Suggestions(MainActivity.this);
+        final Suggestions querySuggestions = new Suggestions();
         final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
                 R.layout.search_suggestion,
                 null,

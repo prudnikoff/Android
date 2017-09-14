@@ -37,7 +37,7 @@ class Database extends SQLiteAssetHelper {
                 " FROM " + Fields.TABLE_NAME, null);
         while (cursor.moveToNext()) {
             String word = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
-            wordsList.add(word);
+            wordsList.add(word.toLowerCase());
         }
         cursor.close();
         db.close();
@@ -48,13 +48,13 @@ class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<WordModel> words = new ArrayList<>();
         Cursor cursor =  db.rawQuery("SELECT * FROM " + Fields.TABLE_NAME + " WHERE "
-                + Fields.KEY_HEADWORD + " = '" + query + "';", null);
+                + Fields.KEY_HEADWORD + " LIKE '" + query + "%' LIMIT 25;", null);
         while (cursor.moveToNext()) {
             String headword = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
             String definition = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_DEF)));
             String pos = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_POS)));
             String example = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_EXM)));
-            words.add(new WordModel(pos, headword, definition, example));
+            words.add(new WordModel(pos, headword.toLowerCase(), definition, example));
         }
         cursor.close();
         db.close();

@@ -15,15 +15,22 @@ class Suggestions {
 
     private String query;
     private ArrayList<String> suggestions;
-    private Context context;
     private int mid;
-    private ArrayList<String> wordsList;
+    private static boolean isLoaded;
+    private static ArrayList<String> wordsList;
     private final int SUGGESTIONS_MAX_SIZE = 10;
 
-    Suggestions(Context context) {
-        this.context = context;
+    Suggestions() {
         suggestions = new ArrayList<>();
+    }
+
+    static void prepare(Context context) {
         wordsList = new Database(context).getWordsList();
+        isLoaded = true;
+    }
+
+    boolean getIsLoaded() {
+        return isLoaded;
     }
 
     ArrayList<String> getSuggestions(String query) {
@@ -38,8 +45,7 @@ class Suggestions {
                 }
             }
         }
-        //if (query.length() == 1) wordsListByLetter = new Database(context).getWordsListByLetter(query);
-        if (query.length() > 1 && suggestions.size() <= SUGGESTIONS_MAX_SIZE) wordsListSearch();
+        if (isLoaded && query.length() > 1 && suggestions.size() <= SUGGESTIONS_MAX_SIZE) wordsListSearch();
         return suggestions;
     }
 
