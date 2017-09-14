@@ -204,7 +204,7 @@ class CategoriesData implements Serializable {
             String name = start + (char) ('A' + i) + end;
             InputStream is = context.getAssets().open(name);
             parse(db, is);
-            Log.d("Amount", (char)('A' + i) + " " + current);
+        Log.d("Amount", (char)('A' + i) + " " + current);
             current = 0;
         }
         Log.d("Amount", "Hole = " + hole);

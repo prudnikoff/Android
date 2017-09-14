@@ -20,18 +20,6 @@ class Database extends SQLiteAssetHelper {
         onCreate(db);
     }
 
-    void addColumn() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            //db.execSQL("ALTER TABLE " + Fields.TABLE_NAME + " ADD COLUMN " + Fields.KEY_EXM + " TEXT;");
-            Cursor cursor = db.rawQuery("SELECT * FROM " + Fields.TABLE_NAME, null);
-            i = cursor.getColumnCount();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
     void addWord(String headword, String definition, String partOfSpeech) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -42,17 +30,35 @@ class Database extends SQLiteAssetHelper {
         db.close();
     }
 
-    void getWords(ArrayList<String> suggestions, String query) {
+    ArrayList<String> getWordsList() {
         SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> wordsList = new ArrayList<>();
         Cursor cursor =  db.rawQuery("SELECT " + Fields.KEY_HEADWORD +
-                " FROM " + Fields.TABLE_NAME +
-                " WHERE " + Fields.KEY_HEADWORD + " LIKE '%" + query + "%' LIMIT 10", null);
-        int i = cursor.getCount();
+                " FROM " + Fields.TABLE_NAME, null);
         while (cursor.moveToNext()) {
-            String l = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
-            suggestions.add(String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD))));
+            String word = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
+            wordsList.add(word);
         }
         cursor.close();
+        db.close();
+        return wordsList;
+    }
+
+    ArrayList<WordModel> getWordsByQuery(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<WordModel> words = new ArrayList<>();
+        Cursor cursor =  db.rawQuery("SELECT * FROM " + Fields.TABLE_NAME + " WHERE "
+                + Fields.KEY_HEADWORD + " = '" + query + "';", null);
+        while (cursor.moveToNext()) {
+            String headword = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
+            String definition = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_DEF)));
+            String pos = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_POS)));
+            String example = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_EXM)));
+            words.add(new WordModel(pos, headword, definition, example));
+        }
+        cursor.close();
+        db.close();
+        return words;
     }
 
     private class Fields implements BaseColumns {

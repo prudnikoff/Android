@@ -37,13 +37,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Database database = new Database(MainActivity.this);
-        database.addColumn();
-        /*try {
-            CategoriesData.startParse(MainActivity.this, database);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
         setContentView(R.layout.main_activity);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
@@ -148,7 +141,6 @@ public class MainActivity extends AppCompatActivity
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.mainSearch_item).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         final Suggestions querySuggestions = new Suggestions(MainActivity.this);
         final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
                 R.layout.search_suggestion,
@@ -184,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                     goCategoryWordsActivity(categoryName, CategoriesData
                             .getCategoryPosition(categoryName), true, headword);
                     searchView.setQuery("", false);
-                } else new InternetConnection(MainActivity.this, searchQuery).execute();
+                } else goDatabaseWordsActivity(new Database(MainActivity.this).getWordsByQuery(searchQuery));
                 searchView.clearFocus();
                 return true;
             }
@@ -256,6 +248,13 @@ public class MainActivity extends AppCompatActivity
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Worlds App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    private void goDatabaseWordsActivity(ArrayList<WordModel> definitions) {
+        Intent intent = new Intent(MainActivity.this, InternetDefinitionsActivity.class);
+        intent.putExtra("query", searchQuery.replaceAll(",", " "));
+        intent.putExtra("definitions", definitions);
+        startActivity(intent);
     }
 
     private void openInGooglePlay() {

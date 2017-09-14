@@ -1,22 +1,29 @@
 package com.worlds.prudnikoff.worlds;
 
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
+import java.util.jar.Pack200;
 
 class Suggestions {
 
     private String query;
     private ArrayList<String> suggestions;
     private Context context;
+    private int mid;
+    private ArrayList<String> wordsList;
     private final int SUGGESTIONS_MAX_SIZE = 10;
 
     Suggestions(Context context) {
         this.context = context;
         suggestions = new ArrayList<>();
+        wordsList = new Database(context).getWordsList();
     }
 
     ArrayList<String> getSuggestions(String query) {
@@ -31,41 +38,48 @@ class Suggestions {
                 }
             }
         }
-        if (query.length() > 1 && suggestions.size() < SUGGESTIONS_MAX_SIZE) //allWordsSearch();
-            new Database(context).getWords(suggestions, query);
+        //if (query.length() == 1) wordsListByLetter = new Database(context).getWordsListByLetter(query);
+        if (query.length() > 1 && suggestions.size() <= SUGGESTIONS_MAX_SIZE) wordsListSearch();
         return suggestions;
-    }
-
-    private void allWordsSearch() {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open(query.substring(0, 1)
-                            .toUpperCase() + " Words.txt")));
-            String line;
-            while ((line = reader.readLine()) != null && suggestions.size() < SUGGESTIONS_MAX_SIZE) {
-                if (line.toLowerCase().startsWith(query.toLowerCase())) {
-                    suggestions.add(line);
-                }
-            }
-        } catch (IOException e) {
-            Log.e("IOException", "Something wrong with the words database");
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.e("IOException", "Something wrong with the words database");
-                }
-            }
-        }
-    }
-
-    String getQuery() {
-        return query;
     }
 
     ArrayList<String> getSuggestions() {
         return suggestions;
+    }
+
+    private void wordsListSearch() {
+        mid = 0;
+        binarySearch(0, wordsList.size() - 1);
+        if (mid > 0) {
+            int i = mid;
+            while (i > 0 && wordsList.get(i - 1).toLowerCase().startsWith(query.toLowerCase())) {
+                i--;
+            }
+            boolean isStarts = true;
+            while ((suggestions.size() <= SUGGESTIONS_MAX_SIZE) && isStarts) {
+                String word = wordsList.get(i);
+                isStarts = word.toLowerCase().startsWith(query.toLowerCase());
+                if ((!suggestions.contains(word)) && isStarts)
+                    suggestions.add(word);
+                i++;
+            }
+        }
+    }
+
+    private void binarySearch(int i, int j) {
+        try {
+            int center = (i + j) / 2;
+            String word = wordsList.get(center);
+            if (word.toLowerCase().startsWith(query.toLowerCase())) {
+                mid = center;
+            } else if (Math.abs(j - i) > 1) {
+                int c = word.compareToIgnoreCase(query);
+                if (c > 0) {
+                    binarySearch(i, center);
+                } else binarySearch(center, j);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
