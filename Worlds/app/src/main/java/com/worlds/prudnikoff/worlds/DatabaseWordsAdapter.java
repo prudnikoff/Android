@@ -36,9 +36,12 @@ class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.Wor
         wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         wordHolder.definitionTextView.setText(word.getDefinition());
         wordHolder.headWordTextView.setText(word.getHeadWord());
-        if (!word.getExample().equals("null")) {
-            wordHolder.exampleTextView.setText(word.getExample());
-        } else wordHolder.exampleTextView.setText("-");
+        if (word.getExamples().length() > 0) {
+            wordHolder.examplesTextView.setText(word.getExamples());
+        } else wordHolder.examplesTextView.setText("-");
+        if (word.getSynonyms().length() > 0) {
+            wordHolder.synonymsTextView.setText(word.getSynonyms());
+        } else wordHolder.synonymsTextView.setText("-");
     }
 
     @Override
@@ -52,8 +55,8 @@ class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.Wor
         TextView headWordTextView;
         TextView definitionTextView;
         TextView partOfSpeechTextView;
-        TextView exampleTextView;
-        TextView exampleLabelTextView;
+        TextView examplesTextView;
+        TextView synonymsTextView;
         ImageButton addButton;
 
         WordHolder(View itemView) {
@@ -62,8 +65,8 @@ class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.Wor
             headWordTextView = (TextView)itemView.findViewById(R.id.headword_textView);
             definitionTextView = (TextView)itemView.findViewById(R.id.definition_textView);
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.partOfSpeech_textView);
-            exampleTextView = (TextView)itemView.findViewById(R.id.example_textView);
-            exampleLabelTextView = (TextView)itemView.findViewById(R.id.example_label_textView);
+            synonymsTextView = (TextView)itemView.findViewById(R.id.synonyms_textView);
+            examplesTextView = (TextView)itemView.findViewById(R.id.example_textView);
             addButton = (ImageButton)itemView.findViewById(R.id.add_button);
             cardView.setOnClickListener(this);
             addButton.setOnClickListener(this);

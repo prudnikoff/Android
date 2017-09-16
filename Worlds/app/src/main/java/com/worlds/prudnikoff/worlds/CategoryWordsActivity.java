@@ -116,7 +116,7 @@ public class CategoryWordsActivity extends AppCompatActivity {
                     intent.putExtra("nameOfCategory", categoryName);
                     startActivity(intent);
                     searchView.setQuery("", false);
-                } else new InternetConnection(CategoryWordsActivity.this, searchQuery).execute();
+                } else goDatabaseWordsActivity(new Database(CategoryWordsActivity.this).getWordsByQuery(searchQuery));
                 searchView.clearFocus();
                 return true;
             }
@@ -153,6 +153,13 @@ public class CategoryWordsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    void goDatabaseWordsActivity(ArrayList<WordModel> definitions) {
+        Intent intent = new Intent(CategoryWordsActivity.this, DatabaseWordsActivity.class);
+        intent.putExtra("query", searchQuery.replaceAll(",", " "));
+        intent.putExtra("definitions", definitions);
+        startActivity(intent);
     }
 
     private void goQuizActivity() {

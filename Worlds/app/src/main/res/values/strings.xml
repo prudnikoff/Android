@@ -8,15 +8,13 @@
     <string name="communicate">Communicate</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="app_info">App: Worlds 2.5\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
+    <string name="app_info">App: Worlds 2.6\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
     <string name="search_hint">Search</string>
-    <string name="american">American</string>
-    <string name="british">British</string>
-    <string name="example">Example:</string>
+    <string name="examples">Examples:</string>
     <string name="enter_a_category_name">Enter a category name:</string>
     <string name="wordsCards">wordsCards</string>
     <string name="memorized">memorized</string>
-    <string name="dialog_example">example</string>
+    <string name="dialog_example">examples</string>
     <string name="dialog_headword">headword</string>
     <string name="dialog_part_of_speech">part of speech</string>
     <string name="dialog_definition">definition</string>
@@ -26,4 +24,6 @@
     <string name="back_up_default_name">WorldsAppBackUp</string>
     <string name="ads"><a href="https://vk.com/englishdiscovery">Awesome community for learners</a></string>
     <string name="ads_dialog">Do you want to discover English more?</string>
+    <string name="synonyms">Synonyms:</string>
+    <string name="dialog_synonyms">synonyms</string>
 </resources>

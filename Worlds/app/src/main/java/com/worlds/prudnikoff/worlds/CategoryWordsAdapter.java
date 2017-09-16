@@ -35,19 +35,16 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
     @Override
     public void onBindViewHolder(WordHolder wordHolder, int position) {
         WordModel word = words.get(position);
-        if (word.getPartOfSpeech() != null) {
-            wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
-        } else wordHolder.partOfSpeechTextView.setText("");
-        if (word.getDefinition() != null) {
-            wordHolder.definitionTextView.setText(word.getDefinition());
-        } else wordHolder.definitionTextView.setText("-");
-        if (word.getHeadWord() != null) {
-            wordHolder.headWordTextView.setText(word.getHeadWord());
-        } else wordHolder.headWordTextView.setText("-");
-        if (word.getExample() != null) {
-            wordHolder.exampleTextView.setText(word.getExample());
-        } else wordHolder.exampleTextView.setText("-");
+        wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
+        wordHolder.definitionTextView.setText(word.getDefinition());
+        wordHolder.headWordTextView.setText(word.getHeadWord());
         wordHolder.isMemorized.setChecked(word.isMemorized());
+        if (word.getExamples().length() > 0) {
+            wordHolder.examplesTextView.setText(word.getExamples());
+        } else wordHolder.examplesTextView.setText("-");
+        if (word.getSynonyms().length() > 0) {
+            wordHolder.synonymsTextView.setText(word.getSynonyms());
+        } else wordHolder.synonymsTextView.setText("-");
     }
 
     @Override
@@ -62,7 +59,8 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         TextView headWordTextView;
         TextView definitionTextView;
         TextView partOfSpeechTextView;
-        TextView exampleTextView;
+        TextView examplesTextView;
+        TextView synonymsTextView;
         CheckBox isMemorized;
 
         WordHolder(View itemView) {
@@ -71,7 +69,8 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
             headWordTextView = (TextView)itemView.findViewById(R.id.w_headword_textView);
             definitionTextView = (TextView)itemView.findViewById(R.id.w_definition_textView);
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.w_partOfSpeech_textView);
-            exampleTextView = (TextView)itemView.findViewById(R.id.w_example_textView);
+            examplesTextView = (TextView)itemView.findViewById(R.id.w_examples_textView);
+            synonymsTextView = (TextView)itemView.findViewById(R.id.w_synonyms_textView);
             isMemorized = (CheckBox)itemView.findViewById(R.id.w_memorized_checkBox);
             isMemorized.setOnCheckedChangeListener(this);
             cardView.setOnClickListener(this);

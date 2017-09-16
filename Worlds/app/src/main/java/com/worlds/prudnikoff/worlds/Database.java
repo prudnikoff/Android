@@ -43,17 +43,19 @@ class Database extends SQLiteAssetHelper {
         Cursor cursor =  db.rawQuery("SELECT " + Fields._ID + ", " + Fields.KEY_HEADWORD +" FROM "
                 + Fields.KEYS_TABLE_NAME + " WHERE " + Fields.KEY_HEADWORD + " LIKE '" + query
                 + "%' LIMIT " + WORDS_MAX, null);
-        while (cursor.moveToNext() && words.size() <= WORDS_MAX) {
+        while (cursor.moveToNext() && words.size() < WORDS_MAX) {
             String headword = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_HEADWORD)));
             String id = String.valueOf(cursor.getString(cursor.getColumnIndex(Fields.KEY_ID)));
             Cursor cursor2 =  db.rawQuery("SELECT " + Fields.KEY_DEF + ", " + Fields.KEY_POS + ", " +
                     Fields.KEY_EXM + ", " + Fields.KEY_SYN + " FROM " + Fields.WORDS_TABLE_NAME + " WHERE "
                     + Fields.KEY_ID + " = '" + id + "'", null);
-            while (cursor2.moveToNext() && words.size() <= 10) {
+            while (cursor2.moveToNext() && words.size() < WORDS_MAX) {
                 String definition = String.valueOf(cursor2.getString(cursor2.getColumnIndex(Fields.KEY_DEF)));
                 String pos = String.valueOf(cursor2.getString(cursor2.getColumnIndex(Fields.KEY_POS)));
                 String examples = String.valueOf(cursor2.getString(cursor2.getColumnIndex(Fields.KEY_EXM)));
-                words.add(new WordModel(pos, headword.toLowerCase(), definition, examples));
+                String synonyms = String.valueOf(cursor2.getString(cursor2.getColumnIndex(Fields.KEY_SYN)));
+                synonyms = synonyms.replaceAll("\n", ", ");
+                words.add(new WordModel(pos, headword.toLowerCase(), definition, examples, synonyms));
             }
             cursor2.close();
         }

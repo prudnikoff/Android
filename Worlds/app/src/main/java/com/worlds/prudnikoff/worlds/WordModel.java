@@ -7,14 +7,16 @@ class WordModel implements Serializable {
     private String partOfSpeech;
     private String headWord;
     private String definition;
-    private String example;
+    private String examples;
+    private String synonyms;
     private boolean isMemorized;
 
-    WordModel(String partOfSpeech, String headWord, String definition, String example) {
+    WordModel(String partOfSpeech, String headWord, String definition, String examples, String synonyms) {
         this.partOfSpeech = partOfSpeech;
         this.headWord = headWord.replaceAll(" ", "\n");
         this.definition = definition;
-        this.example = example;
+        this.examples = examples;
+        this.synonyms = synonyms;
         this.isMemorized = false;
     }
 
@@ -38,14 +40,19 @@ class WordModel implements Serializable {
         return definition;
     }
 
-    String getExample() {
-        return example;
+    String getExamples() {
+        return examples;
     }
 
-    void setData(String partOfSpeech, String headWord, String definition, String example) {
+    String getSynonyms() {
+        return synonyms;
+    }
+
+    void setData(String partOfSpeech, String headWord, String definition, String example, String synonyms) {
         this.partOfSpeech = partOfSpeech;
         this.headWord = headWord;
         this.definition = definition;
-        this.example = example;
+        this.examples = example;
+        this.synonyms = synonyms;
     }
 }

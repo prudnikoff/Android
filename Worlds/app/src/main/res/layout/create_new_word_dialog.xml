@@ -48,7 +48,7 @@
                 android:hint="@string/dialog_definition"/>
 
             <EditText
-                android:id="@+id/dialog_example_textEdit"
+                android:id="@+id/dialog_examples_textEdit"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -57,6 +57,17 @@
                 android:layout_marginEnd="20dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/dialog_example"/>
+
+            <EditText
+                android:id="@+id/dialog_synonyms_textEdit"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/dialog_synonyms"/>
 
         </LinearLayout>
 

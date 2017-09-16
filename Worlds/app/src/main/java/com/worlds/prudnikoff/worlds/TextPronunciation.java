@@ -17,7 +17,7 @@ class TextPronunciation {
                     public void onInit(int status) {
                     }
                 }, "com.google.android.tts");
-        textToSpeech.setLanguage(Locale.UK);
+        textToSpeech.setLanguage(Locale.ENGLISH);
     }
 
     static void pronounce(String textToPronounce) {

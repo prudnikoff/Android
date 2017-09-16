@@ -52,23 +52,26 @@ class AppDialogs {
         final EditText headwordEditText = (EditText) promptView.findViewById(R.id.dialog_headword_editText);
         final EditText partOfSpeechEditText = (EditText) promptView.findViewById(R.id.dialog_partOfSpeech_textEdit);
         final EditText definitionEditText = (EditText) promptView.findViewById(R.id.dialog_definition_textEdit);
-        final EditText exampleEditText = (EditText) promptView.findViewById(R.id.dialog_example_textEdit);
+        final EditText examplesEditText = (EditText) promptView.findViewById(R.id.dialog_examples_textEdit);
+        final EditText synonymsEditText = (EditText) promptView.findViewById(R.id.dialog_synonyms_textEdit);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String partOfSpeech = partOfSpeechEditText.getText().toString();
-                        if (partOfSpeech.length() == 0) partOfSpeech = null;
-                        String example = exampleEditText.getText().toString();
-                        if (example.length() == 0) example = null;
                         String headword = headwordEditText.getText().toString();
                         String definition = definitionEditText.getText().toString();
-                        if (headword.length() == 0 || definition.length() == 0) {
-                            Toast.makeText(context, "Sorry, fields can't be empty",
+                        String example = examplesEditText.getText().toString();
+                        if (example.length() == 0) example = "";
+                        String synonyms = synonymsEditText.getText().toString();
+                        if (synonyms.length() == 0) synonyms = "";
+                        if (headword.length() == 0 || definition.length() == 0 ||
+                                partOfSpeech.length() == 0) {
+                            Toast.makeText(context, "Sorry, some fields can't be empty",
                                     Toast.LENGTH_SHORT).show();
                             createNewWordDialog(context, category);
                         } else {
-                            category.addWord(new WordModel(partOfSpeech, headword, definition, example));
+                            category.addWord(new WordModel(partOfSpeech, headword, definition, example, synonyms));
                             CategoryWordsActivity.notifyAboutWordsChanging();
                             MainActivity.notifyAboutCategoriesChanging();
                         }
@@ -97,27 +100,29 @@ class AppDialogs {
         final EditText headwordEditText = (EditText) promptView.findViewById(R.id.dialog_headword_editText);
         final EditText partOfSpeechEditText = (EditText) promptView.findViewById(R.id.dialog_partOfSpeech_textEdit);
         final EditText definitionEditText = (EditText) promptView.findViewById(R.id.dialog_definition_textEdit);
-        final EditText exampleEditText = (EditText) promptView.findViewById(R.id.dialog_example_textEdit);
+        final EditText examplesEditText = (EditText) promptView.findViewById(R.id.dialog_examples_textEdit);
+        final EditText synonymsEditText = (EditText) promptView.findViewById(R.id.dialog_synonyms_textEdit);
         headwordEditText.setText(word.getHeadWord());
         partOfSpeechEditText.setText(word.getPartOfSpeech());
         definitionEditText.setText(word.getDefinition());
-        exampleEditText.setText(word.getExample());
+        examplesEditText.setText(word.getExamples());
+        synonymsEditText.setText(word.getSynonyms());
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String partOfSpeech = partOfSpeechEditText.getText().toString();
-                        if (partOfSpeech.length() == 0) partOfSpeech = null;
-                        String example = exampleEditText.getText().toString();
-                        if (example.length() == 0) example = null;
                         String headword = headwordEditText.getText().toString();
                         String definition = definitionEditText.getText().toString();
-                        if (headword.length() == 0 || definition.length() == 0) {
-                            Toast.makeText(context, "Sorry, fields can't be empty",
+                        String examples = examplesEditText.getText().toString();
+                        String synonyms = synonymsEditText.getText().toString();
+                        if (headword.length() == 0 || definition.length() == 0 ||
+                                partOfSpeech.length() == 0) {
+                            Toast.makeText(context, "Sorry, some fields can't be empty",
                                     Toast.LENGTH_SHORT).show();
                             editWordDialog(context, word);
                         } else {
-                            word.setData(partOfSpeech, headword, definition, example);
+                            word.setData(partOfSpeech, headword, definition, examples, synonyms);
                             CategoryWordsActivity.notifyAboutWordsChanging();
                             MainActivity.notifyAboutCategoriesChanging();
                         }

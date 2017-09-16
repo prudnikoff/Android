@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:id="@+id/example_label_textView"
-                    android:text="@string/example"
+                    android:text="@string/examples"
                     android:minWidth="100dp"
                     android:textAlignment="center"/>
 
@@ -87,6 +87,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/example_textView"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="italic"
+                    android:textSize="14sp"
+                    android:text="the reigning Formula One world"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/synonyms_label_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="@string/synonyms"
+                    android:minWidth="100dp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/synonyms_textView"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center_vertical"
