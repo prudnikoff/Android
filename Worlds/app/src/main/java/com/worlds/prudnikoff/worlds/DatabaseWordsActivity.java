@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import java.util.ArrayList;
 
-public class InternetDefinitionsActivity extends AppCompatActivity {
+public class DatabaseWordsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.internet_definitions_activity);
+        setContentView(R.layout.database_words_activity);
         RecyclerView internetDefinitionsRecyclerView = (RecyclerView)findViewById
                 (R.id.internet_definitions_recyclerView);
         internetDefinitionsRecyclerView.setHasFixedSize(true);
@@ -21,7 +21,7 @@ public class InternetDefinitionsActivity extends AppCompatActivity {
         final ArrayList<WordModel> definitions = (ArrayList<WordModel>) getIntent()
                 .getSerializableExtra("definitions");
         setTitle(getIntent().getExtras().getString("query"));
-        InternetDefinitionsAdapter adapter = new InternetDefinitionsAdapter(definitions);
+        DatabaseWordsAdapter adapter = new DatabaseWordsAdapter(definitions);
         internetDefinitionsRecyclerView.setAdapter(adapter);
     }
 

@@ -135,7 +135,7 @@ class InternetConnection extends AsyncTask<String, Integer, JSONObject> {
     }
 
     private void goInternetDefinitionsActivity(ArrayList<WordModel> definitions) {
-        Intent intent = new Intent(context, InternetDefinitionsActivity.class);
+        Intent intent = new Intent(context, DatabaseWordsActivity.class);
         intent.putExtra("query", searchQuery.replaceAll(",", " "));
         intent.putExtra("definitions", definitions);
         context.startActivity(intent);

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        new Background().execute(MainActivity.this);
+        new BackgroundLoading().execute(MainActivity.this);
         SharedPreferences sharedPreferences = getSharedPreferences(this
                 .getApplicationInfo().name, Context.MODE_PRIVATE);
         if (sharedPreferences.getInt("numOfLaunches", 0) == 0) {
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goDatabaseWordsActivity(ArrayList<WordModel> definitions) {
-        Intent intent = new Intent(MainActivity.this, InternetDefinitionsActivity.class);
+        Intent intent = new Intent(MainActivity.this, DatabaseWordsActivity.class);
         intent.putExtra("query", searchQuery.replaceAll(",", " "));
         intent.putExtra("definitions", definitions);
         startActivity(intent);

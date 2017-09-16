@@ -3,7 +3,7 @@ package com.worlds.prudnikoff.worlds;
 import android.content.Context;
 import android.os.AsyncTask;
 
-class Background extends AsyncTask<Context, String, String> {
+class BackgroundLoading extends AsyncTask<Context, String, String> {
 
     @Override
     protected String doInBackground(Context... params) {

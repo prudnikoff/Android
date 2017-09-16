@@ -10,41 +10,35 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinitionsAdapter.DefinitionHolder> {
+class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.WordHolder> {
 
-    private ArrayList<WordModel> definitions;
+    private ArrayList<WordModel> words;
 
-    InternetDefinitionsAdapter(ArrayList<WordModel> definitions) {
-        this.definitions = definitions;
+    DatabaseWordsAdapter(ArrayList<WordModel> words) {
+        this.words = words;
     }
 
     @Override
     public int getItemCount() {
-        return definitions.size();
+        return words.size();
     }
 
     @Override
-    public DefinitionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.internet_word_view,
+    public WordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.database_word_view,
                 parent, false);
-        return new DefinitionHolder(viewItem);
+        return new WordHolder(viewItem);
     }
 
     @Override
-    public void onBindViewHolder(DefinitionHolder definitionHolder, int position) {
-        WordModel definition = definitions.get(position);
-        if (definition.getPartOfSpeech() != null) {
-            definitionHolder.partOfSpeechTextView.setText("(" + definition.getPartOfSpeech() + ")");
-        } else definitionHolder.partOfSpeechTextView.setText("");
-        if (definition.getDefinition() != null) {
-            definitionHolder.definitionTextView.setText(definition.getDefinition());
-        } else definitionHolder.definitionTextView.setText("-");
-        if (definition.getHeadWord() != null) {
-            definitionHolder.headWordTextView.setText(definition.getHeadWord());
-        } else definitionHolder.headWordTextView.setText("-");
-        if (definition.getExample() != null) {
-            definitionHolder.exampleTextView.setText(definition.getExample());
-        } else definitionHolder.exampleTextView.setText("-");
+    public void onBindViewHolder(WordHolder wordHolder, int position) {
+        WordModel word = words.get(position);
+        wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
+        wordHolder.definitionTextView.setText(word.getDefinition());
+        wordHolder.headWordTextView.setText(word.getHeadWord());
+        if (!word.getExample().equals("null")) {
+            wordHolder.exampleTextView.setText(word.getExample());
+        } else wordHolder.exampleTextView.setText("-");
     }
 
     @Override
@@ -52,22 +46,24 @@ class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinition
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    class DefinitionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class WordHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         TextView headWordTextView;
         TextView definitionTextView;
         TextView partOfSpeechTextView;
         TextView exampleTextView;
+        TextView exampleLabelTextView;
         ImageButton addButton;
 
-        DefinitionHolder(View itemView) {
+        WordHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.card_View);
             headWordTextView = (TextView)itemView.findViewById(R.id.headword_textView);
             definitionTextView = (TextView)itemView.findViewById(R.id.definition_textView);
             partOfSpeechTextView = (TextView)itemView.findViewById(R.id.partOfSpeech_textView);
             exampleTextView = (TextView)itemView.findViewById(R.id.example_textView);
+            exampleLabelTextView = (TextView)itemView.findViewById(R.id.example_label_textView);
             addButton = (ImageButton)itemView.findViewById(R.id.add_button);
             cardView.setOnClickListener(this);
             addButton.setOnClickListener(this);
@@ -75,7 +71,7 @@ class InternetDefinitionsAdapter extends RecyclerView.Adapter<InternetDefinition
 
         @Override
         public void onClick(View view) {
-            WordModel definition = definitions.get(getAdapterPosition());
+            WordModel definition = words.get(getAdapterPosition());
             if (view.getId() == addButton.getId()) {
                 AppDialogs.addWordToCategoryDialog(view.getContext(), definition);
             } else if (view.getId() == cardView.getId()) {
