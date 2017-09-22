@@ -65,17 +65,17 @@
                         android:layout_height="wrap_content"
                         android:text="25.06.2017, 15:06"
                         android:textSize="14sp"
-                        android:minWidth="180dp"
-                        android:maxWidth="180dp"
+                        android:minWidth="200dp"
+                        android:maxWidth="250dp"
                         android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/num_of_words_textView"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:minWidth="20dp"
                         android:textAlignment="textEnd"
-                        android:layout_weight="0.1"
                         android:textSize="14sp"
                         android:text="77/79"/>
 

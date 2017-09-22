@@ -55,4 +55,12 @@ class WordModel implements Serializable {
         this.examples = example;
         this.synonyms = synonyms;
     }
+
+    private String prepare(String headword) {
+        String prepared = "";
+        String[] parts = headword.split(" ");
+        for (int i = 0; i < parts.length; i++) {
+            if ()
+        }
+    }
 }
