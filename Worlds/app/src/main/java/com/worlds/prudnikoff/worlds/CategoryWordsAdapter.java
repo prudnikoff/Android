@@ -37,7 +37,7 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         WordModel word = words.get(position);
         wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         wordHolder.definitionTextView.setText(word.getDefinition());
-        wordHolder.headWordTextView.setText(word.getHeadWord());
+        wordHolder.headWordTextView.setText(prepare(word.getHeadWord()));
         wordHolder.isMemorized.setChecked(word.isMemorized());
         if (word.getExamples().length() > 0) {
             wordHolder.examplesTextView.setText(word.getExamples());
@@ -50,6 +50,22 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    private String prepare(String headword) {
+        final int maxLength = 11;
+        String prepared = "";
+        String currentLine = "";
+        String[] parts = headword.split(" ");
+        for (int i = 0; i < parts.length; i++) {
+            if (currentLine.length() > maxLength) {
+                prepared += currentLine + "\n";
+                currentLine = "";
+            }
+            currentLine += parts[i] + " ";
+        }
+        prepared += currentLine;
+        return prepared;
     }
 
     class WordHolder extends RecyclerView.ViewHolder implements View.OnClickListener,

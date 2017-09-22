@@ -35,7 +35,7 @@ class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.Wor
         WordModel word = words.get(position);
         wordHolder.partOfSpeechTextView.setText("(" + word.getPartOfSpeech() + ")");
         wordHolder.definitionTextView.setText(word.getDefinition());
-        wordHolder.headWordTextView.setText(word.getHeadWord());
+        wordHolder.headWordTextView.setText(prepare(word.getHeadWord()));
         if (word.getExamples().length() > 0) {
             wordHolder.examplesTextView.setText(word.getExamples());
         } else wordHolder.examplesTextView.setText("-");
@@ -47,6 +47,22 @@ class DatabaseWordsAdapter extends RecyclerView.Adapter<DatabaseWordsAdapter.Wor
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    private String prepare(String headword) {
+        final int maxLength = 11;
+        String prepared = "";
+        String currentLine = "";
+        String[] parts = headword.split(" ");
+        for (int i = 0; i < parts.length; i++) {
+            if (currentLine.length() > maxLength) {
+                prepared += currentLine + "\n";
+                currentLine = "";
+            }
+            currentLine += parts[i] + " ";
+        }
+        prepared += currentLine;
+        return prepared;
     }
 
     class WordHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -13,7 +13,7 @@ class WordModel implements Serializable {
 
     WordModel(String partOfSpeech, String headWord, String definition, String examples, String synonyms) {
         this.partOfSpeech = partOfSpeech;
-        this.headWord = headWord.replaceAll(" ", "\n");
+        this.headWord = headWord;
         this.definition = definition;
         this.examples = examples;
         this.synonyms = synonyms;
@@ -54,13 +54,5 @@ class WordModel implements Serializable {
         this.definition = definition;
         this.examples = example;
         this.synonyms = synonyms;
-    }
-
-    private String prepare(String headword) {
-        String prepared = "";
-        String[] parts = headword.split(" ");
-        for (int i = 0; i < parts.length; i++) {
-            if ()
-        }
     }
 }
