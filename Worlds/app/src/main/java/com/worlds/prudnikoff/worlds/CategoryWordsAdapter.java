@@ -39,10 +39,10 @@ class CategoryWordsAdapter extends RecyclerView.Adapter<CategoryWordsAdapter.Wor
         wordHolder.definitionTextView.setText(word.getDefinition());
         wordHolder.headWordTextView.setText(prepare(word.getHeadWord()));
         wordHolder.isMemorized.setChecked(word.isMemorized());
-        if (word.getExamples().length() > 0) {
+        if (word.getExamples() != null && word.getExamples().length() > 0) {
             wordHolder.examplesTextView.setText(word.getExamples());
         } else wordHolder.examplesTextView.setText("-");
-        if (word.getSynonyms().length() > 0) {
+        if (word.getSynonyms() != null && word.getSynonyms().length() > 0) {
             wordHolder.synonymsTextView.setText(word.getSynonyms());
         } else wordHolder.synonymsTextView.setText("-");
     }

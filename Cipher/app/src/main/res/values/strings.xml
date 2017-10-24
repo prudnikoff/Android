@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cipher</string>
+    <string name="file">File:</string>
+    <string name="key">Generated key</string>
+    <string name="crypt">Crypt</string>
+    <string name="register_state">Register\'s state</string>
+</resources>

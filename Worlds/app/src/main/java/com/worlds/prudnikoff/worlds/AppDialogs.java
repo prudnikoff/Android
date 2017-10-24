@@ -62,7 +62,7 @@ class AppDialogs {
                         String headword = headwordEditText.getText().toString();
                         String definition = definitionEditText.getText().toString();
                         String example = examplesEditText.getText().toString();
-                        if (example.length() == 0) example = "";
+                        if (example.length() == 0) example = ""; //wtf
                         String synonyms = synonymsEditText.getText().toString();
                         if (synonyms.length() == 0) synonyms = "";
                         if (headword.length() == 0 || definition.length() == 0 ||
