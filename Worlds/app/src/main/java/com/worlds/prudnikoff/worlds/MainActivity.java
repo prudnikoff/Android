@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity
         if (sharedPreferences.getInt("numOfLaunches", 0) == 0) {
             CategoriesData.createFirstLaunchCategories(MainActivity.this);
         }
-        if (sharedPreferences.getInt("numOfLaunches", 0) == 9) {
-            AppDialogs.adsDialog(MainActivity.this);
-        }
         TextPronunciation.prepare(getApplicationContext());
         CategoriesData.restoreState(MainActivity.this);
         setUpActions();

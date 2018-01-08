@@ -8,7 +8,7 @@
     <string name="communicate">Communicate</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="app_info">App: Worlds 2.7.1\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
+    <string name="app_info">App: Worlds 2.7.2\nDeveloper: Prudnikoff\nEmail: prudnikoff.dev@gmail.com</string>
     <string name="search_hint">Search</string>
     <string name="examples">Examples:</string>
     <string name="enter_a_category_name">Enter a category name:</string>
@@ -22,7 +22,6 @@
     <string name="back_up">Back up</string>
     <string name="enter_name_of_file">Enter a file name:</string>
     <string name="back_up_default_name">WorldsAppBackUp</string>
-    <string name="ads"><a href="https://vk.com/englishdiscovery">Awesome community for learners</a></string>
     <string name="ads_dialog">Do you want to discover English more?</string>
     <string name="synonyms">Synonyms:</string>
     <string name="dialog_synonyms">synonyms</string>
