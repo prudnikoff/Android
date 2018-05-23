@@ -13,8 +13,6 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_activity);
-        TextView adsTextView = (TextView) findViewById(R.id.ads_textView);
-        adsTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
